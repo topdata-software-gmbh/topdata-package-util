@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/topdata-software-gmbh/topdata-package-service/pkg"
 	"log"
 	"net/http"
 )
 
-var config Config
+var config pkg.Config
 
 var port string
 
@@ -20,9 +21,9 @@ func main() {
 	flag.Parse()
 
 	var err error
-	configFile := "config.json"
+	configFile := "config.json5"
 	fmt.Printf("Reading config file: %s\n", configFile)
-	config, err = LoadConfig(configFile)
+	config, err = pkg.LoadConfig(configFile)
 	if err != nil {
 		log.Fatalf("Failed to load config: %s", err)
 	}
