@@ -1,4 +1,4 @@
-package pkg
+package _struct
 
 import (
 	"github.com/yosuke-furukawa/json5/encoding/json5"

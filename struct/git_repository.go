@@ -1,4 +1,4 @@
-package pkg
+package _struct
 
 type GitRepository struct {
 	Name            string

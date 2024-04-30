@@ -4,12 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/topdata-software-gmbh/topdata-package-service/pkg"
+	"github.com/topdata-software-gmbh/topdata-package-service/service/git_repository_service"
+	"github.com/topdata-software-gmbh/topdata-package-service/struct"
 	"log"
 	"net/http"
 )
 
-var config pkg.Config
+var config _struct.Config
 
 var (
 	port       string
@@ -27,7 +28,7 @@ func main() {
 	var err error
 	configFile := configFile
 	fmt.Printf("Reading config file: %s\n", configFile)
-	config, err = pkg.LoadConfig(configFile)
+	config, err = _struct.LoadConfig(configFile)
 	if err != nil {
 		log.Fatalf("Failed to load config: %s", err)
 	}
@@ -52,5 +53,6 @@ func main() {
 }
 
 func getRepositories(c *gin.Context) {
-	c.JSON(http.StatusOK, config.Repositories)
+	repositories := git_repository_service.GetRepositories(config)
+	c.JSON(http.StatusOK, repositories)
 }
