@@ -13,12 +13,10 @@ import (
 var config model.ServiceConfig
 
 var (
-	port       string
 	configFile string
 )
 
 func init() {
-	flag.StringVar(&port, "port", "8080", "port to run the server on")
 	flag.StringVar(&configFile, "config", "config.json5", "path to the config file")
 }
 
