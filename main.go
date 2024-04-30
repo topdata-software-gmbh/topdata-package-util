@@ -18,6 +18,10 @@ func main() {
 
 	http.HandleFunc("/repositories", getRepositories)
 
+	fmt.Println("Server started at http://localhost:8080")
+	fmt.Println("API Endpoints:")
+	fmt.Println("http://localhost:8080/")
+	fmt.Println("http://localhost:8080/repositories")
 	http.ListenAndServe(":8080", nil)
 }
 func getRepositories(w http.ResponseWriter, r *http.Request) {
