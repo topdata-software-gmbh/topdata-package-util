@@ -1,10 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/topdata-software-gmbh/topdata-package-service/pkg"
 	"log"
 	"net/http"
@@ -33,26 +32,25 @@ func main() {
 		log.Fatalf("Failed to load config: %s", err)
 	}
 
-	router := mux.NewRouter()
+	router := gin.Default()
 
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Welcome to the TopData Package Service!")
+	router.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "Welcome to the TopData Package Service!")
 	})
 
-	router.HandleFunc("/repositories", getRepositories)
+	router.GET("/repositories", getRepositories)
 
 	fmt.Printf("Loaded repositories: %+v\n", config.Repositories)
 	fmt.Printf("Server started at http://localhost:%s\n", port)
 	fmt.Println("API Endpoints:")
 	fmt.Printf("http://localhost:%s/\n", port)
 	fmt.Printf("http://localhost:%s/repositories\n", port)
-	err = http.ListenAndServe(":"+port, router)
+	err = router.Run(":" + port)
 	if err != nil {
 		log.Fatalf("Failed to start server: %s", err)
 	}
 }
 
-func getRepositories(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(config.Repositories)
+func getRepositories(c *gin.Context) {
+	c.JSON(http.StatusOK, config.Repositories)
 }
