@@ -17,17 +17,18 @@ http://packages.api.topinfra.de
 3. Navigate to the project directory.
 4. Run `go run .`.
 
-## API Endpoints
-
-- `http://localhost:8080/` - Welcome message
-- `http://localhost:8080/repositories` - Returns a list of repositories
 
 ## Command Line Options
 
 - `--port`
-    - Set the port to run the server on. Default is `8080`.
-    - example: `go run . --port=8081`
+  - Set the port to run the server on. Default is `8080`.
+  - example: `go run . --port=8081`
 - `--config`
-    - Set the path to the config file. Default is `config.json5`.
-    - example: `go run . --config=path/to/config.json5`
+  - Set the path to the config file. Default is `config.json5`.
+  - example: `go run . --config=path/to/config.json5`
 
+  
+## API Endpoints
+
+- `http://localhost:8080/` - Welcome message
+- `http://localhost:8080/repositories` - Returns a list of repositories
