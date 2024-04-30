@@ -1,0 +1,9 @@
+{
+	"repositories": [
+		{
+			"name": "TopdataWebserviceConnectorSW6",
+			"releaseBranches": ["main-sw64", "main-sw65", "main"],
+			"url": "git@github.com:topdata-software-gmbh/topdata-webservice-connector-sw6.git",
+		}
+	]
+}

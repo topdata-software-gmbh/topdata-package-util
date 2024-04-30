@@ -1,4 +1,4 @@
-package main
+package pkg
 
 import (
 	"github.com/yosuke-furukawa/json5/encoding/json5"
@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	Repositories []Repository `json:"repositories"`
+	Repositories []GitRepository `json:"repositories"`
 }
 
 func LoadConfig(path string) (Config, error) {
