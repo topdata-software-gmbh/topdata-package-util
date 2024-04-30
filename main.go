@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -15,5 +16,11 @@ func main() {
 		fmt.Fprintf(w, "Welcome to the TopData Package Service!")
 	})
 
+	http.HandleFunc("/repositories", getRepositories)
+
 	http.ListenAndServe(":8080", nil)
+}
+func getRepositories(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(config.Repositories)
 }
