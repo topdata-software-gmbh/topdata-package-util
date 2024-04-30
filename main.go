@@ -28,7 +28,10 @@ func main() {
 	fmt.Println("API Endpoints:")
 	fmt.Println("http://localhost:8080/")
 	fmt.Println("http://localhost:8080/repositories")
-	http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatalf("Failed to start server: %s", err)
+	}
 }
 
 func getRepositories(w http.ResponseWriter, r *http.Request) {
