@@ -5,6 +5,7 @@ package model
 type GitRepositoryInfo struct {
 	Name            string
 	Description     string
+	URL             string // optional [TODO: we want a setting whether to show this or not]
 	Branches        []string
 	ReleaseBranches []string
 }

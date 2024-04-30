@@ -9,6 +9,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"os"
 	"path/filepath"
+	"sync"
 )
 
 func GetRepositoryBranches(repoConf model.GitRepositoryConfig) ([]string, error) {
@@ -155,18 +156,60 @@ func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, er
 	return publicKeys, nil
 }
 
+//func GetRepoInfos(repoConfigs []model.GitRepositoryConfig) ([]model.GitRepositoryInfo, error) {
+//	repoInfos := make([]model.GitRepositoryInfo, len(repoConfigs))
+//	// ---- fetch branches from the repoConfig
+//	for i, repoConfig := range repoConfigs {
+//		branches, err := GetRepositoryBranches(repoConfig)
+//		if err != nil {
+//			return nil, err
+//		}
+//		repoInfos[i].Name = repoConfig.Name
+//		repoInfos[i].URL = repoConfig.URL
+//		repoInfos[i].Description = repoConfig.Description
+//		repoInfos[i].Branches = branches
+//		//		repoInfos[i].ReleaseBranches =
+//	}
+//	return repoInfos, nil
+//}
+
 func GetRepoInfos(repoConfigs []model.GitRepositoryConfig) ([]model.GitRepositoryInfo, error) {
-	repoInfos := make([]model.GitRepositoryInfo, len(repoConfigs))
-	// ---- fetch branches from the repoConfig
-	for i, repoConfig := range repoConfigs {
-		branches, err := GetRepositoryBranches(repoConfig)
-		if err != nil {
-			return nil, err
-		}
-		repoInfos[i].Name = repoConfig.Name
-		repoInfos[i].Description = repoConfig.Description
-		repoInfos[i].Branches = branches
-		//		repoInfos[i].ReleaseBranches =
+	var wg sync.WaitGroup
+	repoInfoCh := make(chan model.GitRepositoryInfo, len(repoConfigs))
+	errCh := make(chan error, len(repoConfigs))
+
+	for _, repoConfig := range repoConfigs {
+		wg.Add(1)
+		go func(rc model.GitRepositoryConfig) {
+			defer wg.Done()
+			branches, err := GetRepositoryBranches(rc)
+			if err != nil {
+				errCh <- err
+				return
+			}
+			repoInfoCh <- model.GitRepositoryInfo{
+				Name:        rc.Name,
+				URL:         rc.URL,
+				Description: rc.Description,
+				Branches:    branches,
+			}
+		}(repoConfig)
 	}
+
+	go func() {
+		wg.Wait()
+		close(repoInfoCh)
+		close(errCh)
+	}()
+
+	repoInfos := make([]model.GitRepositoryInfo, 0, len(repoConfigs))
+	for info := range repoInfoCh {
+		repoInfos = append(repoInfos, info)
+	}
+
+	if len(errCh) > 0 {
+		return nil, <-errCh
+	}
+
 	return repoInfos, nil
 }
