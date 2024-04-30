@@ -18,3 +18,7 @@ go mod tidy
 
 - `http://localhost:8080/` - Welcome message
 - `http://localhost:8080/repositories` - Returns a list of repositories
+
+## Command Line Options
+
+- `-port` - Set the port to run the server on. Default is `8080`.
