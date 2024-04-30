@@ -46,11 +46,8 @@ func main() {
 	router.GET("/repositories", getRepositories)
 
 	fmt.Printf("Loaded repositories: %+v\n", config.RepositoryConfigs)
-	fmt.Println("Starting server at http://localhost:" + port)
-	//fmt.Println("API Endpoints:")
-	//fmt.Printf("http://localhost:%s/\n", port)
-	//fmt.Printf("http://localhost:%s/repositories\n", port)
-	err = router.Run(":" + port)
+	fmt.Println("Starting server at http://localhost:" + fmt.Sprint(config.Port))
+	err = router.Run(":" + fmt.Sprint(config.Port))
 	if err != nil {
 		log.Fatalf("Failed to start server: %s", err)
 	}
