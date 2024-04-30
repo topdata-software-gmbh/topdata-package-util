@@ -33,7 +33,12 @@ func main() {
 		log.Fatalf("Failed to load config: %s", err)
 	}
 
-	router := gin.Default()
+	router := gin.New()
+	if config.Username != nil && config.Password != nil {
+		router.Use(gin.BasicAuth(gin.Accounts{
+			*config.Username: *config.Password,
+		}))
+	}
 
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Welcome to the TopData Package Service!")
