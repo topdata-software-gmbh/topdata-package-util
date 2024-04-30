@@ -31,7 +31,9 @@ var config Config
 
 func main() {
 	var err error
-	config, err = LoadConfig("config.json")
+	configFile := "config.json"
+	fmt.Printf("Reading config file: %s\n", configFile)
+	config, err = LoadConfig(configFile)
 	if err != nil {
 		log.Fatalf("Failed to load config: %s", err)
 	}
