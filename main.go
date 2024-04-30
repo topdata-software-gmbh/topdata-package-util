@@ -33,7 +33,7 @@ func main() {
 		log.Fatalf("Failed to load config: %s", err)
 	}
 
-	router := gin.New()
+	router := gin.Default()
 	if config.Username != nil && config.Password != nil {
 		router.Use(gin.BasicAuth(gin.Accounts{
 			*config.Username: *config.Password,

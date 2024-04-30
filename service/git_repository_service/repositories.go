@@ -150,10 +150,10 @@ func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, er
 	if repoConf.PathSshKey == nil {
 		return nil, nil
 	}
-	fmt.Println(">>>> Using ssh key: " + *repoConf.PathSshKey)
+	//fmt.Println(">>>> Using ssh key: " + *repoConf.PathSshKey)
 	publicKeys, err = ssh.NewPublicKeysFromFile("git", *repoConf.PathSshKey, "")
 	if err != nil {
-		fmt.Println("Error reading ssh key: " + err.Error())
+		fmt.Println("!!!! Error reading ssh key: " + err.Error())
 		return nil, err
 	}
 	// dump publicKeys
