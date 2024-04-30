@@ -45,9 +45,11 @@ func main() {
 		})
 	})
 
-	router.GET("/repositories", getRepositories)
+	router.GET("/repositories", getRepositoriesAction)
 
-	fmt.Printf("Loaded repositories: %+v\n", config.RepositoryConfigs)
+	fmt.Printf("Loaded %d repository configs: %v\n", len(config.RepositoryConfigs), getRepoNames(config.RepositoryConfigs))
+
+	// ---- get port
 	finalPort := portFromCliOption
 	if finalPort == "" {
 		if config.Port != 0 {
@@ -56,6 +58,8 @@ func main() {
 			finalPort = "8080"
 		}
 	}
+
+	// ---- start the server
 	fmt.Println("Starting server at http://localhost:" + finalPort)
 	err = router.Run(":" + finalPort)
 	if err != nil {
@@ -63,7 +67,7 @@ func main() {
 	}
 }
 
-func getRepositories(c *gin.Context) {
+func getRepositoriesAction(c *gin.Context) {
 	repoInfos, err := git_repository_service.GetRepoInfos(config.RepositoryConfigs)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -72,4 +76,12 @@ func getRepositories(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, repoInfos)
+}
+
+func getRepoNames(repoConfigs []model.GitRepositoryConfig) []string {
+	names := make([]string, len(repoConfigs))
+	for i, config := range repoConfigs {
+		names[i] = config.Name
+	}
+	return names
 }
