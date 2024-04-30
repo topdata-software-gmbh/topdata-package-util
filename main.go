@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,7 +10,15 @@ import (
 
 var config Config
 
+var port string
+
+func init() {
+	flag.StringVar(&port, "port", "8080", "port to run the server on")
+}
+
 func main() {
+	flag.Parse()
+
 	var err error
 	configFile := "config.json"
 	fmt.Printf("Reading config file: %s\n", configFile)
@@ -24,11 +33,11 @@ func main() {
 
 	http.HandleFunc("/repositories", getRepositories)
 
-	fmt.Println("Server started at http://localhost:8080")
+	fmt.Printf("Server started at http://localhost:%s\n", port)
 	fmt.Println("API Endpoints:")
-	fmt.Println("http://localhost:8080/")
-	fmt.Println("http://localhost:8080/repositories")
-	err = http.ListenAndServe(":8080", nil)
+	fmt.Printf("http://localhost:%s/\n", port)
+	fmt.Printf("http://localhost:%s/repositories\n", port)
+	err = http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatalf("Failed to start server: %s", err)
 	}
