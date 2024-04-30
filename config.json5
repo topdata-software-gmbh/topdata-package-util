@@ -1,9 +1,13 @@
 {
 	"repositories": [
+//		{
+//			name: "TopdataWebserviceConnectorSW6",
+//			url: "git@github.com:topdata-software-gmbh/topdata-webservice-connector-sw6.git",
+//		},
 		{
-			"name": "TopdataWebserviceConnectorSW6",
-			"releaseBranches": ["main-sw64", "main-sw65", "main"],
-			"url": "git@github.com:topdata-software-gmbh/topdata-webservice-connector-sw6.git",
-		}
+			name: "TopdataTopfinderSW6xxxxxxxxxxxxxxx",
+			url: "git@bitbucket.org:topdata/topdata-topfinder-pro-sw6.git",
+			pathSshKey: "/home/marc/.ssh/topdata-package-service-bitbucket-key",
+		},
 	]
 }

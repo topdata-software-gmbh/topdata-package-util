@@ -1,0 +1,13 @@
+{
+	"repositories": [
+		{
+			name: "TopdataWebserviceConnectorSW6",
+			url: "git@github.com:topdata-software-gmbh/topdata-webservice-connector-sw6.git",
+		},
+		{
+			name: "someUrlName",
+			url: "git@github.com:some-company/some-private-repo.git",
+			pathSshKey: "/path/to/ssh/private/key",
+		}
+	]
+}

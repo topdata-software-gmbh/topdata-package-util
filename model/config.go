@@ -1,4 +1,4 @@
-package _struct
+package model
 
 import (
 	"github.com/yosuke-furukawa/json5/encoding/json5"

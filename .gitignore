@@ -1,3 +1,4 @@
 .aider*
 .idea
 bin/*
+config.json5

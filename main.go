@@ -4,13 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/git_repository_service"
-	"github.com/topdata-software-gmbh/topdata-package-service/struct"
 	"log"
 	"net/http"
 )
 
-var config _struct.Config
+var config model.Config
 
 var (
 	port       string
@@ -28,7 +28,7 @@ func main() {
 	var err error
 	configFile := configFile
 	fmt.Printf("Reading config file: %s\n", configFile)
-	config, err = _struct.LoadConfig(configFile)
+	config, err = model.LoadConfig(configFile)
 	if err != nil {
 		log.Fatalf("Failed to load config: %s", err)
 	}
@@ -39,13 +39,19 @@ func main() {
 		c.String(http.StatusOK, "Welcome to the TopData Package Service!")
 	})
 
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
+
 	router.GET("/repositories", getRepositories)
 
 	fmt.Printf("Loaded repositories: %+v\n", config.Repositories)
-	fmt.Printf("Server started at http://localhost:%s\n", port)
-	fmt.Println("API Endpoints:")
-	fmt.Printf("http://localhost:%s/\n", port)
-	fmt.Printf("http://localhost:%s/repositories\n", port)
+	fmt.Println("Starting server at http://localhost:" + port)
+	//fmt.Println("API Endpoints:")
+	//fmt.Printf("http://localhost:%s/\n", port)
+	//fmt.Printf("http://localhost:%s/repositories\n", port)
 	err = router.Run(":" + port)
 	if err != nil {
 		log.Fatalf("Failed to start server: %s", err)
@@ -54,5 +60,16 @@ func main() {
 
 func getRepositories(c *gin.Context) {
 	repositories := git_repository_service.GetRepositories(config)
+	// ---- fetch branches from the repository
+	for i, repository := range repositories {
+		branches, err := git_repository_service.GetRepositoryBranches(repository)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": fmt.Sprintf("Failed to fetch branches for repository %s: %s", repository.Name, err),
+			})
+			return
+		}
+		repositories[i].Branches = branches
+	}
 	c.JSON(http.StatusOK, repositories)
 }
