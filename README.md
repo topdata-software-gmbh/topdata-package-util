@@ -27,4 +27,7 @@ http://packages.api.topinfra.de
 - `--port`
     - Set the port to run the server on. Default is `8080`.
     - example: `go run . --port=8081`
+- `--config`
+    - Set the path to the config file. Default is `config.json5`.
+    - example: `go run . --config=path/to/config.json5`
 
