@@ -37,6 +37,7 @@ func main() {
 
 	router.HandleFunc("/repositories", getRepositories)
 
+	fmt.Printf("Loaded repositories: %+v\n", config.Repositories)
 	fmt.Printf("Server started at http://localhost:%s\n", port)
 	fmt.Println("API Endpoints:")
 	fmt.Printf("http://localhost:%s/\n", port)
