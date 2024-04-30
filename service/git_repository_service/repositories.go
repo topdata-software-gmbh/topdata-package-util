@@ -164,6 +164,7 @@ func GetRepoInfos(repoConfigs []model.GitRepositoryConfig) ([]model.GitRepositor
 			return nil, err
 		}
 		repoInfos[i].Name = repoConfig.Name
+		repoInfos[i].Description = repoConfig.Description
 		repoInfos[i].Branches = branches
 		//		repoInfos[i].ReleaseBranches =
 	}

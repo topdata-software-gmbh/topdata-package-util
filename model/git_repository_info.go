@@ -4,6 +4,7 @@ package model
 // maybe also the git url? needed?
 type GitRepositoryInfo struct {
 	Name            string
+	Description     string
 	Branches        []string
 	ReleaseBranches []string
 }

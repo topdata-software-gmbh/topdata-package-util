@@ -31,4 +31,5 @@ http://packages.api.topinfra.de
 ## API Endpoints
 
 - `http://localhost:8080/` - Welcome message
+- `http://localhost:8080/ping` - Pong
 - `http://localhost:8080/repositories` - Returns a list of repositories
