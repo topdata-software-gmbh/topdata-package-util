@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"github.com/yosuke-furukawa/json5/encoding/json5"
 	"io/ioutil"
 	"os"
 )
@@ -24,7 +24,7 @@ func LoadConfig(path string) (Config, error) {
 		return config, err
 	}
 
-	err = json.Unmarshal(bytes, &config)
+	err = json5.Unmarshal(bytes, &config)
 	if err != nil {
 		return config, err
 	}
