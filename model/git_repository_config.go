@@ -1,9 +1,9 @@
 package model
 
-type GitRepository struct {
+type GitRepositoryConfig struct {
 	Name       string
 	URL        string
-	PathSshKey *string `json:"pathSshKey"`
+	PathSshKey *string
 	Branches   []string
 	//	ReleaseBranches []string
 }

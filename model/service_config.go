@@ -2,16 +2,17 @@ package model
 
 import (
 	"github.com/yosuke-furukawa/json5/encoding/json5"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
-type Config struct {
-	Repositories []GitRepository `json:"repositories"`
+type ServiceConfig struct {
+	Port              uint16                `json:"port"`
+	RepositoryConfigs []GitRepositoryConfig `json:"repositories"`
 }
 
-func LoadConfig(path string) (Config, error) {
-	var config Config
+func LoadConfig(path string) (ServiceConfig, error) {
+	var config ServiceConfig
 
 	file, err := os.Open(path)
 	if err != nil {
@@ -19,7 +20,7 @@ func LoadConfig(path string) (Config, error) {
 	}
 	defer file.Close()
 
-	bytes, err := ioutil.ReadAll(file)
+	bytes, err := io.ReadAll(file)
 	if err != nil {
 		return config, err
 	}

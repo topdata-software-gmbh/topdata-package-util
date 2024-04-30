@@ -11,31 +11,19 @@ import (
 	"path/filepath"
 )
 
-func GetRepositories(config model.Config) []model.GitRepository {
-	return config.Repositories
-}
-
-func GetRepositoryBranches(repoModel model.GitRepository) ([]string, error) {
-	fmt.Println("GetRepositoryBranches: " + repoModel.Name)
-	// ---- fetch branches from the repoModel
-	gitDir := filepath.Join("/tmp/git-repos", repoModel.Name)
+func GetRepositoryBranches(repoConf model.GitRepositoryConfig) ([]string, error) {
+	fmt.Println(">>>> GetRepositoryBranches: " + repoConf.Name)
+	// ---- fetch branches from the repoConf
+	gitDir := filepath.Join("/tmp/git-repos", repoConf.Name)
 
 	// ---- git clone / pull
-	repo, err := refreshRepo(repoModel, gitDir)
+	repo, err := refreshRepo(repoConf, gitDir)
 	if err != nil {
 		fmt.Println("Error fetching repo to " + gitDir + ": " + err.Error())
 		return nil, err
 	}
 
-	//// ---- fetch branches from the repoModel
-	//branches, err := getBranches(repo)
-	//if err != nil {
-	//	fmt.Println("Error fetching branches to " + gitDir + ": " + err.Error())
-	//	return nil
-	//}
-	//return branches
-
-	remoteBranches, err := getRemoteBranches(repoModel, repo)
+	remoteBranches, err := getRemoteBranches(repoConf, repo)
 	if err != nil {
 		fmt.Println("Error fetching remote branches to " + gitDir + ": " + err.Error())
 		return nil, err
@@ -62,7 +50,7 @@ func getBranches(repo *git.Repository) ([]string, error) {
 	return branches, nil
 }
 
-func getRemoteBranches(repoModel model.GitRepository, repo *git.Repository) ([]string, error) {
+func getRemoteBranches(repoConf model.GitRepositoryConfig, repo *git.Repository) ([]string, error) {
 	// ---- branches from the remote repository
 	branches := make([]string, 0)
 	remote, err := repo.Remote("origin")
@@ -72,7 +60,7 @@ func getRemoteBranches(repoModel model.GitRepository, repo *git.Repository) ([]s
 	}
 
 	listOptions := &git.ListOptions{}
-	publicKeys, err := getAuth(repoModel, err)
+	publicKeys, err := getAuth(repoConf, err)
 	if err != nil {
 		return nil, err
 	}
@@ -93,29 +81,29 @@ func getRemoteBranches(repoModel model.GitRepository, repo *git.Repository) ([]s
 	return branches, nil
 }
 
-func refreshRepo(repository model.GitRepository, destGitDir string) (*git.Repository, error) {
+func refreshRepo(repoConf model.GitRepositoryConfig, destGitDir string) (*git.Repository, error) {
 
 	var err error
 
-	// Create a unique directory for each repository
+	// Create a unique directory for each repoConf
 	if err = os.MkdirAll(destGitDir, 0755); err != nil {
 		return nil, err
 	}
 
-	publicKeys, err := getAuth(repository, err)
+	publicKeys, err := getAuth(repoConf, err)
 	if err != nil {
 		return nil, err
 	}
 
 	var repo *git.Repository
 
-	// Check if the repository has already been cloned
+	// Check if the repoConf has already been cloned
 	if _, err = os.Stat(filepath.Join(destGitDir, ".git")); os.IsNotExist(err) {
-		// If not, clone the repository
-		fmt.Println(">>>> Cloning repository: " + repository.URL)
+		// If not, clone the repoConf
+		fmt.Println(">>>> Cloning repoConf: " + repoConf.URL)
 
 		cloneOptions := &git.CloneOptions{
-			URL: repository.URL,
+			URL: repoConf.URL,
 		}
 		if publicKeys != nil {
 			cloneOptions.Auth = publicKeys
@@ -123,8 +111,8 @@ func refreshRepo(repository model.GitRepository, destGitDir string) (*git.Reposi
 
 		repo, err = git.PlainClone(destGitDir, false, cloneOptions)
 	} else {
-		// If it has, open the existing repository
-		fmt.Println(">>>> Using existing repository: " + destGitDir)
+		// If it has, open the existing repoConf
+		fmt.Println(">>>> Using existing repoConf: " + destGitDir)
 		repo, err = git.PlainOpen(destGitDir)
 		if err == nil {
 			// And pull the latest changes from the origin remote
@@ -150,13 +138,13 @@ func refreshRepo(repository model.GitRepository, destGitDir string) (*git.Reposi
 	return repo, err
 }
 
-func getAuth(repository model.GitRepository, err error) (*ssh.PublicKeys, error) {
+func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, error) {
 	var publicKeys *ssh.PublicKeys = nil
-	if repository.PathSshKey == nil {
+	if repoConf.PathSshKey == nil {
 		return nil, nil
 	}
-	fmt.Println(">>>> Using ssh key: " + *repository.PathSshKey)
-	publicKeys, err = ssh.NewPublicKeysFromFile("git", *repository.PathSshKey, "")
+	fmt.Println(">>>> Using ssh key: " + *repoConf.PathSshKey)
+	publicKeys, err = ssh.NewPublicKeysFromFile("git", *repoConf.PathSshKey, "")
 	if err != nil {
 		fmt.Println("Error reading ssh key: " + err.Error())
 		return nil, err
@@ -165,4 +153,19 @@ func getAuth(repository model.GitRepository, err error) (*ssh.PublicKeys, error)
 	// fmt.Println("loaded publicKeys: " + publicKeys.User + " " + publicKeys.Name())
 
 	return publicKeys, nil
+}
+
+func GetRepoInfos(repoConfigs []model.GitRepositoryConfig) ([]model.GitRepositoryInfo, error) {
+	repoInfos := make([]model.GitRepositoryInfo, len(repoConfigs))
+	// ---- fetch branches from the repoConfig
+	for i, repoConfig := range repoConfigs {
+		branches, err := GetRepositoryBranches(repoConfig)
+		if err != nil {
+			return nil, err
+		}
+		repoInfos[i].Name = repoConfig.Name
+		repoInfos[i].Branches = branches
+		//		repoInfos[i].ReleaseBranches =
+	}
+	return repoInfos, nil
 }

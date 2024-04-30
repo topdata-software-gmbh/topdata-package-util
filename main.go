@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-var config model.Config
+var config model.ServiceConfig
 
 var (
 	port       string
@@ -47,7 +47,7 @@ func main() {
 
 	router.GET("/repositories", getRepositories)
 
-	fmt.Printf("Loaded repositories: %+v\n", config.Repositories)
+	fmt.Printf("Loaded repositories: %+v\n", config.RepositoryConfigs)
 	fmt.Println("Starting server at http://localhost:" + port)
 	//fmt.Println("API Endpoints:")
 	//fmt.Printf("http://localhost:%s/\n", port)
@@ -59,17 +59,12 @@ func main() {
 }
 
 func getRepositories(c *gin.Context) {
-	repositories := git_repository_service.GetRepositories(config)
-	// ---- fetch branches from the repository
-	for i, repository := range repositories {
-		branches, err := git_repository_service.GetRepositoryBranches(repository)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": fmt.Sprintf("Failed to fetch branches for repository %s: %s", repository.Name, err),
-			})
-			return
-		}
-		repositories[i].Branches = branches
+	repoInfos, err := git_repository_service.GetRepoInfos(config.RepositoryConfigs)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
-	c.JSON(http.StatusOK, repositories)
+	c.JSON(http.StatusOK, repoInfos)
 }
