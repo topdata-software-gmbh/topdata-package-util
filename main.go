@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/gorilla/mux"
 	"github.com/topdata-software-gmbh/topdata-package-service/pkg"
 	"log"
 	"net/http"
@@ -28,17 +29,19 @@ func main() {
 		log.Fatalf("Failed to load config: %s", err)
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	router := mux.NewRouter()
+
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Welcome to the TopData Package Service!")
 	})
 
-	http.HandleFunc("/repositories", getRepositories)
+	router.HandleFunc("/repositories", getRepositories)
 
 	fmt.Printf("Server started at http://localhost:%s\n", port)
 	fmt.Println("API Endpoints:")
 	fmt.Printf("http://localhost:%s/\n", port)
 	fmt.Printf("http://localhost:%s/repositories\n", port)
-	err = http.ListenAndServe(":"+port, nil)
+	err = http.ListenAndServe(":"+port, router)
 	if err != nil {
 		log.Fatalf("Failed to start server: %s", err)
 	}
