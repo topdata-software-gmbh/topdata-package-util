@@ -18,7 +18,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&port, "port", "", "port to run the server on")
+	flag.StringVar(&port, "port", "8080", "port to run the server on")
 	flag.StringVar(&configFile, "config", "config.json5", "path to the config file")
 }
 
@@ -50,7 +50,11 @@ func main() {
 	fmt.Printf("Loaded repositories: %+v\n", config.RepositoryConfigs)
 	finalPort := port
 	if finalPort == "" {
-		finalPort = fmt.Sprint(config.Port)
+		if config.Port != 0 {
+			finalPort = fmt.Sprint(config.Port)
+		} else {
+			finalPort = "8080"
+		}
 	}
 	fmt.Println("Starting server at http://localhost:" + finalPort)
 	err = router.Run(":" + finalPort)
