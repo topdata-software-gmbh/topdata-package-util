@@ -9,6 +9,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"os"
 	"path/filepath"
+	"sort"
 	"sync"
 )
 
@@ -29,6 +30,8 @@ func GetRepositoryBranches(repoConf model.GitRepositoryConfig) ([]string, error)
 		fmt.Println("Error fetching remote branches to " + gitDir + ": " + err.Error())
 		return nil, err
 	}
+
+	//
 
 	return remoteBranches, nil
 
@@ -79,6 +82,9 @@ func getRemoteBranches(repoConf model.GitRepositoryConfig, repo *git.Repository)
 		branches = append(branches, ref.Name().Short())
 	}
 
+	// Sort the branches slice in increasing order.
+	sort.Strings(branches)
+
 	return branches, nil
 }
 
@@ -113,7 +119,7 @@ func refreshRepo(repoConf model.GitRepositoryConfig, destGitDir string) (*git.Re
 		repo, err = git.PlainClone(destGitDir, false, cloneOptions)
 	} else {
 		// If it has, open the existing repoConf
-		fmt.Println(">>>> Using existing repoConf: " + destGitDir)
+		fmt.Println(">>>> Using existing repository: " + destGitDir)
 		repo, err = git.PlainOpen(destGitDir)
 		if err == nil {
 			// And pull the latest changes from the origin remote
