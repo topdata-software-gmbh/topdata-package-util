@@ -7,6 +7,9 @@ This is a microservice written in Go that handles git repositories from GitHub a
 go mod tidy
 ```
 
+## Prod URL
+http://packages.api.topinfra.de
+
 ## Running the Service
 
 1. Ensure you have Go installed on your machine.
@@ -21,4 +24,7 @@ go mod tidy
 
 ## Command Line Options
 
-- `-port` - Set the port to run the server on. Default is `8080`.
+- `--port`
+    - Set the port to run the server on. Default is `8080`.
+    - example: `go run . --port=8081`
+
