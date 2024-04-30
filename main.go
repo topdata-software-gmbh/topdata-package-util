@@ -12,17 +12,21 @@ import (
 
 var config pkg.Config
 
-var port string
+var (
+	port       string
+	configFile string
+)
 
 func init() {
 	flag.StringVar(&port, "port", "8080", "port to run the server on")
+	flag.StringVar(&configFile, "config", "config.json5", "path to the config file")
 }
 
 func main() {
 	flag.Parse()
 
 	var err error
-	configFile := "config.json5"
+	configFile := configFile
 	fmt.Printf("Reading config file: %s\n", configFile)
 	config, err = pkg.LoadConfig(configFile)
 	if err != nil {
