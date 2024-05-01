@@ -73,7 +73,7 @@ func main() {
 }
 
 func getRepositoriesAction(c *gin.Context) {
-	repoInfos, err := git_repository_service.GetRepoInfos(config.RepositoryConfigs)
+	repoInfos, err := git_repository_service.GetRepoInfos(config.RepositoryConfigs, 10)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
