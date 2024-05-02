@@ -51,6 +51,7 @@ func main() {
 	})
 
 	router.GET("/repositories", getRepositoriesAction)
+	router.GET("/repository-details/:name", getRepositoryDetailsAction)
 
 	fmt.Printf("Loaded %d repository configs: %v\n", len(config.RepositoryConfigs), getRepoNames(config.RepositoryConfigs))
 
@@ -81,6 +82,19 @@ func getRepositoriesAction(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, repoInfos)
+}
+
+func getRepositoryDetailsAction(c *gin.Context) {
+	repoName := c.Param("name")
+	for _, repoConfig := range config.RepositoryConfigs {
+		if repoConfig.Name == repoName {
+			c.JSON(http.StatusOK, repoConfig)
+			return
+		}
+	}
+	c.JSON(http.StatusNotFound, gin.H{
+		"error": "Repository not found",
+	})
 }
 
 func getRepoNames(repoConfigs []model.GitRepositoryConfig) []string {
