@@ -33,3 +33,4 @@ http://packages.api.topinfra.de
 - `http://localhost:8080/` - Welcome message
 - `http://localhost:8080/ping` - Pong
 - `http://localhost:8080/repositories` - Returns a list of repositories
+- `http://localhost:8080/repository-details/:name` - Returns details of a repository

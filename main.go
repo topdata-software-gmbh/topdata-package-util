@@ -40,18 +40,10 @@ func main() {
 		}))
 	}
 
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Welcome to the TopData Package Service!")
-	})
-
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-
-	router.GET("/repositories", getRepositoriesAction)
-	router.GET("/repository-details/:name", getRepositoryDetailsAction)
+	router.GET("/", welcomeHandler)
+	router.GET("/ping", pingHandler)
+	router.GET("/repositories", getRepositoriesHandler)
+	router.GET("/repository-details/:name", getRepositoryDetailsHandler)
 
 	fmt.Printf("Loaded %d repository configs: %v\n", len(config.RepositoryConfigs), getRepoNames(config.RepositoryConfigs))
 
@@ -73,7 +65,7 @@ func main() {
 	}
 }
 
-func getRepositoriesAction(c *gin.Context) {
+func getRepositoriesHandler(c *gin.Context) {
 	repoInfos, err := git_repository_service.GetRepoInfos(config.RepositoryConfigs, 10)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -84,7 +76,7 @@ func getRepositoriesAction(c *gin.Context) {
 	c.JSON(http.StatusOK, repoInfos)
 }
 
-func getRepositoryDetailsAction(c *gin.Context) {
+func getRepositoryDetailsHandler(c *gin.Context) {
 	repoName := c.Param("name")
 	for _, repoConfig := range config.RepositoryConfigs {
 		if repoConfig.Name == repoName {
@@ -103,4 +95,14 @@ func getRepoNames(repoConfigs []model.GitRepositoryConfig) []string {
 		names[i] = config.Name
 	}
 	return names
+}
+
+func welcomeHandler(c *gin.Context) {
+	c.String(http.StatusOK, "Welcome to the TopData Package Service!")
+}
+
+func pingHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "pong",
+	})
 }

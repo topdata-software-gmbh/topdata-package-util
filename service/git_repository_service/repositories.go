@@ -1,4 +1,3 @@
-// In service/repositories.go
 package git_repository_service
 
 import (
