@@ -30,10 +30,7 @@ func GetRepositoryBranches(repoConf model.GitRepositoryConfig) ([]string, error)
 		return nil, err
 	}
 
-	//
-
 	return remoteBranches, nil
-
 }
 
 func getBranches(repo *git.Repository) ([]string, error) {

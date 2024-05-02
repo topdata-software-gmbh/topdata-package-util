@@ -19,7 +19,7 @@ var (
 
 func init() {
 	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
-	flag.StringVar(&configFile, "serviceConfig", "serviceConfig.json5", "path to the serviceConfig file")
+	flag.StringVar(&configFile, "configFile", "config.json5", "path to the service config file")
 }
 
 func ServiceConfigMiddleware(config model.ServiceConfig) gin.HandlerFunc {
@@ -45,8 +45,6 @@ func main() {
 		router.Use(gin.BasicAuth(gin.Accounts{
 			*serviceConfig.Username: *serviceConfig.Password,
 		}))
-
-		router.Use(ServiceConfigMiddleware(serviceConfig))
 	}
 
 	router.Use(ServiceConfigMiddleware(serviceConfig))

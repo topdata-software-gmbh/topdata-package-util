@@ -13,7 +13,7 @@ type ServiceConfig struct {
 	RepositoryConfigs []GitRepositoryConfig `json:"repositories"`
 }
 
-func LoadConfig(path string) (ServiceConfig, error) {
+func LoadServiceConfig(path string) (ServiceConfig, error) {
 	var config ServiceConfig
 
 	file, err := os.Open(path)
