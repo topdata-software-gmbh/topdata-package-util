@@ -87,6 +87,7 @@ func getRemoteBranches(repoConf model.GitRepositoryConfig, repo *git.Repository)
 func filterBranches(branches []string) []string {
 	releaseBranches := make([]string, 0)
 	for _, branch := range branches {
+		// TODO: the regex should be part of the service config
 		matched, _ := regexp.MatchString(`^(main|main-.*|release-.*)$`, branch)
 		if matched {
 			releaseBranches = append(releaseBranches, branch)
