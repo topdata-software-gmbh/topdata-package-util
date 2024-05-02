@@ -24,13 +24,14 @@ func GetRepositoryDetailsHandler(c *gin.Context) {
 	serviceConfig := c.MustGet("serviceConfig").(model.ServiceConfig)
 
 	repoName := c.Param("name")
-	for _, repoConfig := range serviceConfig.RepositoryConfigs {
-		if repoConfig.Name == repoName {
-			c.JSON(http.StatusOK, repoConfig)
-			return
-		}
+	repoConfig, err := git_repository_service.GetRepoDetails(repoName, serviceConfig.RepositoryConfigs)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
-	c.JSON(http.StatusNotFound, gin.H{
-		"error": "Repository not found",
-	})
+
+	c.JSON(http.StatusOK, repoConfig)
 }

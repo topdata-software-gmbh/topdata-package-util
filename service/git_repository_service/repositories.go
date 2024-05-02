@@ -8,6 +8,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"sync"
 )
@@ -271,4 +272,35 @@ func GetRepoInfos(repoConfigs []model.GitRepositoryConfig, maxConcurrency int) (
 	}
 
 	return repoInfos, nil
+}
+
+func GetRepoDetails(repoName string, repoConfigs []model.GitRepositoryConfig) (model.GitRepositoryInfo, error) {
+	for _, repoConfig := range repoConfigs {
+		if repoConfig.Name == repoName {
+			branches, err := GetRepositoryBranches(repoConfig)
+			if err != nil {
+				return model.GitRepositoryInfo{}, err
+			}
+			return model.GitRepositoryInfo{
+				Name:            repoConfig.Name,
+				URL:             repoConfig.URL,
+				Branches:        branches,
+				ReleaseBranches: filterBranches(branches),
+			}, nil
+		}
+	}
+	return model.GitRepositoryInfo{}, fmt.Errorf("repository not found: %s", repoName)
+}
+
+// filterBranches filters the given branches and returns only those that are either "main" or start with "release-".
+// It takes a slice of strings representing the branch names as input and returns a slice of strings containing the filtered branch names.
+func filterBranches(branches []string) []string {
+	releaseBranches := make([]string, 0)
+	for _, branch := range branches {
+		matched, _ := regexp.MatchString(`^(main|release-.*)$`, branch)
+		if matched {
+			releaseBranches = append(releaseBranches, branch)
+		}
+	}
+	return releaseBranches
 }
