@@ -22,6 +22,13 @@ func init() {
 	flag.StringVar(&configFile, "serviceConfig", "serviceConfig.json5", "path to the serviceConfig file")
 }
 
+func ServiceConfigMiddleware(config model.ServiceConfig) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("serviceConfig", config)
+		c.Next()
+	}
+}
+
 func main() {
 	flag.Parse()
 
@@ -38,6 +45,8 @@ func main() {
 		router.Use(gin.BasicAuth(gin.Accounts{
 			*serviceConfig.Username: *serviceConfig.Password,
 		}))
+
+		router.Use(ServiceConfigMiddleware(serviceConfig))
 	}
 
 	router.Use(ServiceConfigMiddleware(serviceConfig))
