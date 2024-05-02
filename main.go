@@ -19,7 +19,7 @@ var (
 
 func init() {
 	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
-	flag.StringVar(&configFile, "configFile", "config.json5", "path to the service config file")
+	flag.StringVar(&configFile, "config-file", "config.json5", "path to the service config file")
 }
 
 func ServiceConfigMiddleware(config model.ServiceConfig) gin.HandlerFunc {
@@ -33,7 +33,6 @@ func main() {
 	flag.Parse()
 
 	var err error
-	configFile := configFile
 	fmt.Printf("Reading serviceConfig file: %s\n", configFile)
 	serviceConfig, err = model.LoadServiceConfig(configFile)
 	if err != nil {
