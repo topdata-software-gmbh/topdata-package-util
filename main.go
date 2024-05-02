@@ -4,13 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/topdata-software-gmbh/topdata-package-service/controllers"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/git_repository_service"
 	"log"
 	"net/http"
 )
 
-var config model.ServiceConfig
+var serviceConfig model.ServiceConfig
 
 var (
 	portFromCliOption string
@@ -19,7 +19,7 @@ var (
 
 func init() {
 	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
-	flag.StringVar(&configFile, "config", "config.json5", "path to the config file")
+	flag.StringVar(&configFile, "serviceConfig", "serviceConfig.json5", "path to the serviceConfig file")
 }
 
 func main() {
@@ -27,31 +27,33 @@ func main() {
 
 	var err error
 	configFile := configFile
-	fmt.Printf("Reading config file: %s\n", configFile)
-	config, err = model.LoadConfig(configFile)
+	fmt.Printf("Reading serviceConfig file: %s\n", configFile)
+	serviceConfig, err = model.LoadServiceConfig(configFile)
 	if err != nil {
-		log.Fatalf("Failed to load config: %s", err)
+		log.Fatalf("Failed to load serviceConfig: %s", err)
 	}
 
 	router := gin.Default()
-	if config.Username != nil && config.Password != nil {
+	if serviceConfig.Username != nil && serviceConfig.Password != nil {
 		router.Use(gin.BasicAuth(gin.Accounts{
-			*config.Username: *config.Password,
+			*serviceConfig.Username: *serviceConfig.Password,
 		}))
 	}
 
+	router.Use(ServiceConfigMiddleware(serviceConfig))
+
 	router.GET("/", welcomeHandler)
 	router.GET("/ping", pingHandler)
-	router.GET("/repositories", getRepositoriesHandler)
-	router.GET("/repository-details/:name", getRepositoryDetailsHandler)
+	router.GET("/repositories", controllers.GetRepositoriesHandler)
+	router.GET("/repository-details/:name", controllers.GetRepositoryDetailsHandler)
 
-	fmt.Printf("Loaded %d repository configs: %v\n", len(config.RepositoryConfigs), getRepoNames(config.RepositoryConfigs))
+	fmt.Printf("Loaded %d repository configs: %v\n", len(serviceConfig.RepositoryConfigs), getRepoNames(serviceConfig.RepositoryConfigs))
 
 	// ---- get port
 	finalPort := portFromCliOption
 	if finalPort == "" {
-		if config.Port != 0 {
-			finalPort = fmt.Sprint(config.Port)
+		if serviceConfig.Port != 0 {
+			finalPort = fmt.Sprint(serviceConfig.Port)
 		} else {
 			finalPort = "8080"
 		}
@@ -63,30 +65,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to start server: %s", err)
 	}
-}
-
-func getRepositoriesHandler(c *gin.Context) {
-	repoInfos, err := git_repository_service.GetRepoInfos(config.RepositoryConfigs, 10)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, repoInfos)
-}
-
-func getRepositoryDetailsHandler(c *gin.Context) {
-	repoName := c.Param("name")
-	for _, repoConfig := range config.RepositoryConfigs {
-		if repoConfig.Name == repoName {
-			c.JSON(http.StatusOK, repoConfig)
-			return
-		}
-	}
-	c.JSON(http.StatusNotFound, gin.H{
-		"error": "Repository not found",
-	})
 }
 
 func getRepoNames(repoConfigs []model.GitRepositoryConfig) []string {
