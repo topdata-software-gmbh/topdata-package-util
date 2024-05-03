@@ -1,6 +1,7 @@
 package git_service_v2
 
 import (
+	"fmt"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/file_path_service"
 	"os/exec"
@@ -28,15 +29,29 @@ func FetchRepositoryBranches(repoURL string) ([]string, error) {
 	return branches, nil
 }
 
-func Clone(repoConfig model.GitRepositoryConfig) error {
+func CloneRepository(repoConfig model.GitRepositoryConfig) error {
 	// Execute the git command to clone the repository
 	folderName := file_path_service.GetLocalGitRepoDir(repoConfig)
-	cmd := exec.Command("git", "clone", repoConfig.URL, folderName)
-	err := cmd.Run()
 
-	if err != nil {
-		return err
+	err2 := execCommand("git", "clone", repoConfig.URL, folderName)
+	if err2 != nil {
+		return err2
 	}
 
+	return nil
+}
+
+func execCommand(command string, args ...string) error {
+	cmd := exec.Command(command, args...)
+	output, err := cmd.CombinedOutput()
+	fmt.Println(string(output))
+
+	if err != nil {
+		fmt.Println("!!!!! cmd: " + cmd.String())
+		fmt.Println("!!!!! out: " + string(output))
+		fmt.Println("!!!!! err: " + err.Error())
+
+		return err
+	}
 	return nil
 }

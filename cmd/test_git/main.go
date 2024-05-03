@@ -29,17 +29,19 @@ func main() {
 	color.Cyan("Loaded %d repository configs\n", len(serviceConfig.RepositoryConfigs))
 	// iterate over the repository configs
 	for _, repoConfig := range serviceConfig.RepositoryConfigs {
-		fmt.Printf("Cloning repository %s from %s\n", repoConfig.Name, repoConfig.URL)
-		// Clone the repository
-		err := git_service_v2.Clone(&repoConfig)
+		color.Cyan("Cloning repository %s from %s\n", repoConfig.Name, repoConfig.URL)
+		// CloneRepository the repository
+		err := git_service_v2.CloneRepository(repoConfig)
 		if err != nil {
-			log.Fatalf("Failed to clone repository %s: %s", repoConfig.Name, err)
+			log.Println("Failed to clone repository %s: [%s]: %s", repoConfig.Name, repoConfig.URL, err)
 		}
 		//// Fetch the branches of the repository
-		//branches, err := git_service_v2.FetchRepositoryBranches(repoConfig.URL)
-		//if err != nil {
-		//	log.Fatalf("Failed to fetch branches for repository %s: %s", repoConfig.Name, err)
-		//}
-		//fmt.Printf("Fetched branches for repository %s: %v\n", repoConfig.Name, branches)
+
+		color.Cyan("Fetching branches for repository %s\n", repoConfig.Name)
+		branches, err := git_service_v2.FetchRepositoryBranches(repoConfig.URL)
+		if err != nil {
+			log.Fatalf("Failed to fetch branches for repository %s: %s", repoConfig.Name, err)
+		}
+		fmt.Printf("Fetched branches for repository %s: %v\n", repoConfig.Name, branches)
 	}
 }
