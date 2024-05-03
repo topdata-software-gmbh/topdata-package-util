@@ -5,6 +5,6 @@ import (
 	"path/filepath"
 )
 
-func GetLocalGitRepoDir(repoConf model.GitRepositoryConfig) string {
+func GetLocalGitRepoDir(repoConf model.GitRepoConfig) string {
 	return filepath.Join("/tmp/git-repos", repoConf.Name)
 }

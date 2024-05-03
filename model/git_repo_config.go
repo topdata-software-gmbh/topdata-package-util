@@ -1,6 +1,6 @@
 package model
 
-type GitRepositoryConfig struct {
+type GitRepoConfig struct {
 	Name        string
 	Description string
 	URL         string

@@ -7,10 +7,10 @@ import (
 )
 
 type ServiceConfig struct {
-	Port              uint16                `json:"port"`
-	Username          *string               `json:"username"`
-	Password          *string               `json:"password"`
-	RepositoryConfigs []GitRepositoryConfig `json:"repositories"`
+	Port              uint16          `json:"port"`
+	Username          *string         `json:"username"`
+	Password          *string         `json:"password"`
+	RepositoryConfigs []GitRepoConfig `json:"repositories"`
 }
 
 func LoadServiceConfig(path string) (ServiceConfig, error) {

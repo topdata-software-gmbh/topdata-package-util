@@ -24,15 +24,15 @@ var testGitCommand = &cobra.Command{
 		// iterate over the repository configs
 		for _, repoConfig := range serviceConfig.RepositoryConfigs {
 			color.Cyan("Cloning repository %s from %s\n", repoConfig.Name, repoConfig.URL)
-			// CloneRepository the repository
-			err := git_service_v2.CloneRepository(repoConfig)
+			// CloneRepo the repository
+			err := git_service_v2.CloneRepo(repoConfig)
 			if err != nil {
 				log.Println("Failed to clone repository %s: [%s]: %s", repoConfig.Name, repoConfig.URL, err)
 			}
 			//// Fetch the branches of the repository
 
 			color.Cyan("Fetching branches for repository %s\n", repoConfig.Name)
-			branches, err := git_service_v2.FetchRepositoryBranches(repoConfig.URL)
+			branches, err := git_service_v2.FetchRepoBranches(repoConfig.URL)
 			if err != nil {
 				log.Fatalf("Failed to fetch branches for repository %s: %s", repoConfig.Name, err)
 			}

@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-func refreshRepo(repoConf model.GitRepositoryConfig, destGitDir string) (*git.Repository, error) {
+func refreshRepo(repoConf model.GitRepoConfig, destGitDir string) (*git.Repository, error) {
 
 	var err error
 
@@ -81,7 +81,7 @@ func refreshRepo(repoConf model.GitRepositoryConfig, destGitDir string) (*git.Re
 	return repo, err
 }
 
-func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, error) {
+func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 	var publicKeys *ssh.PublicKeys = nil
 	if repoConf.PathSshKey == nil {
 		return nil, nil
@@ -98,8 +98,8 @@ func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, er
 	return publicKeys, nil
 }
 
-//func GetRepoInfos(repoConfigs []model.GitRepositoryConfig) ([]model.GitRepositoryInfo, error) {
-//	repoInfos := make([]model.GitRepositoryInfo, len(repoConfigs))
+//func GetRepoInfos(repoConfigs []model.GitRepoConfig) ([]model.GitRepoInfo, error) {
+//	repoInfos := make([]model.GitRepoInfo, len(repoConfigs))
 //	// ---- fetch branches from the repoConfig
 //	for i, repoConfig := range repoConfigs {
 //		branches, err := GetRepositoryBranches(repoConfig)
@@ -115,21 +115,21 @@ func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, er
 //	return repoInfos, nil
 //}
 
-//func GetRepoInfos(repoConfigs []model.GitRepositoryConfig) ([]model.GitRepositoryInfo, error) {
+//func GetRepoInfos(repoConfigs []model.GitRepoConfig) ([]model.GitRepoInfo, error) {
 //	var wg sync.WaitGroup
-//	repoInfoCh := make(chan model.GitRepositoryInfo, len(repoConfigs))
+//	repoInfoCh := make(chan model.GitRepoInfo, len(repoConfigs))
 //	errCh := make(chan error, len(repoConfigs))
 //
 //	for _, repoConfig := range repoConfigs {
 //		wg.Add(1)
-//		go func(rc model.GitRepositoryConfig) {
+//		go func(rc model.GitRepoConfig) {
 //			defer wg.Done()
 //			branches, err := GetRepositoryBranches(rc)
 //			if err != nil {
 //				errCh <- err
 //				return
 //			}
-//			repoInfoCh <- model.GitRepositoryInfo{
+//			repoInfoCh <- model.GitRepoInfo{
 //				Name:        rc.Name,
 //				URL:         rc.URL,
 //				Description: rc.Description,
@@ -144,7 +144,7 @@ func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, er
 //		close(errCh)
 //	}()
 //
-//	repoInfos := make([]model.GitRepositoryInfo, 0, len(repoConfigs))
+//	repoInfos := make([]model.GitRepoInfo, 0, len(repoConfigs))
 //	for info := range repoInfoCh {
 //		repoInfos = append(repoInfos, info)
 //	}
@@ -160,9 +160,9 @@ func getAuth(repoConf model.GitRepositoryConfig, err error) (*ssh.PublicKeys, er
 // Create a buffered channel with a capacity equal to the maximum number of goroutines you want to allow to run concurrently.
 // Before starting a new goroutine, send a value into the channel. This operation will block if the channel is already full, effectively limiting the number of concurrently running goroutines.
 // When a goroutine finishes, read a value from the channel to allow another goroutine to start.
-func GetRepoInfos(repoConfigs []model.GitRepositoryConfig, maxConcurrency int) ([]model.GitRepositoryInfo, error) {
+func GetRepoInfos(repoConfigs []model.GitRepoConfig, maxConcurrency int) ([]model.GitRepoInfo, error) {
 	var wg sync.WaitGroup
-	repoInfoCh := make(chan model.GitRepositoryInfo, len(repoConfigs))
+	repoInfoCh := make(chan model.GitRepoInfo, len(repoConfigs))
 	errCh := make(chan error, len(repoConfigs))
 
 	// Create a buffered channel as a semaphore
@@ -174,7 +174,7 @@ func GetRepoInfos(repoConfigs []model.GitRepositoryConfig, maxConcurrency int) (
 		// Send a value into the semaphore; this will block if the semaphore is full
 		sem <- struct{}{}
 
-		go func(rc model.GitRepositoryConfig) {
+		go func(rc model.GitRepoConfig) {
 			defer wg.Done()
 
 			branches, err := GetRepositoryBranches(rc)
@@ -183,7 +183,7 @@ func GetRepoInfos(repoConfigs []model.GitRepositoryConfig, maxConcurrency int) (
 				return
 			}
 
-			repoInfoCh <- model.GitRepositoryInfo{
+			repoInfoCh <- model.GitRepoInfo{
 				Name:        rc.Name,
 				URL:         rc.URL,
 				Description: rc.Description,
@@ -201,7 +201,7 @@ func GetRepoInfos(repoConfigs []model.GitRepositoryConfig, maxConcurrency int) (
 		close(errCh)
 	}()
 
-	repoInfos := make([]model.GitRepositoryInfo, 0, len(repoConfigs))
+	repoInfos := make([]model.GitRepoInfo, 0, len(repoConfigs))
 	for info := range repoInfoCh {
 		repoInfos = append(repoInfos, info)
 	}
@@ -213,12 +213,12 @@ func GetRepoInfos(repoConfigs []model.GitRepositoryConfig, maxConcurrency int) (
 	return repoInfos, nil
 }
 
-func GetRepoDetails(repoName string, repoConfigs []model.GitRepositoryConfig) (model.GitRepositoryInfo, error) {
+func GetRepoDetails(repoName string, repoConfigs []model.GitRepoConfig) (model.GitRepoInfo, error) {
 	for _, repoConfig := range repoConfigs {
 		if repoConfig.Name == repoName {
 			branches, err := GetRepositoryBranches(repoConfig)
 			if err != nil {
-				return model.GitRepositoryInfo{}, err
+				return model.GitRepoInfo{}, err
 			}
 			releaseBranchNames := filterBranches(branches, `^(server|server-.*|release-.*)$`)
 
@@ -231,14 +231,14 @@ func GetRepoDetails(repoName string, repoConfigs []model.GitRepositoryConfig) (m
 				commitId, err := GetCommitId(repoConfig, branch)
 				if err != nil {
 					log.Println("Error getting commit ID for branch: " + branch + " " + err.Error())
-					return model.GitRepositoryInfo{}, err
+					return model.GitRepoInfo{}, err
 				}
 				releaseBranches = append(releaseBranches, model.GitBranchInfo{
 					Name:     branch,
 					CommitId: commitId,
 				})
 			}
-			return model.GitRepositoryInfo{
+			return model.GitRepoInfo{
 				Name:            repoConfig.Name,
 				URL:             repoConfig.URL,
 				Branches:        branches,
@@ -246,5 +246,5 @@ func GetRepoDetails(repoName string, repoConfigs []model.GitRepositoryConfig) (m
 			}, nil
 		}
 	}
-	return model.GitRepositoryInfo{}, fmt.Errorf("repository not found: %s", repoName)
+	return model.GitRepoInfo{}, fmt.Errorf("repository not found: %s", repoName)
 }

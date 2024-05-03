@@ -7,8 +7,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "server",
-	Short: "Webserver serving the Topdata Package Service",
+	Use:   "main",
+	Short: "The entrypoint",
 }
 
 func Execute() {

@@ -12,7 +12,7 @@ import (
 	"sort"
 )
 
-func GetRepositoryBranches(repoConf model.GitRepositoryConfig) ([]string, error) {
+func GetRepositoryBranches(repoConf model.GitRepoConfig) ([]string, error) {
 	fmt.Println(">>>> GetRepositoryBranches: " + repoConf.Name)
 	// ---- fetch branches from the repoConf
 	gitDir := file_path_service.GetLocalGitRepoDir(repoConf)
@@ -50,7 +50,7 @@ func getBranches(repo *git.Repository) ([]string, error) {
 	return branches, nil
 }
 
-func getRemoteBranches(repoConf model.GitRepositoryConfig, repo *git.Repository) ([]string, error) {
+func getRemoteBranches(repoConf model.GitRepoConfig, repo *git.Repository) ([]string, error) {
 	// ---- branches from the remote repository
 	branches := make([]string, 0)
 	remote, err := repo.Remote("origin")
@@ -98,7 +98,7 @@ func filterBranches(branches []string, regexPattern string) []string {
 	return releaseBranches
 }
 
-func GetCommitId(repoConfig model.GitRepositoryConfig, branchName string) (string, error) {
+func GetCommitId(repoConfig model.GitRepoConfig, branchName string) (string, error) {
 	destGitDir := file_path_service.GetLocalGitRepoDir(repoConfig)
 	repo, err := refreshRepo(repoConfig, destGitDir)
 
