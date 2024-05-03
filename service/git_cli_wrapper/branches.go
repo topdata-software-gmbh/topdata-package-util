@@ -46,32 +46,47 @@ func filterBranchNames(branches []string, regexPattern string) []string {
 	return releaseBranches
 }
 
-func getBranchCommitId(repoConfig model.GitRepoConfig, name2 string) string {
-	// git rev-parse refs/heads/branchName
-
-	out, err := execGitCommand(repoConfig, "rev-parse", "refs/heads/"+name2)
-	if err != nil {
-		log.Fatalln("Error getting branch commit id: " + err.Error())
-	}
-
+// returns the commit id of the current branch
+func getCommitId(repoConfig model.GitRepoConfig) string {
+	out, _ := execGitCommand(repoConfig, "rev-parse", "HEAD")
 	return strings.TrimSpace(out)
 }
 
+//func getCommitId(repoConfig model.GitRepoConfig, name2 string) string {
+//	// git rev-parse refs/heads/branchName
+//
+//	out, err := execGitCommand(repoConfig, "rev-parse", "refs/heads/"+name2)
+//	if err != nil {
+//		log.Fatalln("Error getting branch commit id: " + err.Error())
+//	}
+//
+//	return strings.TrimSpace(out)
+//}
+
 func GetOneBranch(repoConfig model.GitRepoConfig, branchName string) model.GitBranchInfo {
+
+	checkoutBranch(repoConfig, branchName)
+
 	branchInfo := model.GitBranchInfo{
-		Name:           branchName,
-		CommitId:       getBranchCommitId(repoConfig, branchName),
-		PackageVersion: getPackageVersion(repoConfig, branchName),
+		Name:     branchName,
+		CommitId: getCommitId(repoConfig),
+		Version:  getComposerJson(repoConfig).Version,
 	}
 	fmt.Println("Branch details for repository: " + repoConfig.Name + ", branch: " + branchName)
 
 	return branchInfo
 }
 
-func getPackageVersion(repoConfig model.GitRepoConfig, branchName string) string {
-	// checkout branch
-	checkoutBranch(repoConfig, branchName)
-	return "TODO: get package version from composer.json"
+func getComposerJson(repoConfig model.GitRepoConfig) model.ComposerJSON {
+	var composerJson model.ComposerJSON
+
+	// Load data from composer.json file
+	err := composerJson.LoadFromFile(repoConfig.GetAbsolutePath("composer.json"))
+	if err != nil {
+		log.Fatalln("Error loading composer.json: " + err.Error())
+	}
+
+	return composerJson
 }
 
 func checkoutBranch(repoConfig model.GitRepoConfig, branchName string) {

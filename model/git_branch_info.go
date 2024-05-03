@@ -1,7 +1,7 @@
 package model
 
 type GitBranchInfo struct {
-	Name           string
-	CommitId       string
-	PackageVersion string
+	Name     string
+	CommitId string
+	Version  string
 }
