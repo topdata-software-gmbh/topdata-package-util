@@ -14,7 +14,9 @@ var showGitBranchDetailsCommand = &cobra.Command{
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Details for repository: %s, branch %s ...\n", args[0], args[1])
-		gitBranchInfo := git_cli_wrapper.GetOneBranch(args[0], args[1])
+
+		repoConfig := model.GitRepoConfig{Name: args[0]}
+		gitBranchInfo := git_cli_wrapper.GetOneBranch(repoConfig, args[1])
 		fmt.Printf("Branch details: %v\n", gitBranchInfo)
 		cli_out.DumpBranchesTable([]model.GitBranchInfo{gitBranchInfo})
 	},

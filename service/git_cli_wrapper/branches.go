@@ -57,24 +57,44 @@ func getBranchCommitId(repoConfig model.GitRepoConfig, name2 string) string {
 	return strings.TrimSpace(out)
 }
 
-func GetOneBranch(repoName string, branchName string) model.GitBranchInfo {
+func GetOneBranch(repoConfig model.GitRepoConfig, branchName string) model.GitBranchInfo {
 	branchInfo := model.GitBranchInfo{
-		Name:     branchName,
-		CommitId: getBranchCommitId(model.GitRepoConfig{Name: repoName}, branchName),
+		Name:           branchName,
+		CommitId:       getBranchCommitId(repoConfig, branchName),
+		PackageVersion: getPackageVersion(repoConfig, branchName),
 	}
-	fmt.Println("Branch details for repository: " + repoName + ", branch: " + branchName)
+	fmt.Println("Branch details for repository: " + repoConfig.Name + ", branch: " + branchName)
 
 	return branchInfo
 }
 
-func GetReleaseBranches(repositoryName string) []model.GitBranchInfo {
-	releaseBranchNames := GetBranchNames(model.GitRepoConfig{Name: repositoryName})
+func getPackageVersion(repoConfig model.GitRepoConfig, branchName string) string {
+	// checkout branch
+	checkoutBranch(repoConfig, branchName)
+	return "TODO: get package version from composer.json"
+}
+
+func checkoutBranch(repoConfig model.GitRepoConfig, branchName string) {
+	_, _ = execGitCommand(repoConfig, "checkout", branchName)
+	_, _ = execGitCommand(repoConfig, "pull")
+}
+
+func GetReleaseBranches(repoConfig model.GitRepoConfig) []model.GitBranchInfo {
+	releaseBranchNames := GetBranchNames(repoConfig)
 	color.Yellow("Release branch names: %v\n", releaseBranchNames)
 	releaseBranches := make([]model.GitBranchInfo, len(releaseBranchNames))
 	for idx, branchName := range releaseBranchNames {
 		fmt.Println("-----> " + branchName)
-		releaseBranches[idx] = GetOneBranch(repositoryName, branchName)
+		releaseBranches[idx] = GetOneBranch(repoConfig, branchName)
 	}
 	color.Blue("Release branches: %v\n", releaseBranches)
 	return releaseBranches
+}
+
+func SwitchBranch(repoConfig model.GitRepoConfig, branchName string) error {
+	_, err := execGitCommand(repoConfig, "checkout", branchName)
+	if err != nil {
+		log.Fatalln("Error switching branch: " + err.Error())
+	}
+	return nil
 }

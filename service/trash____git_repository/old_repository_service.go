@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-func refreshRepo(repoConf model.GitRepoConfig, destGitDir string) (*git.Repository, error) {
+func refreshRepo_old(repoConf model.GitRepoConfig, destGitDir string) (*git.Repository, error) {
 
 	var err error
 

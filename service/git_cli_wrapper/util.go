@@ -8,13 +8,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"os/exec"
-	"path/filepath"
 	"strings"
 )
-
-func GetLocalGitRepoDir(repoConf model.GitRepoConfig) string {
-	return filepath.Join("/tmp/git-repos", repoConf.Name)
-}
 
 func execCommand(command string, args ...string) error {
 	cmd := exec.Command(command, args...)
@@ -32,7 +27,7 @@ func execCommand(command string, args ...string) error {
 }
 
 func execGitCommand(repoConfig model.GitRepoConfig, args ...string) (string, error) {
-	repoDir := GetLocalGitRepoDir(repoConfig)
+	repoDir := repoConfig.GetLocalGitRepoDir()
 	args = append([]string{"-C", repoDir}, args...)
 	cmd := exec.Command("git", args...)
 	output, err := cmd.CombinedOutput()

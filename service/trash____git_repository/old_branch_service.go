@@ -6,25 +6,24 @@ import (
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
 	"log"
 	"regexp"
 	"sort"
 )
 
-func GetRepositoryBranches_old(repoConf model.GitRepoConfig) ([]string, error) {
-	fmt.Println(">>>> GetRepositoryBranches_old: " + repoConf.Name)
-	// ---- fetch branches from the repoConf
-	gitDir := git_cli_wrapper.GetLocalGitRepoDir(repoConf)
+func GetRepositoryBranches_old(repoConfig model.GitRepoConfig) ([]string, error) {
+	fmt.Println(">>>> GetRepositoryBranches_old: " + repoConfig.Name)
+	// ---- fetch branches from the repoConfig
+	gitDir := repoConfig.GetLocalGitRepoDir()
 
 	// ---- git clone / pull
-	repo, err := refreshRepo(repoConf, gitDir)
+	repo, err := refreshRepo_old(repoConfig, gitDir)
 	if err != nil {
 		fmt.Println("Error fetching repo to " + gitDir + ": " + err.Error())
 		return nil, err
 	}
 
-	remoteBranches, err := getRemoteBranches(repoConf, repo)
+	remoteBranches, err := getRemoteBranches(repoConfig, repo)
 	if err != nil {
 		fmt.Println("Error fetching remote branches to " + gitDir + ": " + err.Error())
 		return nil, err
@@ -99,8 +98,8 @@ func FilterBranches_old(branches []string, regexPattern string) []string {
 }
 
 func GetCommitId(repoConfig model.GitRepoConfig, branchName string) (string, error) {
-	destGitDir := git_cli_wrapper.GetLocalGitRepoDir(repoConfig)
-	repo, err := refreshRepo(repoConfig, destGitDir)
+	destGitDir := repoConfig.GetLocalGitRepoDir()
+	repo, err := refreshRepo_old(repoConfig, destGitDir)
 
 	if err != nil {
 		log.Println("Error fetching repo to " + destGitDir + ": " + err.Error())
