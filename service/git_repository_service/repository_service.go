@@ -5,6 +5,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"log"
 	"os"
 	"path/filepath"
 	"sync"
@@ -44,23 +45,36 @@ func refreshRepo(repoConf model.GitRepositoryConfig, destGitDir string) (*git.Re
 		fmt.Println(">>>> Using existing repository: " + destGitDir)
 		repo, err = git.PlainOpen(destGitDir)
 		if err == nil {
-			// And pull the latest changes from the origin remote
-			worktree, err := repo.Worktree()
-			if err != nil {
-				return nil, err
-			}
 
-			pullOptions := &git.PullOptions{
+			fetchOptions := &git.FetchOptions{
 				RemoteName: "origin",
+				Force:      true,
 			}
 			if publicKeys != nil {
-				pullOptions.Auth = publicKeys
+				fetchOptions.Auth = publicKeys
 			}
 
-			err = worktree.Pull(pullOptions)
+			err = repo.Fetch(fetchOptions)
 			if err != nil && err != git.NoErrAlreadyUpToDate {
 				return nil, err
 			}
+			// And pull the latest changes from the origin remote
+			//worktree, err := repo.Worktree()
+			//if err != nil {
+			//	return nil, err
+			//}
+			//pullOptions := &git.PullOptions{
+			//	RemoteName: "origin",
+			//	Force:      true,
+			//}
+			//if publicKeys != nil {
+			//	pullOptions.Auth = publicKeys
+			//}
+			//
+			//err = worktree.Pull(pullOptions)
+			//if err != nil && err != git.NoErrAlreadyUpToDate {
+			//	return nil, err
+			//}
 		}
 	}
 
@@ -206,13 +220,35 @@ func GetRepoDetails(repoName string, repoConfigs []model.GitRepositoryConfig) (m
 			if err != nil {
 				return model.GitRepositoryInfo{}, err
 			}
+			releaseBranchNames := filterBranches(branches, `^(main|main-.*|release-.*)$`)
+
+			log.Println("releaseBranchNames: ", releaseBranchNames)
+
+			releaseBranches := make([]model.GitBranchInfo, 0)
+			// iterate over release branches and get git commit id for each
+			for _, branch := range releaseBranchNames {
+				// get commit id for the branch
+				commitId, err := GetCommitId(repoConfig, branch)
+				if err != nil {
+					log.Println("Error getting commit ID for branch: " + branch + " " + err.Error())
+					return model.GitRepositoryInfo{}, err
+				}
+				releaseBranches = append(releaseBranches, model.GitBranchInfo{
+					Name:     branch,
+					CommitId: commitId,
+				})
+			}
 			return model.GitRepositoryInfo{
 				Name:            repoConfig.Name,
 				URL:             repoConfig.URL,
 				Branches:        branches,
-				ReleaseBranches: filterBranches(branches),
+				ReleaseBranches: releaseBranches,
 			}, nil
 		}
 	}
 	return model.GitRepositoryInfo{}, fmt.Errorf("repository not found: %s", repoName)
+}
+
+func getLocalGitRepoDir(repoConf model.GitRepositoryConfig) string {
+	return filepath.Join("/tmp/git-repos", repoConf.Name)
 }

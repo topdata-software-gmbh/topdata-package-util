@@ -53,7 +53,7 @@ func main() {
 	router.GET("/repositories", controllers.GetRepositoriesHandler)
 	router.GET("/repository-details/:name", controllers.GetRepositoryDetailsHandler)
 
-	fmt.Printf("Loaded %d repository configs: %v\n", len(serviceConfig.RepositoryConfigs), getRepoNames(serviceConfig.RepositoryConfigs))
+	fmt.Printf("Loaded %d repository configs\n", len(serviceConfig.RepositoryConfigs))
 
 	// ---- get port
 	finalPort := portFromCliOption
@@ -73,13 +73,13 @@ func main() {
 	}
 }
 
-func getRepoNames(repoConfigs []model.GitRepositoryConfig) []string {
-	names := make([]string, len(repoConfigs))
-	for i, config := range repoConfigs {
-		names[i] = config.Name
-	}
-	return names
-}
+//func getRepoNames(repoConfigs []model.GitRepositoryConfig) []string {
+//	names := make([]string, len(repoConfigs))
+//	for i, config := range repoConfigs {
+//		names[i] = config.Name
+//	}
+//	return names
+//}
 
 func welcomeHandler(c *gin.Context) {
 	c.String(http.StatusOK, "Welcome to the TopData Package Service!")

@@ -7,5 +7,5 @@ type GitRepositoryInfo struct {
 	Description     string
 	URL             string // optional [TODO: we want a setting whether to show this or not]
 	Branches        []string
-	ReleaseBranches []string
+	ReleaseBranches []GitBranchInfo
 }
