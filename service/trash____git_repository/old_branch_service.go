@@ -1,4 +1,4 @@
-package git_repository_service
+package trash____git_repository
 
 import (
 	"fmt"
@@ -6,16 +6,16 @@ import (
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/git_service_v2"
+	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
 	"log"
 	"regexp"
 	"sort"
 )
 
-func GetRepositoryBranches(repoConf model.GitRepoConfig) ([]string, error) {
-	fmt.Println(">>>> GetRepositoryBranches: " + repoConf.Name)
+func GetRepositoryBranches_old(repoConf model.GitRepoConfig) ([]string, error) {
+	fmt.Println(">>>> GetRepositoryBranches_old: " + repoConf.Name)
 	// ---- fetch branches from the repoConf
-	gitDir := git_service_v2.GetLocalGitRepoDir(repoConf)
+	gitDir := git_cli_wrapper.GetLocalGitRepoDir(repoConf)
 
 	// ---- git clone / pull
 	repo, err := refreshRepo(repoConf, gitDir)
@@ -84,9 +84,9 @@ func getRemoteBranches(repoConf model.GitRepoConfig, repo *git.Repository) ([]st
 	return branches, nil
 }
 
-// filterBranches filters the given branches and returns only those that are either "server" or start with "release-".
+// FilterBranches_old filters the given branches and returns only those that are either "server" or start with "release-".
 // It takes a slice of strings representing the branch names as input and returns a slice of strings containing the filtered branch names.
-func filterBranches(branches []string, regexPattern string) []string {
+func FilterBranches_old(branches []string, regexPattern string) []string {
 	releaseBranches := make([]string, 0)
 	for _, branch := range branches {
 		// TODO: the regex should be part of the service config
@@ -99,7 +99,7 @@ func filterBranches(branches []string, regexPattern string) []string {
 }
 
 func GetCommitId(repoConfig model.GitRepoConfig, branchName string) (string, error) {
-	destGitDir := git_service_v2.GetLocalGitRepoDir(repoConfig)
+	destGitDir := git_cli_wrapper.GetLocalGitRepoDir(repoConfig)
 	repo, err := refreshRepo(repoConfig, destGitDir)
 
 	if err != nil {

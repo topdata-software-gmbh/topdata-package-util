@@ -36,8 +36,8 @@ var serverCommand = &cobra.Command{
 		flag.Parse()
 
 		var err error
-		fmt.Printf("Reading serviceConfig file: %s\n", configFile)
-		serviceConfig, err = model.LoadServiceConfig(configFile)
+		fmt.Printf("Reading serviceConfig file: %s\n", ConfigFile)
+		serviceConfig, err = model.LoadServiceConfig(ConfigFile)
 		if err != nil {
 			log.Fatalf("Failed to load serviceConfig: %s", err)
 		}
@@ -88,5 +88,5 @@ func pingHandler(c *gin.Context) {
 }
 
 func init() {
-	rootCmd.AddCommand(serverCommand)
+	appRootCmd.AddCommand(serverCommand)
 }

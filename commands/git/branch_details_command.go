@@ -1,24 +1,25 @@
-package commands
+package git
 
 import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/git_service_v2"
+	"github.com/topdata-software-gmbh/topdata-package-service/service/cli_out"
+	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
 )
 
 var showGitBranchDetailsCommand = &cobra.Command{
 	Use:   "show-git-branch-details [repositoryName] [branchName]",
-	Short: "Testing git cli wrapper",
+	Short: "Shows details of single branch of a repository",
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Details for repository: %s, branch %s ...\n", args[0], args[1])
-		gitBranchInfo := git_service_v2.GetBranchDetails(args[0], args[1])
+		gitBranchInfo := git_cli_wrapper.GetOneBranch(args[0], args[1])
 		fmt.Printf("Branch details: %v\n", gitBranchInfo)
-		git_service_v2.PrintBranchesTable([]model.GitBranchInfo{gitBranchInfo})
+		cli_out.DumpBranchesTable([]model.GitBranchInfo{gitBranchInfo})
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(showGitBranchDetailsCommand)
+	gitRootCmd.AddCommand(showGitBranchDetailsCommand)
 }

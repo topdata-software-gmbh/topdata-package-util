@@ -1,4 +1,4 @@
-package git_repository_service
+package trash____git_repository
 
 import (
 	"fmt"
@@ -102,7 +102,7 @@ func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 //	repoInfos := make([]model.GitRepoInfo, len(repoConfigs))
 //	// ---- fetch branches from the repoConfig
 //	for i, repoConfig := range repoConfigs {
-//		branches, err := GetRepositoryBranches(repoConfig)
+//		branches, err := GetRepositoryBranches_old(repoConfig)
 //		if err != nil {
 //			return nil, err
 //		}
@@ -124,7 +124,7 @@ func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 //		wg.Add(1)
 //		go func(rc model.GitRepoConfig) {
 //			defer wg.Done()
-//			branches, err := GetRepositoryBranches(rc)
+//			branches, err := GetRepositoryBranches_old(rc)
 //			if err != nil {
 //				errCh <- err
 //				return
@@ -177,7 +177,7 @@ func GetRepoInfos(repoConfigs []model.GitRepoConfig, maxConcurrency int) ([]mode
 		go func(rc model.GitRepoConfig) {
 			defer wg.Done()
 
-			branches, err := GetRepositoryBranches(rc)
+			branches, err := GetRepositoryBranches_old(rc)
 			if err != nil {
 				errCh <- err
 				return
@@ -215,36 +215,34 @@ func GetRepoInfos(repoConfigs []model.GitRepoConfig, maxConcurrency int) ([]mode
 
 func GetRepoDetails(repoName string, repoConfigs []model.GitRepoConfig) (model.GitRepoInfo, error) {
 	for _, repoConfig := range repoConfigs {
-		if repoConfig.Name == repoName {
-			branches, err := GetRepositoryBranches(repoConfig)
+		branches, err := GetRepositoryBranches_old(repoConfig)
+		if err != nil {
+			return model.GitRepoInfo{}, err
+		}
+		releaseBranchNames := FilterBranches_old(branches, `^(server|server-.*|release-.*)$`)
+
+		log.Println("releaseBranchNames: ", releaseBranchNames)
+
+		releaseBranches := make([]model.GitBranchInfo, 0)
+		// iterate over release branches and get git commit id for each
+		for _, branch := range releaseBranchNames {
+			// get commit id for the branch
+			commitId, err := GetCommitId(repoConfig, branch)
 			if err != nil {
+				log.Println("Error getting commit ID for branch: " + branch + " " + err.Error())
 				return model.GitRepoInfo{}, err
 			}
-			releaseBranchNames := filterBranches(branches, `^(server|server-.*|release-.*)$`)
-
-			log.Println("releaseBranchNames: ", releaseBranchNames)
-
-			releaseBranches := make([]model.GitBranchInfo, 0)
-			// iterate over release branches and get git commit id for each
-			for _, branch := range releaseBranchNames {
-				// get commit id for the branch
-				commitId, err := GetCommitId(repoConfig, branch)
-				if err != nil {
-					log.Println("Error getting commit ID for branch: " + branch + " " + err.Error())
-					return model.GitRepoInfo{}, err
-				}
-				releaseBranches = append(releaseBranches, model.GitBranchInfo{
-					Name:     branch,
-					CommitId: commitId,
-				})
-			}
-			return model.GitRepoInfo{
-				Name:            repoConfig.Name,
-				URL:             repoConfig.URL,
-				Branches:        branches,
-				ReleaseBranches: releaseBranches,
-			}, nil
+			releaseBranches = append(releaseBranches, model.GitBranchInfo{
+				Name:     branch,
+				CommitId: commitId,
+			})
 		}
+		return model.GitRepoInfo{
+			Name:            repoConfig.Name,
+			URL:             repoConfig.URL,
+			Branches:        branches,
+			ReleaseBranches: releaseBranches,
+		}, nil
 	}
 	return model.GitRepoInfo{}, fmt.Errorf("repository not found: %s", repoName)
 }

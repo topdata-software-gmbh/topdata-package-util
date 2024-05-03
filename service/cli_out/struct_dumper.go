@@ -1,4 +1,4 @@
-package git_service_v2
+package cli_out
 
 import (
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func PrintBranchesTable(branches []model.GitBranchInfo) {
+func DumpBranchesTable(branches []model.GitBranchInfo) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Name", "CommitId"})

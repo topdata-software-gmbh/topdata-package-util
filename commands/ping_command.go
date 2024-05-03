@@ -14,5 +14,5 @@ var pingCommand = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(pingCommand)
+	appRootCmd.AddCommand(pingCommand)
 }

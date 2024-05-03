@@ -1,4 +1,4 @@
-package git_service_v2
+package git_cli_wrapper
 
 import (
 	"github.com/topdata-software-gmbh/topdata-package-service/model"

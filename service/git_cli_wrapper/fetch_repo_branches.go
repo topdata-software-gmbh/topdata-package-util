@@ -1,4 +1,4 @@
-package git_service_v2
+package git_cli_wrapper
 
 // This service uses the git CLI to interact with git repositories.
 // It is a replacement for the go-git library.
