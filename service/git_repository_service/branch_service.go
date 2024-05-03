@@ -6,7 +6,7 @@ import (
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/file_path_service"
+	"github.com/topdata-software-gmbh/topdata-package-service/service/git_service_v2"
 	"log"
 	"regexp"
 	"sort"
@@ -15,7 +15,7 @@ import (
 func GetRepositoryBranches(repoConf model.GitRepoConfig) ([]string, error) {
 	fmt.Println(">>>> GetRepositoryBranches: " + repoConf.Name)
 	// ---- fetch branches from the repoConf
-	gitDir := file_path_service.GetLocalGitRepoDir(repoConf)
+	gitDir := git_service_v2.GetLocalGitRepoDir(repoConf)
 
 	// ---- git clone / pull
 	repo, err := refreshRepo(repoConf, gitDir)
@@ -99,7 +99,7 @@ func filterBranches(branches []string, regexPattern string) []string {
 }
 
 func GetCommitId(repoConfig model.GitRepoConfig, branchName string) (string, error) {
-	destGitDir := file_path_service.GetLocalGitRepoDir(repoConfig)
+	destGitDir := git_service_v2.GetLocalGitRepoDir(repoConfig)
 	repo, err := refreshRepo(repoConfig, destGitDir)
 
 	if err != nil {
