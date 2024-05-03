@@ -220,7 +220,7 @@ func GetRepoDetails(repoName string, repoConfigs []model.GitRepositoryConfig) (m
 			if err != nil {
 				return model.GitRepositoryInfo{}, err
 			}
-			releaseBranchNames := filterBranches(branches, `^(main|main-.*|release-.*)$`)
+			releaseBranchNames := filterBranches(branches, `^(server|server-.*|release-.*)$`)
 
 			log.Println("releaseBranchNames: ", releaseBranchNames)
 

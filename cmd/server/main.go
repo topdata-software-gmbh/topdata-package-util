@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/gin-gonic/gin"
 	"github.com/topdata-software-gmbh/topdata-package-service/controllers"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
@@ -53,7 +54,7 @@ func main() {
 	router.GET("/repositories", controllers.GetRepositoriesHandler)
 	router.GET("/repository-details/:name", controllers.GetRepositoryDetailsHandler)
 
-	fmt.Printf("Loaded %d repository configs\n", len(serviceConfig.RepositoryConfigs))
+	color.Cyan("Loaded %d repository configs\n", len(serviceConfig.RepositoryConfigs))
 
 	// ---- get port
 	finalPort := portFromCliOption
