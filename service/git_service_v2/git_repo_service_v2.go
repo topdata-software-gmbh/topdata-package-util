@@ -2,6 +2,7 @@ package git_service_v2
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/file_path_service"
 	"os/exec"
@@ -47,9 +48,9 @@ func execCommand(command string, args ...string) error {
 	fmt.Println(string(output))
 
 	if err != nil {
-		fmt.Println("!!!!! cmd: " + cmd.String())
-		fmt.Println("!!!!! out: " + string(output))
-		fmt.Println("!!!!! err: " + err.Error())
+		color.Yellow("!!!!! cmd: " + cmd.String())
+		color.Red("!!!!! out: " + strings.TrimSpace(string(output)))
+		color.Yellow("!!!!! err: " + err.Error())
 
 		return err
 	}
