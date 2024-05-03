@@ -248,7 +248,3 @@ func GetRepoDetails(repoName string, repoConfigs []model.GitRepositoryConfig) (m
 	}
 	return model.GitRepositoryInfo{}, fmt.Errorf("repository not found: %s", repoName)
 }
-
-func getLocalGitRepoDir(repoConf model.GitRepositoryConfig) string {
-	return filepath.Join("/tmp/git-repos", repoConf.Name)
-}

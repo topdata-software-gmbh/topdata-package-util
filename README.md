@@ -4,28 +4,28 @@ This is a microservice written in Go that handles git repositories from GitHub a
 
 ## Installation
 ```bash
+# fetch dependencies 
 go mod tidy
 ```
-
-## Prod URL
-http://packages.api.topinfra.de
 
 ## Running the Service
 
 1. Ensure you have Go installed on your machine.
 2. Clone this repository.
 3. Navigate to the project directory.
-4. Run `go run .`.
-
+4. Run the server:
+```bash
+go run cmd/server/main.go
+```
 
 ## Command Line Options
 
 - `--port`
   - Set the port to run the server on. Default is `8080`.
-  - example: `go run . --port=8081`
+  - example: `go run cmd/server/main.go --port=8081`
 - `--config`
   - Set the path to the config file. Default is `config.json5`.
-  - example: `go run . --config=path/to/config.json5`
+  - example: `go run cmd/server/main.go --config=path/to/config.json5`
 
   
 ## API Endpoints
