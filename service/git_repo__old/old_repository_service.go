@@ -109,7 +109,7 @@ func getAuth(repoConf model.PkgConfig, err error) (*ssh.PublicKeys, error) {
 //		repoInfos[i].Name = repoConfig.Name
 //		repoInfos[i].URL = repoConfig.URL
 //		repoInfos[i].Description = repoConfig.Description
-//		repoInfos[i].Branches = branches
+//		repoInfos[i].BranchNames = branches
 //		//		repoInfos[i].ReleaseBranches =
 //	}
 //	return repoInfos, nil
@@ -133,7 +133,7 @@ func getAuth(repoConf model.PkgConfig, err error) (*ssh.PublicKeys, error) {
 //				Name:        rc.Name,
 //				URL:         rc.URL,
 //				Description: rc.Description,
-//				Branches:    branches,
+//				BranchNames:    branches,
 //			}
 //		}(repoConfig)
 //	}
@@ -187,7 +187,7 @@ func GetRepoInfos(pkgConfigs []model.PkgConfig, maxConcurrency int) ([]model.Pkg
 				Name:        rc.Name,
 				URL:         rc.URL,
 				Description: rc.Description,
-				Branches:    branches,
+				BranchNames: branches,
 			}
 
 			// Read a value from the semaphore, allowing another goroutine to proceed
@@ -240,7 +240,7 @@ func GetRepoDetails_old(repoName string, pkgConfigs []model.PkgConfig) (model.Pk
 		return model.PkgInfo{
 			Name:            repoConfig.Name,
 			URL:             repoConfig.URL,
-			Branches:        branches,
+			BranchNames:     branches,
 			ReleaseBranches: releaseBranches,
 		}, nil
 	}

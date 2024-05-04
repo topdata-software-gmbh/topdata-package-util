@@ -15,7 +15,7 @@ var testGitCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("PackagesPortfolioFile")
 
-		fmt.Printf("Reading webserver config file: %s\n", pathPackagesPortfolioFile)
+		fmt.Printf("Reading packages portfolio file: %s\n", pathPackagesPortfolioFile)
 		pkgConfigs, err := loaders.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 		if err != nil {
 			log.Fatalf("Failed to load packages portfolio file: %s", err)
