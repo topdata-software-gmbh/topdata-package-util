@@ -1,4 +1,4 @@
-package trash____git_repository
+package git_repo__old
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"sort"
 )
 
-func GetRepositoryBranches_old(repoConfig model.GitRepoConfig) ([]string, error) {
+func GetRepositoryBranches_old(repoConfig model.PkgConfig) ([]string, error) {
 	fmt.Println(">>>> GetRepositoryBranches_old: " + repoConfig.Name)
 	// ---- fetch branches from the repoConfig
 	gitDir := repoConfig.GetLocalGitRepoDir()
@@ -49,7 +49,7 @@ func getBranches(repo *git.Repository) ([]string, error) {
 	return branches, nil
 }
 
-func getRemoteBranches(repoConf model.GitRepoConfig, repo *git.Repository) ([]string, error) {
+func getRemoteBranches(repoConf model.PkgConfig, repo *git.Repository) ([]string, error) {
 	// ---- branches from the remote repository
 	branches := make([]string, 0)
 	remote, err := repo.Remote("origin")
@@ -97,7 +97,7 @@ func FilterBranches_old(branches []string, regexPattern string) []string {
 	return releaseBranches
 }
 
-func GetCommitId(repoConfig model.GitRepoConfig, branchName string) (string, error) {
+func GetCommitId(repoConfig model.PkgConfig, branchName string) (string, error) {
 	destGitDir := repoConfig.GetLocalGitRepoDir()
 	repo, err := refreshRepo_old(repoConfig, destGitDir)
 

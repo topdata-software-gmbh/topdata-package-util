@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/commands/pkg"
+	"github.com/topdata-software-gmbh/topdata-package-service/commands/pkg_commands"
 	"os"
 )
 
@@ -19,9 +19,11 @@ func Execute() {
 	}
 }
 
-var ConfigFile string
+var WebserverConfigFile string
+var PackagesPortfolioFile string
 
 func init() {
-	appRootCmd.PersistentFlags().StringVar(&ConfigFile, "config-file", "config.json5", "config file (default is config.json5)")
-	pkg.Register(appRootCmd)
+	appRootCmd.PersistentFlags().StringVar(&WebserverConfigFile, "webserver-config-file", "webserver-config.json5", "config file (default is webserver-config.json5)") // TODO: move to webserver_command.go
+	appRootCmd.PersistentFlags().StringVar(&PackagesPortfolioFile, "packages-portfolio-file", "packages-portfolio.json5", "config file (default is packages-portfolio.json5)")
+	pkg_commands.Register(appRootCmd)
 }

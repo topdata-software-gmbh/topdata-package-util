@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-func GetBranchNames(repoConf model.GitRepoConfig) []string {
+func GetBranchNames(repoConf model.PkgConfig) []string {
 	fmt.Println(">>>> GetBranchNames: " + repoConf.Name)
 	// pkg for-each-ref --format='%(refname:short)' refs/heads/
 	out, err := execGitCommand(repoConf, "for-each-ref", "--format", "%(refname:short)", "refs/heads/")
@@ -27,7 +27,7 @@ func GetBranchNames(repoConf model.GitRepoConfig) []string {
 	return branches
 }
 
-func GetReleaseBranchNames(repoConfig model.GitRepoConfig) []string {
+func GetReleaseBranchNames(repoConfig model.PkgConfig) []string {
 	branchNames := GetBranchNames(repoConfig)
 	return filterBranchNames(branchNames, `^(main|main-.*|release-.*)$`)
 }
@@ -47,12 +47,12 @@ func filterBranchNames(branches []string, regexPattern string) []string {
 }
 
 // returns the commit id of the current branch
-func getCommitId(repoConfig model.GitRepoConfig) string {
+func getCommitId(repoConfig model.PkgConfig) string {
 	out, _ := execGitCommand(repoConfig, "rev-parse", "HEAD")
 	return strings.TrimSpace(out)
 }
 
-//func getCommitId(repoConfig model.GitRepoConfig, name2 string) string {
+//func getCommitId(repoConfig model.PkgConfig, name2 string) string {
 //	// pkg rev-parse refs/heads/branchName
 //
 //	out, err := execGitCommand(repoConfig, "rev-parse", "refs/heads/"+name2)
@@ -63,7 +63,7 @@ func getCommitId(repoConfig model.GitRepoConfig) string {
 //	return strings.TrimSpace(out)
 //}
 
-func GetOneBranch(repoConfig model.GitRepoConfig, branchName string) model.GitBranchInfo {
+func GetOneBranch(repoConfig model.PkgConfig, branchName string) model.GitBranchInfo {
 
 	checkoutBranch(repoConfig, branchName)
 
@@ -79,7 +79,7 @@ func GetOneBranch(repoConfig model.GitRepoConfig, branchName string) model.GitBr
 	return branchInfo
 }
 
-func getComposerJson(repoConfig model.GitRepoConfig) model.ComposerJSON {
+func getComposerJson(repoConfig model.PkgConfig) model.ComposerJSON {
 	var composerJson model.ComposerJSON
 
 	// Load data from composer.json file
@@ -91,12 +91,12 @@ func getComposerJson(repoConfig model.GitRepoConfig) model.ComposerJSON {
 	return composerJson
 }
 
-func checkoutBranch(repoConfig model.GitRepoConfig, branchName string) {
+func checkoutBranch(repoConfig model.PkgConfig, branchName string) {
 	_, _ = execGitCommand(repoConfig, "checkout", branchName)
 	_, _ = execGitCommand(repoConfig, "pull")
 }
 
-func GetReleaseBranches(repoConfig model.GitRepoConfig) []model.GitBranchInfo {
+func GetReleaseBranches(repoConfig model.PkgConfig) []model.GitBranchInfo {
 	releaseBranchNames := GetBranchNames(repoConfig)
 	color.Yellow("Release branch names: %v\n", releaseBranchNames)
 	releaseBranches := make([]model.GitBranchInfo, len(releaseBranchNames))
@@ -108,7 +108,7 @@ func GetReleaseBranches(repoConfig model.GitRepoConfig) []model.GitBranchInfo {
 	return releaseBranches
 }
 
-func SwitchBranch(repoConfig model.GitRepoConfig, branchName string) error {
+func SwitchBranch(repoConfig model.PkgConfig, branchName string) error {
 	_, err := execGitCommand(repoConfig, "checkout", branchName)
 	if err != nil {
 		log.Fatalln("Error switching branch: " + err.Error())

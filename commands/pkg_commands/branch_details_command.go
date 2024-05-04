@@ -1,4 +1,4 @@
-package pkg
+package pkg_commands
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ var showGitBranchDetailsCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Details for repository: %s, branch %s ...\n", args[0], args[1])
 
-		repoConfig := model.GitRepoConfig{Name: args[0]}
+		repoConfig := model.PkgConfig{Name: args[0]}
 		gitBranchInfo := git_cli_wrapper.GetOneBranch(repoConfig, args[1])
 		fmt.Printf("Branch details: %v\n", gitBranchInfo)
 		cli_out.DumpBranchesTable([]model.GitBranchInfo{gitBranchInfo})
@@ -23,5 +23,5 @@ var showGitBranchDetailsCommand = &cobra.Command{
 }
 
 func init() {
-	gitRootCmd.AddCommand(showGitBranchDetailsCommand)
+	pkgRootCommand.AddCommand(showGitBranchDetailsCommand)
 }

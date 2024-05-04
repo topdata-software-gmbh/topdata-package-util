@@ -36,8 +36,8 @@ var serverCommand = &cobra.Command{
 		flag.Parse()
 
 		var err error
-		fmt.Printf("Reading serviceConfig file: %s\n", ConfigFile)
-		serviceConfig, err = model.LoadServiceConfig(ConfigFile)
+		fmt.Printf("Reading serviceConfig file: %s\n", WebserverConfigFile)
+		serviceConfig, err = model.LoadServiceConfig(WebserverConfigFile)
 		if err != nil {
 			log.Fatalf("Failed to load serviceConfig: %s", err)
 		}

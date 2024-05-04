@@ -17,3 +17,15 @@ func DumpBranchesTable(branches []model.GitBranchInfo) {
 
 	t.Render()
 }
+
+func DumpPkgsTable(pkgInfos []model.PkgInfo) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Package Name", "URL", "Description"})
+
+	for _, p := range pkgInfos {
+		t.AppendRow([]interface{}{p.Name, p.URL, p.Description})
+	}
+
+	t.Render()
+}

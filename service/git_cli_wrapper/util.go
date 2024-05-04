@@ -26,7 +26,7 @@ func execCommand(command string, args ...string) error {
 	return nil
 }
 
-func execGitCommand(repoConfig model.GitRepoConfig, args ...string) (string, error) {
+func execGitCommand(repoConfig model.PkgConfig, args ...string) (string, error) {
 	repoDir := repoConfig.GetLocalGitRepoDir()
 	args = append([]string{"-C", repoDir}, args...)
 	cmd := exec.Command("git", args...)

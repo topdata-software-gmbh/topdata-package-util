@@ -1,4 +1,4 @@
-package trash____git_repository
+package git_repo__old
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-func refreshRepo_old(repoConf model.GitRepoConfig, destGitDir string) (*git.Repository, error) {
+func refreshRepo_old(repoConf model.PkgConfig, destGitDir string) (*git.Repository, error) {
 
 	var err error
 
@@ -81,7 +81,7 @@ func refreshRepo_old(repoConf model.GitRepoConfig, destGitDir string) (*git.Repo
 	return repo, err
 }
 
-func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
+func getAuth(repoConf model.PkgConfig, err error) (*ssh.PublicKeys, error) {
 	var publicKeys *ssh.PublicKeys = nil
 	if repoConf.PathSshKey == nil {
 		return nil, nil
@@ -98,10 +98,10 @@ func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 	return publicKeys, nil
 }
 
-//func GetRepoInfos(repoConfigs []model.GitRepoConfig) ([]model.GitRepoInfo, error) {
-//	repoInfos := make([]model.GitRepoInfo, len(repoConfigs))
+//func GetRepoInfos(pkgConfigs []model.PkgConfig) ([]model.PkgInfo, error) {
+//	repoInfos := make([]model.PkgInfo, len(pkgConfigs))
 //	// ---- fetch branches from the repoConfig
-//	for i, repoConfig := range repoConfigs {
+//	for i, repoConfig := range pkgConfigs {
 //		branches, err := GetRepositoryBranches_old(repoConfig)
 //		if err != nil {
 //			return nil, err
@@ -115,21 +115,21 @@ func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 //	return repoInfos, nil
 //}
 
-//func GetRepoInfos(repoConfigs []model.GitRepoConfig) ([]model.GitRepoInfo, error) {
+//func GetRepoInfos(pkgConfigs []model.PkgConfig) ([]model.PkgInfo, error) {
 //	var wg sync.WaitGroup
-//	repoInfoCh := make(chan model.GitRepoInfo, len(repoConfigs))
-//	errCh := make(chan error, len(repoConfigs))
+//	repoInfoCh := make(chan model.PkgInfo, len(pkgConfigs))
+//	errCh := make(chan error, len(pkgConfigs))
 //
-//	for _, repoConfig := range repoConfigs {
+//	for _, repoConfig := range pkgConfigs {
 //		wg.Add(1)
-//		go func(rc model.GitRepoConfig) {
+//		go func(rc model.PkgConfig) {
 //			defer wg.Done()
 //			branches, err := GetRepositoryBranches_old(rc)
 //			if err != nil {
 //				errCh <- err
 //				return
 //			}
-//			repoInfoCh <- model.GitRepoInfo{
+//			repoInfoCh <- model.PkgInfo{
 //				Name:        rc.Name,
 //				URL:         rc.URL,
 //				Description: rc.Description,
@@ -144,7 +144,7 @@ func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 //		close(errCh)
 //	}()
 //
-//	repoInfos := make([]model.GitRepoInfo, 0, len(repoConfigs))
+//	repoInfos := make([]model.PkgInfo, 0, len(pkgConfigs))
 //	for info := range repoInfoCh {
 //		repoInfos = append(repoInfos, info)
 //	}
@@ -160,21 +160,21 @@ func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 // Create a buffered channel with a capacity equal to the maximum number of goroutines you want to allow to run concurrently.
 // Before starting a new goroutine, send a value into the channel. This operation will block if the channel is already full, effectively limiting the number of concurrently running goroutines.
 // When a goroutine finishes, read a value from the channel to allow another goroutine to start.
-func GetRepoInfos(repoConfigs []model.GitRepoConfig, maxConcurrency int) ([]model.GitRepoInfo, error) {
+func GetRepoInfos(pkgConfigs []model.PkgConfig, maxConcurrency int) ([]model.PkgInfo, error) {
 	var wg sync.WaitGroup
-	repoInfoCh := make(chan model.GitRepoInfo, len(repoConfigs))
-	errCh := make(chan error, len(repoConfigs))
+	repoInfoCh := make(chan model.PkgInfo, len(pkgConfigs))
+	errCh := make(chan error, len(pkgConfigs))
 
 	// Create a buffered channel as a semaphore
 	sem := make(chan struct{}, maxConcurrency)
 
-	for _, repoConfig := range repoConfigs {
+	for _, repoConfig := range pkgConfigs {
 		wg.Add(1)
 
 		// Send a value into the semaphore; this will block if the semaphore is full
 		sem <- struct{}{}
 
-		go func(rc model.GitRepoConfig) {
+		go func(rc model.PkgConfig) {
 			defer wg.Done()
 
 			branches, err := GetRepositoryBranches_old(rc)
@@ -183,7 +183,7 @@ func GetRepoInfos(repoConfigs []model.GitRepoConfig, maxConcurrency int) ([]mode
 				return
 			}
 
-			repoInfoCh <- model.GitRepoInfo{
+			repoInfoCh <- model.PkgInfo{
 				Name:        rc.Name,
 				URL:         rc.URL,
 				Description: rc.Description,
@@ -201,7 +201,7 @@ func GetRepoInfos(repoConfigs []model.GitRepoConfig, maxConcurrency int) ([]mode
 		close(errCh)
 	}()
 
-	repoInfos := make([]model.GitRepoInfo, 0, len(repoConfigs))
+	repoInfos := make([]model.PkgInfo, 0, len(pkgConfigs))
 	for info := range repoInfoCh {
 		repoInfos = append(repoInfos, info)
 	}
@@ -213,11 +213,11 @@ func GetRepoInfos(repoConfigs []model.GitRepoConfig, maxConcurrency int) ([]mode
 	return repoInfos, nil
 }
 
-func GetRepoDetails(repoName string, repoConfigs []model.GitRepoConfig) (model.GitRepoInfo, error) {
-	for _, repoConfig := range repoConfigs {
+func GetRepoDetails(repoName string, pkgConfigs []model.PkgConfig) (model.PkgInfo, error) {
+	for _, repoConfig := range pkgConfigs {
 		branches, err := GetRepositoryBranches_old(repoConfig)
 		if err != nil {
-			return model.GitRepoInfo{}, err
+			return model.PkgInfo{}, err
 		}
 		releaseBranchNames := FilterBranches_old(branches, `^(server|server-.*|release-.*)$`)
 
@@ -230,19 +230,19 @@ func GetRepoDetails(repoName string, repoConfigs []model.GitRepoConfig) (model.G
 			commitId, err := GetCommitId(repoConfig, branch)
 			if err != nil {
 				log.Println("Error getting commit ID for branch: " + branch + " " + err.Error())
-				return model.GitRepoInfo{}, err
+				return model.PkgInfo{}, err
 			}
 			releaseBranches = append(releaseBranches, model.GitBranchInfo{
 				Name:     branch,
 				CommitId: commitId,
 			})
 		}
-		return model.GitRepoInfo{
+		return model.PkgInfo{
 			Name:            repoConfig.Name,
 			URL:             repoConfig.URL,
 			Branches:        branches,
 			ReleaseBranches: releaseBranches,
 		}, nil
 	}
-	return model.GitRepoInfo{}, fmt.Errorf("repository not found: %s", repoName)
+	return model.PkgInfo{}, fmt.Errorf("repository not found: %s", repoName)
 }

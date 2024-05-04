@@ -4,19 +4,19 @@ import (
 	"path/filepath"
 )
 
-type GitRepoConfig struct {
+type PkgConfig struct {
 	Name        string
 	Description string
-	URL         string
+	URL         string // TODO: rename GitRepoUrl
 	PathSshKey  *string
 	Branches    []string
 	//	ReleaseBranches []string
 }
 
-func (repoConfig *GitRepoConfig) GetLocalGitRepoDir() string {
+func (repoConfig *PkgConfig) GetLocalGitRepoDir() string {
 	return filepath.Join("/tmp/git-repos", repoConfig.Name)
 }
 
-func (repoConfig *GitRepoConfig) GetAbsolutePath(relativePath string) string {
+func (repoConfig *PkgConfig) GetAbsolutePath(relativePath string) string {
 	return filepath.Join(repoConfig.GetLocalGitRepoDir(), relativePath)
 }

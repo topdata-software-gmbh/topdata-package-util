@@ -1,4 +1,4 @@
-package pkg
+package pkg_commands
 
 import (
 	"fmt"
@@ -10,13 +10,13 @@ import (
 )
 
 var testGitCommand = &cobra.Command{
-	Use:   "test-pkg",
-	Short: "Testing pkg cli wrapper",
+	Use:   "test-git",
+	Short: "Testing git cli wrapper",
 	Run: func(cmd *cobra.Command, args []string) {
-		pathConfigFile, _ := cmd.Flags().GetString("ConfigFile")
+		pathWebserverConfigFile, _ := cmd.Flags().GetString("WebserverConfigFile")
 
-		fmt.Printf("Reading serviceConfig file: %s\n", pathConfigFile)
-		serviceConfig, err := model.LoadServiceConfig(pathConfigFile)
+		fmt.Printf("Reading serviceConfig file: %s\n", pathWebserverConfigFile)
+		serviceConfig, err := model.LoadServiceConfig(pathWebserverConfigFile)
 		if err != nil {
 			log.Fatalf("Failed to load serviceConfig: %s", err)
 		}
@@ -44,5 +44,5 @@ var testGitCommand = &cobra.Command{
 }
 
 func init() {
-	gitRootCmd.AddCommand(testGitCommand)
+	pkgRootCommand.AddCommand(testGitCommand)
 }

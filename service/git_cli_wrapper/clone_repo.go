@@ -4,7 +4,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 )
 
-func CloneRepo(repoConfig model.GitRepoConfig) error {
+func CloneRepo(repoConfig model.PkgConfig) error {
 	// Execute the pkg command to clone the repository
 	folderName := repoConfig.GetLocalGitRepoDir()
 

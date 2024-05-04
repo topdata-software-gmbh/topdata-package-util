@@ -1,10 +1,10 @@
 package model
 
 type GitRepoConfigList struct {
-	RepoConfigs []GitRepoConfig
+	RepoConfigs []PkgConfig
 }
 
-func (rcl *GitRepoConfigList) FindByName(name string) *GitRepoConfig {
+func (rcl *GitRepoConfigList) FindOneByName(name string) *PkgConfig {
 	for _, repoConfig := range rcl.RepoConfigs {
 		if repoConfig.Name == name {
 			return &repoConfig
