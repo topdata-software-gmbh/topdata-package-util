@@ -1,0 +1,5 @@
+{
+	port: 9999, // optional, default is 8080
+	username: "admin", // options basic auth
+	password: "admin", // options basic auth
+}

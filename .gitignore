@@ -1,4 +1,5 @@
 .aider*
 .idea
 bin/*
-config.json5
+webserver-config.json5
+packages-portfolio.json5

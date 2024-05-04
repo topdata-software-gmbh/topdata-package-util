@@ -1,4 +1,4 @@
-package model
+package loaders
 
 import (
 	"github.com/yosuke-furukawa/json5/encoding/json5"
@@ -6,15 +6,8 @@ import (
 	"os"
 )
 
-type ServiceConfig struct {
-	Port              uint16      `json:"port"`
-	Username          *string     `json:"username"`
-	Password          *string     `json:"password"`
-	RepositoryConfigs []PkgConfig `json:"repositories"`
-}
-
-func LoadServiceConfig(path string) (ServiceConfig, error) {
-	var config ServiceConfig
+func LoadWebserverConfig(path string) (WebserverConfig, error) {
+	var config WebserverConfig
 
 	file, err := os.Open(path)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-var serviceConfig model.ServiceConfig
+var webserverConfig model.WebserverConfig
 
 var (
 	portFromCliOption string
@@ -22,9 +22,9 @@ func init() {
 	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
 }
 
-func ServiceConfigMiddleware(config model.ServiceConfig) gin.HandlerFunc {
+func ServiceConfigMiddleware(config model.WebserverConfig) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("serviceConfig", config)
+		c.Set("webserverConfig", config)
 		c.Next()
 	}
 }
@@ -36,33 +36,33 @@ var serverCommand = &cobra.Command{
 		flag.Parse()
 
 		var err error
-		fmt.Printf("Reading serviceConfig file: %s\n", WebserverConfigFile)
-		serviceConfig, err = model.LoadServiceConfig(WebserverConfigFile)
+		fmt.Printf("Reading webserver config file: %s\n", WebserverConfigFile)
+		webserverConfig, err = model.LoadWebserverConfig(WebserverConfigFile)
 		if err != nil {
-			log.Fatalf("Failed to load serviceConfig: %s", err)
+			log.Fatalf("Failed to load webserverConfig: %s", err)
 		}
 
 		router := gin.Default()
-		if serviceConfig.Username != nil && serviceConfig.Password != nil {
+		if webserverConfig.Username != nil && webserverConfig.Password != nil {
 			router.Use(gin.BasicAuth(gin.Accounts{
-				*serviceConfig.Username: *serviceConfig.Password,
+				*webserverConfig.Username: *webserverConfig.Password,
 			}))
 		}
 
-		router.Use(ServiceConfigMiddleware(serviceConfig))
+		router.Use(ServiceConfigMiddleware(webserverConfig))
 
 		router.GET("/", welcomeHandler)
 		router.GET("/ping", pingHandler)
 		router.GET("/repositories", controllers.GetRepositoriesHandler)
 		router.GET("/repository-details/:name", controllers.GetRepositoryDetailsHandler)
 
-		color.Cyan("Loaded %d repository configs\n", len(serviceConfig.RepositoryConfigs))
+		color.Cyan("Loaded %d repository configs\n", len(webserverConfig.RepositoryConfigs))
 
 		// ---- get port
 		finalPort := portFromCliOption
 		if finalPort == "" {
-			if serviceConfig.Port != 0 {
-				finalPort = fmt.Sprint(serviceConfig.Port)
+			if webserverConfig.Port != 0 {
+				finalPort = fmt.Sprint(webserverConfig.Port)
 			} else {
 				finalPort = "8080"
 			}

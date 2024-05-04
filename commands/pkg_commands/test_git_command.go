@@ -15,15 +15,15 @@ var testGitCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		pathWebserverConfigFile, _ := cmd.Flags().GetString("WebserverConfigFile")
 
-		fmt.Printf("Reading serviceConfig file: %s\n", pathWebserverConfigFile)
-		serviceConfig, err := model.LoadServiceConfig(pathWebserverConfigFile)
+		fmt.Printf("Reading webserver config file: %s\n", pathWebserverConfigFile)
+		webserverConfig, err := model.LoadWebserverConfig(pathWebserverConfigFile)
 		if err != nil {
-			log.Fatalf("Failed to load serviceConfig: %s", err)
+			log.Fatalf("Failed to load webserverConfig: %s", err)
 		}
 
-		color.Cyan("Loaded %d repository configs\n", len(serviceConfig.RepositoryConfigs))
+		color.Cyan("Loaded %d repository configs\n", len(webserverConfig.RepositoryConfigs))
 		// iterate over the repository configs
-		for _, repoConfig := range serviceConfig.RepositoryConfigs {
+		for _, repoConfig := range webserverConfig.RepositoryConfigs {
 			color.Cyan("Cloning repository %s from %s\n", repoConfig.Name, repoConfig.URL)
 			// CloneRepo the repository
 			err := git_cli_wrapper.CloneRepo(repoConfig)
