@@ -9,7 +9,7 @@ import (
 )
 
 var listBranchesCommand = &cobra.Command{
-	Use:   "list-branches [repositoryName]",
+	Use:   "list-branches [packageName]",
 	Short: "Prints a table with all branches of a repository",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

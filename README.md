@@ -1,31 +1,33 @@
 # TopData Package Service
 
-This is a microservice written in Go that handles git repositories from GitHub and Bitbucket with multiple release branches.
+## About
+- This is cli command written in Go that handles "Topdata Packages"
+- aka "Topdata Release Manager"
+- a Topdata Package is currently a "Shopware 6 Plugin", more to come.
+- git repositories with branches are used for release management 
+- it is single CLI program with multiple commands and subcommands
+- It has a webserver with JSON endpoints to be used for generating documentation pages (using mkdocs) and maybe for other services later
 
-## Installation
-```bash
-# fetch dependencies 
-go mod tidy
-```
-
-## Running the Service
+## Compile and run the program
 
 1. Ensure you have Go installed on your machine.
 2. Clone this repository.
 3. Navigate to the project directory.
-4. Run the server:
+4. Install the dependencies:
 ```bash
-go run cmd/server/main.go
+go mod tidy
+```
+5. Run the program:
+```bash
+go run .
 ```
 
 ## Command Line Options
 
-- `--port`
-  - Set the port to run the server on. Default is `8080`.
-  - example: `go run cmd/server/main.go --port=8081`
-- `--config`
-  - Set the path to the config file. Default is `config.json5`.
-  - example: `go run cmd/server/main.go --config=path/to/config.json5`
+- `--packages-portfolio-file`
+  - Set the path to the config file. Default is `webserver-config.json5`.
+- `--packages-portfolio-file`
+  - Set the path to the config file where the package list is defined. Default is `packages-portfolio.json5`. 
 
   
 ## API Endpoints

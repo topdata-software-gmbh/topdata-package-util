@@ -9,7 +9,7 @@ import (
 )
 
 var showGitBranchDetailsCommand = &cobra.Command{
-	Use:   "show-git-branch-details [repositoryName] [branchName]",
+	Use:   "show-git-branch-details [packageName] [branchName]",
 	Short: "Shows details of single branch of a repository",
 	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
