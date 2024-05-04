@@ -8,7 +8,7 @@ import (
 )
 
 func GetRepositoriesHandler(c *gin.Context) {
-	webserverConfig := c.MustGet("webserverConfig").(model.WebserverConfig)
+	pkgConfigs := c.MustGet("pkgConfigs").([]model.PkgConfig)
 
 	repoInfos, err := git_repo__old.GetRepoInfos(pkgConfigs, 10)
 	if err != nil {
@@ -21,10 +21,10 @@ func GetRepositoriesHandler(c *gin.Context) {
 }
 
 func GetRepositoryDetailsHandler(c *gin.Context) {
-	webserverConfig := c.MustGet("webserverConfig").(model.WebserverConfig)
+	pkgConfigs := c.MustGet("pkgConfigs").([]model.PkgConfig)
 
 	repoName := c.Param("name")
-	repoConfig, err := git_repo__old.GetRepoDetails(repoName, pkgConfigs)
+	repoConfig, err := git_repo__old.GetRepoDetails_old(repoName, pkgConfigs)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

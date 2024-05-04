@@ -12,13 +12,10 @@ var pkgListCommand = &cobra.Command{
 	Use:   "list",
 	Short: "Prints a table with all packages",
 	Run: func(cmd *cobra.Command, args []string) {
-		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("PackagesPortfolioFile")
+		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
 
-		fmt.Printf("Reading webserver config file: %s\n", pathPackagesPortfolioFile)
-		pkgConfigs, err := loaders.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
-		if err != nil {
-			fmt.Printf("Failed to load package portfolio: %s", err)
-		}
+		fmt.Printf("---- Reading webserver config file: %s\n", pathPackagesPortfolioFile)
+		pkgConfigs, _ := loaders.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 
 		pkgInfos := make([]model.PkgInfo, len(pkgConfigs))
 		cli_out.DumpPkgsTable(pkgInfos)

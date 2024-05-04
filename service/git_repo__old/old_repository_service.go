@@ -213,7 +213,7 @@ func GetRepoInfos(pkgConfigs []model.PkgConfig, maxConcurrency int) ([]model.Pkg
 	return repoInfos, nil
 }
 
-func GetRepoDetails(repoName string, pkgConfigs []model.PkgConfig) (model.PkgInfo, error) {
+func GetRepoDetails_old(repoName string, pkgConfigs []model.PkgConfig) (model.PkgInfo, error) {
 	for _, repoConfig := range pkgConfigs {
 		branches, err := GetRepositoryBranches_old(repoConfig)
 		if err != nil {

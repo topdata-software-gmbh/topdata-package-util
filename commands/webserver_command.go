@@ -24,9 +24,9 @@ func init() {
 	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
 }
 
-var serverCommand = &cobra.Command{
-	Use:   "server",
-	Short: "Start the server",
+var webserverCommand = &cobra.Command{
+	Use:   "webserver",
+	Short: "Start the webserver",
 	Run: func(cmd *cobra.Command, args []string) {
 		flag.Parse()
 		router := gin.Default()
@@ -34,7 +34,7 @@ var serverCommand = &cobra.Command{
 		var err error
 
 		// ---- webserver config
-		fmt.Printf("Reading webserver config file: %s\n", WebserverConfigFile)
+		fmt.Printf("---- Reading webserver config file: %s\n", WebserverConfigFile)
 		webserverConfig, err = loaders.LoadWebserverConfig(WebserverConfigFile)
 		if err != nil {
 			log.Fatalf("Failed to load webserverConfig: %s", err)
@@ -95,5 +95,5 @@ func pingHandler(c *gin.Context) {
 }
 
 func init() {
-	appRootCmd.AddCommand(serverCommand)
+	appRootCmd.AddCommand(webserverCommand)
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/yosuke-furukawa/json5/encoding/json5"
 	"io"
+	"log"
 	"os"
 )
 
@@ -21,7 +22,8 @@ func LoadPackagePortfolioFile(pathConfigFile string) ([]model.PkgConfig, error) 
 	var configs []model.PkgConfig
 	err := loadJSONFile(pathConfigFile, &configs)
 	if err != nil {
-		return configs, fmt.Errorf("failed to load package portfolio: %w", err)
+		log.Fatalln("Failed to load package portfolio", err)
+		//return configs, fmt.Errorf("failed to load package portfolio from %s: %w", pathConfigFile, err)
 	}
 	return configs, nil
 }
