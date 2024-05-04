@@ -28,7 +28,7 @@ func refreshRepo_old(repoConf model.GitRepoConfig, destGitDir string) (*git.Repo
 	var repo *git.Repository
 
 	// Check if the repoConf has already been cloned
-	if _, err = os.Stat(filepath.Join(destGitDir, ".git")); os.IsNotExist(err) {
+	if _, err = os.Stat(filepath.Join(destGitDir, ".pkg")); os.IsNotExist(err) {
 		// If not, clone the repoConf
 		fmt.Println(">>>> Cloning repoConf: " + repoConf.URL)
 
@@ -63,7 +63,7 @@ func refreshRepo_old(repoConf model.GitRepoConfig, destGitDir string) (*git.Repo
 			//if err != nil {
 			//	return nil, err
 			//}
-			//pullOptions := &git.PullOptions{
+			//pullOptions := &pkg.PullOptions{
 			//	RemoteName: "origin",
 			//	Force:      true,
 			//}
@@ -72,7 +72,7 @@ func refreshRepo_old(repoConf model.GitRepoConfig, destGitDir string) (*git.Repo
 			//}
 			//
 			//err = worktree.Pull(pullOptions)
-			//if err != nil && err != git.NoErrAlreadyUpToDate {
+			//if err != nil && err != pkg.NoErrAlreadyUpToDate {
 			//	return nil, err
 			//}
 		}
@@ -87,7 +87,7 @@ func getAuth(repoConf model.GitRepoConfig, err error) (*ssh.PublicKeys, error) {
 		return nil, nil
 	}
 	//fmt.Println(">>>> Using ssh key: " + *repoConf.PathSshKey)
-	publicKeys, err = ssh.NewPublicKeysFromFile("git", *repoConf.PathSshKey, "")
+	publicKeys, err = ssh.NewPublicKeysFromFile("pkg", *repoConf.PathSshKey, "")
 	if err != nil {
 		fmt.Println("!!!! Error reading ssh key: " + err.Error())
 		return nil, err
@@ -224,7 +224,7 @@ func GetRepoDetails(repoName string, repoConfigs []model.GitRepoConfig) (model.G
 		log.Println("releaseBranchNames: ", releaseBranchNames)
 
 		releaseBranches := make([]model.GitBranchInfo, 0)
-		// iterate over release branches and get git commit id for each
+		// iterate over release branches and get pkg commit id for each
 		for _, branch := range releaseBranchNames {
 			// get commit id for the branch
 			commitId, err := GetCommitId(repoConfig, branch)

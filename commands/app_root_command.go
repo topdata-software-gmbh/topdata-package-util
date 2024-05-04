@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/commands/git"
+	"github.com/topdata-software-gmbh/topdata-package-service/commands/pkg"
 	"os"
 )
 
@@ -23,5 +23,5 @@ var ConfigFile string
 
 func init() {
 	appRootCmd.PersistentFlags().StringVar(&ConfigFile, "config-file", "config.json5", "config file (default is config.json5)")
-	git.Register(appRootCmd)
+	pkg.Register(appRootCmd)
 }

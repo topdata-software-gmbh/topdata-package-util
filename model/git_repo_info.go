@@ -1,7 +1,7 @@
 package model
 
-// this is a model for the git repository info which is extracted from a git repository
-// maybe also the git url? needed?
+// this is a model for the pkg repository info which is extracted from a pkg repository
+// maybe also the pkg url? needed?
 type GitRepoInfo struct {
 	Name            string
 	Description     string

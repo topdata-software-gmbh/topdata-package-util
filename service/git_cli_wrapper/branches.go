@@ -1,7 +1,7 @@
 package git_cli_wrapper
 
-// This service uses the git CLI to interact with git repositories.
-// It is a replacement for the go-git library.
+// This service uses the pkg CLI to interact with pkg repositories.
+// It is a replacement for the go-pkg library.
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 
 func GetBranchNames(repoConf model.GitRepoConfig) []string {
 	fmt.Println(">>>> GetBranchNames: " + repoConf.Name)
-	// git for-each-ref --format='%(refname:short)' refs/heads/
+	// pkg for-each-ref --format='%(refname:short)' refs/heads/
 	out, err := execGitCommand(repoConf, "for-each-ref", "--format", "%(refname:short)", "refs/heads/")
 	if err != nil {
 		log.Fatalln("Error getting branch names: " + err.Error())
@@ -53,7 +53,7 @@ func getCommitId(repoConfig model.GitRepoConfig) string {
 }
 
 //func getCommitId(repoConfig model.GitRepoConfig, name2 string) string {
-//	// git rev-parse refs/heads/branchName
+//	// pkg rev-parse refs/heads/branchName
 //
 //	out, err := execGitCommand(repoConfig, "rev-parse", "refs/heads/"+name2)
 //	if err != nil {

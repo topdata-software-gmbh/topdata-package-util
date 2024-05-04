@@ -1,4 +1,4 @@
-package git
+package pkg
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ import (
 )
 
 var testGitCommand = &cobra.Command{
-	Use:   "test-git",
-	Short: "Testing git cli wrapper",
+	Use:   "test-pkg",
+	Short: "Testing pkg cli wrapper",
 	Run: func(cmd *cobra.Command, args []string) {
 		pathConfigFile, _ := cmd.Flags().GetString("ConfigFile")
 

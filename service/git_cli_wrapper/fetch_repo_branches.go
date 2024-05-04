@@ -1,7 +1,7 @@
 package git_cli_wrapper
 
-// This service uses the git CLI to interact with git repositories.
-// It is a replacement for the go-git library.
+// This service uses the pkg CLI to interact with pkg repositories.
+// It is a replacement for the go-pkg library.
 
 import (
 	"os/exec"
@@ -9,7 +9,7 @@ import (
 )
 
 func FetchRepoBranches(repoURL string) ([]string, error) {
-	// Execute the git command to fetch all branches
+	// Execute the pkg command to fetch all branches
 	cmd := exec.Command("git", "ls-remote", "--heads", repoURL)
 	output, err := cmd.Output()
 

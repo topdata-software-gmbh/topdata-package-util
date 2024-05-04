@@ -1,4 +1,4 @@
-package git
+package pkg
 
 import (
 	"github.com/spf13/cobra"
@@ -7,8 +7,8 @@ import (
 var gitConfigPath string
 
 var gitRootCmd = &cobra.Command{
-	Use:   "git",
-	Short: "git repository and branch management",
+	Use:   "pkg",
+	Short: "pkg repository and branch management",
 }
 
 func Register(rootCmd *cobra.Command) {

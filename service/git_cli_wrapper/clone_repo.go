@@ -5,7 +5,7 @@ import (
 )
 
 func CloneRepo(repoConfig model.GitRepoConfig) error {
-	// Execute the git command to clone the repository
+	// Execute the pkg command to clone the repository
 	folderName := repoConfig.GetLocalGitRepoDir()
 
 	err2 := execCommand("git", "clone", repoConfig.URL, folderName)
