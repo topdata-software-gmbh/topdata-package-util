@@ -48,14 +48,11 @@ var webserverCommand = &cobra.Command{
 
 		// pkg configs / pkg portfolio
 		fmt.Printf("Reading packages portfolio file: %s\n", PackagesPortfolioFile)
-		pkgConfigs, err := loaders.LoadPackagePortfolioFile(PackagesPortfolioFile)
-		if err != nil {
-			log.Fatalf("Failed to load packages portfolio file: %s", err)
-		}
+		pkgConfigList := loaders.LoadPackagePortfolioFile(PackagesPortfolioFile)
 
 		// ---- register loaded configs in middlewares
 		router.Use(gin_middleware.WebserverConfigMiddleware(webserverConfig))
-		router.Use(gin_middleware.PkgConfigsMiddleware(pkgConfigs))
+		router.Use(gin_middleware.PkgConfigListMiddleware(pkgConfigList))
 
 		// ---- define routes
 		router.GET("/", welcomeHandler)
@@ -63,9 +60,10 @@ var webserverCommand = &cobra.Command{
 		router.GET("/repositories", controllers.GetRepositoriesHandler)
 		router.GET("/repository-details/:name", controllers.GetRepositoryDetailsHandler)
 
-		color.Cyan("Loaded %d repository configs\n", len(pkgConfigs))
+		// ----
+		color.Cyan("Loaded %d repository configs\n", len(pkgConfigList.PkgConfigs))
 
-		// ---- get port
+		// ---- get port (TODO: remove, use spf13/viper)
 		finalPort := portFromCliOption
 		if finalPort == "" {
 			if webserverConfig.Port != 0 {

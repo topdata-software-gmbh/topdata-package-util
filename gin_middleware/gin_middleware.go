@@ -12,9 +12,9 @@ func WebserverConfigMiddleware(webserverConfig model.WebserverConfig) gin.Handle
 	}
 }
 
-func PkgConfigsMiddleware(pkgConfigs []model.PkgConfig) gin.HandlerFunc {
+func PkgConfigListMiddleware(pkgConfigList model.PkgConfigList) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("pkgConfigs", pkgConfigs)
+		c.Set("pkgConfigList", pkgConfigList)
 		c.Next()
 	}
 }

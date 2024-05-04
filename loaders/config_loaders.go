@@ -18,14 +18,15 @@ func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig,
 	return config, nil
 }
 
-func LoadPackagePortfolioFile(pathConfigFile string) ([]model.PkgConfig, error) {
+func LoadPackagePortfolioFile(pathConfigFile string) model.PkgConfigList {
+	fmt.Printf("Reading packages portfolio file: %s\n", pathConfigFile)
 	var configs []model.PkgConfig
 	err := loadJSONFile(pathConfigFile, &configs)
 	if err != nil {
 		log.Fatalln("Failed to load package portfolio", err)
-		//return configs, fmt.Errorf("failed to load package portfolio from %s: %w", pathConfigFile, err)
 	}
-	return configs, nil
+
+	return model.PkgConfigList{PkgConfigs: configs}
 }
 
 func loadJSONFile(filePath string, v interface{}) error {

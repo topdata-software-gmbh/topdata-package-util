@@ -14,22 +14,14 @@ var testGitCommand = &cobra.Command{
 	Short: "Testing git cli wrapper",
 	Run: func(cmd *cobra.Command, args []string) {
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("PackagesPortfolioFile")
+		pkgConfigList := loaders.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
+		color.Cyan("Loaded %d repository configs\n", len(pkgConfigList.PkgConfigs))
 
-		fmt.Printf("Reading packages portfolio file: %s\n", pathPackagesPortfolioFile)
-		pkgConfigs, err := loaders.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
-		if err != nil {
-			log.Fatalf("Failed to load packages portfolio file: %s", err)
-		}
-
-		color.Cyan("Loaded %d repository configs\n", len(pkgConfigs))
 		// iterate over the repository configs
-		for _, pkgConfig := range pkgConfigs {
+		for _, pkgConfig := range pkgConfigList.PkgConfigs {
 			color.Cyan("Cloning repository %s from %s\n", pkgConfig.Name, pkgConfig.URL)
 			// CloneRepo the repository
-			err := git_cli_wrapper.CloneRepo(pkgConfig)
-			if err != nil {
-				log.Println("Failed to clone repository %s: [%s]: %s", pkgConfig.Name, pkgConfig.URL, err)
-			}
+			git_cli_wrapper.CloneRepo(pkgConfig)
 			//// Fetch the branches of the repository
 
 			color.Cyan("Fetching branches for repository %s\n", pkgConfig.Name)

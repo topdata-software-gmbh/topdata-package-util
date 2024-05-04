@@ -13,22 +13,28 @@ import (
 	"strings"
 )
 
-func GetBranchNames(repoConf model.PkgConfig) []string {
-	fmt.Println(">>>> GetBranchNames: " + repoConf.Name)
-	// pkg for-each-ref --format='%(refname:short)' refs/heads/
-	out, err := execGitCommand(repoConf, "for-each-ref", "--format", "%(refname:short)", "refs/heads/")
-	if err != nil {
-		log.Fatalln("Error getting branch names: " + err.Error())
-	}
-	log.Println("Branch names: " + out)
-
+func GetLocalBranchNames(repoConf model.PkgConfig) []string {
+	fmt.Println(">>>> GetLocalBranchNames: " + repoConf.Name)
+	// git for-each-ref --format='%(refname:short)' refs/heads/
+	out := execGitCommand(repoConf, "for-each-ref", "--format", "%(refname:short)", "refs/heads/")
 	branches := strings.Split(strings.TrimSpace(out), "\n")
 
 	return branches
 }
 
+func GetRemoteBranchNames(pkgConfig model.PkgConfig) []string {
+	// git ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'
+	//out := execCommand("sh", "-c", "git ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'")
+
+	shellCommand := fmt.Sprintf("GIT_SSH_COMMAND='ssh -i %s' git -C %s ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'", *pkgConfig.PathSshKey, pkgConfig.GetLocalGitRepoDir())
+	fmt.Println("================= cmd: ", shellCommand)
+	out := execShellCommand(shellCommand)
+
+	return strings.Split(strings.TrimSpace(out), "\n")
+}
+
 func GetReleaseBranchNames(repoConfig model.PkgConfig) []string {
-	branchNames := GetBranchNames(repoConfig)
+	branchNames := GetLocalBranchNames(repoConfig)
 	return filterBranchNames(branchNames, `^(main|main-.*|release-.*)$`)
 }
 
@@ -48,7 +54,7 @@ func filterBranchNames(branches []string, regexPattern string) []string {
 
 // returns the commit id of the current branch
 func getCommitId(repoConfig model.PkgConfig) string {
-	out, _ := execGitCommand(repoConfig, "rev-parse", "HEAD")
+	out := execGitCommand(repoConfig, "rev-parse", "HEAD")
 	return strings.TrimSpace(out)
 }
 
@@ -92,12 +98,12 @@ func getComposerJson(repoConfig model.PkgConfig) model.ComposerJSON {
 }
 
 func checkoutBranch(repoConfig model.PkgConfig, branchName string) {
-	_, _ = execGitCommand(repoConfig, "checkout", branchName)
-	_, _ = execGitCommand(repoConfig, "pull")
+	_ = execGitCommand(repoConfig, "checkout", branchName)
+	_ = execGitCommand(repoConfig, "pull")
 }
 
 func GetReleaseBranches(repoConfig model.PkgConfig) []model.GitBranchInfo {
-	releaseBranchNames := GetBranchNames(repoConfig)
+	releaseBranchNames := GetLocalBranchNames(repoConfig)
 	color.Yellow("Release branch names: %v\n", releaseBranchNames)
 	releaseBranches := make([]model.GitBranchInfo, len(releaseBranchNames))
 	for idx, branchName := range releaseBranchNames {
@@ -108,10 +114,7 @@ func GetReleaseBranches(repoConfig model.PkgConfig) []model.GitBranchInfo {
 	return releaseBranches
 }
 
-func SwitchBranch(repoConfig model.PkgConfig, branchName string) error {
-	_, err := execGitCommand(repoConfig, "checkout", branchName)
-	if err != nil {
-		log.Fatalln("Error switching branch: " + err.Error())
-	}
-	return nil
+func SwitchBranch(pkgConfig model.PkgConfig, branchName string) {
+	log.Println("Switching to branch: " + branchName)
+	_ = execGitCommand(pkgConfig, "checkout", branchName)
 }
