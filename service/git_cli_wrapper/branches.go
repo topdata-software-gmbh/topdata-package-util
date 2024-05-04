@@ -67,10 +67,12 @@ func GetOneBranch(repoConfig model.GitRepoConfig, branchName string) model.GitBr
 
 	checkoutBranch(repoConfig, branchName)
 
+	composerJson := getComposerJson(repoConfig)
 	branchInfo := model.GitBranchInfo{
-		Name:     branchName,
-		CommitId: getCommitId(repoConfig),
-		Version:  getComposerJson(repoConfig).Version,
+		Name:            branchName,
+		CommitId:        getCommitId(repoConfig),
+		PackageVersion:  composerJson.Version,
+		ShopwareVersion: composerJson.Require["shopware/core"],
 	}
 	fmt.Println("Branch details for repository: " + repoConfig.Name + ", branch: " + branchName)
 
@@ -102,7 +104,7 @@ func GetReleaseBranches(repoConfig model.GitRepoConfig) []model.GitBranchInfo {
 		fmt.Println("-----> " + branchName)
 		releaseBranches[idx] = GetOneBranch(repoConfig, branchName)
 	}
-	color.Blue("Release branches: %v\n", releaseBranches)
+	// color.Blue("Release branches: %v\n", releaseBranches)
 	return releaseBranches
 }
 

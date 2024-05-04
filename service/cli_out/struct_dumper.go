@@ -9,10 +9,10 @@ import (
 func DumpBranchesTable(branches []model.GitBranchInfo) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Name", "Commit Id", "Version"})
+	t.AppendHeader(table.Row{"Git Branch", "Commit Id", "PackageVersion", "Shopware PackageVersion"})
 
 	for _, b := range branches {
-		t.AppendRow([]interface{}{b.Name, b.CommitId, b.Version})
+		t.AppendRow([]interface{}{b.Name, b.CommitId, b.PackageVersion, b.ShopwareVersion})
 	}
 
 	t.Render()

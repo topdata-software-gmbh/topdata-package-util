@@ -8,9 +8,10 @@ import (
 
 // ComposerJSON represents the structure of the composer.json file
 type ComposerJSON struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Version     string `json:"version"`
+	Name        string            `json:"name"`
+	Description string            `json:"description"`
+	Version     string            `json:"version"`
+	Require     map[string]string `json:"require"`
 }
 
 // LoadFromFile loads data from a composer.json file into a ComposerJSON struct
