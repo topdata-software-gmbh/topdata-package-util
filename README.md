@@ -22,21 +22,41 @@ go mod tidy
 go run .
 ```
 
-## Command Line Options
 
-- `--packages-portfolio-file`
+## CLI Commands
+Run the program for exploring the commands:
+```bash
+go run main.go --help
+```
+
+## Command Line Options
+- `--webserver-config-file`
   - Set the path to the config file. Default is `webserver-config.json5`.
 - `--packages-portfolio-file`
   - Set the path to the config file where the package list is defined. Default is `packages-portfolio.json5`. 
 
-  
-## API Endpoints
+
+
+## Webserver
+The program has a built-in webserver for serving a JSON API, start it with:
+```bash
+go run main.go webserver
+```
+
+### API Endpoints
 
 - `http://localhost:8080/` - Welcome message
 - `http://localhost:8080/ping` - Pong
 - `http://localhost:8080/repositories` - Returns a list of repositories
 - `http://localhost:8080/repository-details/:name` - Returns details of a repository
 
+
+### Shopware Plugin Versioning Scheme
+- [MAJOR].[MINOR].[PATCH]
+- when a new release is created, the version number is increased by 1 in the following way:
+  - MAJOR: increased when there are breaking changes
+  - MINOR: increased when there are new features
+  - PATCH: increased when there are bug fixes 
 
 ## TODO
 - rename repository to package
