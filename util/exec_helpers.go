@@ -23,12 +23,15 @@ func RunCommand(command string, args ...string) string {
 }
 
 // RunShellCommand executes a shell. Chaining commands with pipes is possible. passing extraEnv is optional.
-func RunShellCommand(shellCommand string, extraEnv []string) string {
+func RunShellCommand(shellCommand string, extraEnv *[]string) string {
 	//color.Yellow("================= RunShellCommand env: %s", extraEnv)
 	//color.Yellow("================= RunShellCommand cmd: %s", shellCommand)
+	color.Yellow(">>>> cmd: " + shellCommand)
 
 	cmd := exec.Command("/usr/bin/sh", "-c", shellCommand)
-	cmd.Env = extraEnv
+	if extraEnv != nil {
+		cmd.Env = *extraEnv
+	}
 
 	output, err := cmd.CombinedOutput()
 

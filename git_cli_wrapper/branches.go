@@ -30,7 +30,7 @@ func GetRemoteBranchNames(pkgConfig model.PkgConfig) []string {
 	}
 
 	shellCommand := fmt.Sprintf("git -C %s ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'", pkgConfig.GetLocalGitRepoDir())
-	out := util.RunShellCommand(shellCommand, extraEnv)
+	out := util.RunShellCommand(shellCommand, &extraEnv)
 
 	return strings.Split(strings.TrimSpace(out), "\n")
 }
