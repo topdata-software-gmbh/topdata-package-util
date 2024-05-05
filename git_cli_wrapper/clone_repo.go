@@ -10,7 +10,7 @@ func CloneRepo(repoConfig model.PkgConfig) {
 	// Execute the git command to clone the repository
 	folderName := repoConfig.GetLocalGitRepoDir()
 
-	_ = execCommand("git", "clone", repoConfig.URL, folderName)
+	_ = util.ExecCommand("git", "clone", repoConfig.URL, folderName)
 }
 
 // RefreshRepo .. aka DownsyncRepo .... pulls all remote branches and checks them out locally

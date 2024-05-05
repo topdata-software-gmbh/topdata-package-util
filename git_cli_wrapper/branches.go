@@ -8,6 +8,7 @@ import (
 	"github.com/fatih/color"
 	_ "github.com/fatih/color"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-service/util"
 	"strings"
 )
 
@@ -29,7 +30,7 @@ func GetRemoteBranchNames(pkgConfig model.PkgConfig) []string {
 	}
 
 	shellCommand := fmt.Sprintf("git -C %s ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'", pkgConfig.GetLocalGitRepoDir())
-	out := execShellCommand(shellCommand, extraEnv)
+	out := util.ExecShellCommand(shellCommand, extraEnv)
 
 	return strings.Split(strings.TrimSpace(out), "\n")
 }
