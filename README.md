@@ -60,7 +60,9 @@ go run main.go webserver
 
 ## TODO
 - cache the parsed git data (command `pkg list` is very slow)
-- fix and refactor the JSON API
+- use spf13/viper for configuration
+- when creating a relaease zip, log it somewhere (release-log-path should be part of the config file)
+- fix and refactor the webservice API
 
 
 ## Security issues
