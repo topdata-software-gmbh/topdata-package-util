@@ -2,10 +2,10 @@ package pkg_commands
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/topdata-software-gmbh/topdata-package-service/cli_out"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/cli_out"
 )
 
 var pkgListCommand = &cobra.Command{

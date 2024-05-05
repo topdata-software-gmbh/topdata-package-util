@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/topdata-software-gmbh/topdata-package-service/git_repo__old"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/git_repo__old"
 	"net/http"
 )
 

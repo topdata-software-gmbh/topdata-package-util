@@ -4,7 +4,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
+	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
 )
 
 var buildReleaseZipCommand = &cobra.Command{
