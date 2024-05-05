@@ -20,9 +20,11 @@ var (
 	portFromCliOption string
 )
 
-func init() {
-	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
-}
+//func init() {
+//	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
+//}
+
+var webserverConfigFile string
 
 var webserverCommand = &cobra.Command{
 	Use:   "webserver",
@@ -34,8 +36,8 @@ var webserverCommand = &cobra.Command{
 		var err error
 
 		// ---- webserver config
-		fmt.Printf("---- Reading webserver config file: %s\n", WebserverConfigFile)
-		webserverConfig, err = config.LoadWebserverConfig(WebserverConfigFile)
+		fmt.Printf("---- Reading webserver config file: %s\n", webserverConfigFile)
+		webserverConfig, err = config.LoadWebserverConfig(webserverConfigFile)
 		if err != nil {
 			log.Fatalf("Failed to load webserverConfig: %s", err)
 		}
@@ -91,5 +93,6 @@ func pingHandler(c *gin.Context) {
 }
 
 func init() {
+	webserverCommand.Flags().StringVarP(&webserverConfigFile, "webserver-config-file", "w", "webserver-config.json5", "Path to config file with settings for the webserver")
 	appRootCommand.AddCommand(webserverCommand)
 }
