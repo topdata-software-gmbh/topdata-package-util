@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-// ExecCommand executes a (CLI) command
-func ExecCommand(command string, args ...string) string {
+// RunCommand executes a (CLI) command
+func RunCommand(command string, args ...string) string {
 	cmd := exec.Command(command, args...)
 	output, err := cmd.CombinedOutput()
 
@@ -22,10 +22,10 @@ func ExecCommand(command string, args ...string) string {
 	return string(output)
 }
 
-// ExecShellCommand executes a shell. Chaining commands with pipes is possible. passing extraEnv is optional.
-func ExecShellCommand(shellCommand string, extraEnv []string) string {
-	//color.Yellow("================= ExecShellCommand env: %s", extraEnv)
-	//color.Yellow("================= ExecShellCommand cmd: %s", shellCommand)
+// RunShellCommand executes a shell. Chaining commands with pipes is possible. passing extraEnv is optional.
+func RunShellCommand(shellCommand string, extraEnv []string) string {
+	//color.Yellow("================= RunShellCommand env: %s", extraEnv)
+	//color.Yellow("================= RunShellCommand cmd: %s", shellCommand)
 
 	cmd := exec.Command("/usr/bin/sh", "-c", shellCommand)
 	cmd.Env = extraEnv

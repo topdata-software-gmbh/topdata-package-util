@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-func execGitCommand(pkgConfig model.PkgConfig, args ...string) string {
+func runGitCommand(pkgConfig model.PkgConfig, args ...string) string {
 	repoDir := pkgConfig.GetLocalGitRepoDir()
 	args = append([]string{"-C", repoDir}, args...)
 

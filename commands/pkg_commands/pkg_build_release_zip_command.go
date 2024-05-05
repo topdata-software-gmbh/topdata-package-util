@@ -6,7 +6,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-service/pkg_zipper"
 )
 
 var buildReleaseZipCommand = &cobra.Command{
@@ -32,7 +32,7 @@ var buildReleaseZipCommand = &cobra.Command{
 		//  -- create a zip file
 		pathDestZipFile := "/tmp/" + pkgConfig.Name + "-" + gitBranchInfo.PackageVersion + ".zip"
 		color.Blue("Creating zip file " + pathDestZipFile + "...")
-		util.CreateZipArchive(pkgConfig.GetLocalGitRepoDir(), pathDestZipFile)
+		pkg_zipper.CreateZipArchive(pkgConfig.GetLocalGitRepoDir(), pathDestZipFile)
 		// -- upload the zip file to the shopware6 plugin store
 
 	},

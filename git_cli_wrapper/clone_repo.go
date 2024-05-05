@@ -10,7 +10,7 @@ func CloneRepo(repoConfig model.PkgConfig) {
 	// Execute the git command to clone the repository
 	folderName := repoConfig.GetLocalGitRepoDir()
 
-	_ = util.ExecCommand("git", "clone", repoConfig.URL, folderName)
+	_ = util.RunCommand("git", "clone", repoConfig.URL, folderName)
 }
 
 // RefreshRepo .. aka DownsyncRepo .... pulls all remote branches and checks them out locally
@@ -32,9 +32,9 @@ func RefreshRepo(repoConfig model.PkgConfig) {
 	// check out each remote branch locally if it doesn't already exist
 	for _, branchName := range remoteBranchNames {
 		if util.StringSliceContains(localBranchNames, branchName) {
-			_ = execGitCommand(repoConfig, "checkout", branchName)
+			_ = runGitCommand(repoConfig, "checkout", branchName)
 		} else {
-			_ = execGitCommand(repoConfig, "checkout", "-b", branchName, "origin/"+branchName)
+			_ = runGitCommand(repoConfig, "checkout", "-b", branchName, "origin/"+branchName)
 		}
 	}
 	// TODO: remove stale local branches
