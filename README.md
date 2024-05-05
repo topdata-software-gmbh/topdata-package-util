@@ -59,6 +59,9 @@ go run main.go webserver
   - PATCH: increased when there are bug fixes 
 
 ## TODO
-- rename repository to package
 - /get-release-branches/{packageMachineName}
 - /get-releases/{packageMachineName}/{releaseBranchName}
+
+
+## Security issues
+If you think that you have found a security issue, please contact security@topdata.de

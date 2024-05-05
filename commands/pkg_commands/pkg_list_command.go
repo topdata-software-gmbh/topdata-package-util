@@ -14,8 +14,8 @@ var pkgListCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
-
 		pkgInfos := make([]model.PkgInfo, len(pkgConfigList.PkgConfigs))
+
 		for i, pkgConfig := range pkgConfigList.PkgConfigs {
 			git_cli_wrapper.DownsyncRepo(pkgConfig)
 			pkgInfos[i] = model.PkgInfo{

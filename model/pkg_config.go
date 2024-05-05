@@ -1,7 +1,8 @@
 package model
 
 import (
-	"os"
+	"github.com/fatih/color"
+	"github.com/topdata-software-gmbh/topdata-package-service/util"
 	"path/filepath"
 )
 
@@ -24,7 +25,8 @@ func (repoConfig *PkgConfig) GetAbsolutePath(relativePath string) string {
 
 func (repoConfig *PkgConfig) IsLocalRepoExisting() bool {
 	path := repoConfig.GetLocalGitRepoDir() + "/.git"
-	_, err := os.Stat(path)
+	bExists := util.FileExists(path)
+	color.Blue("Checking if repo exists: %s : %s", path, bExists)
 
-	return os.IsExist(err)
+	return bExists
 }
