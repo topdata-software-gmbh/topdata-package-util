@@ -57,6 +57,5 @@ func CheckoutBranch(repoConfig model.PkgConfig, branchName string) {
 }
 
 func SwitchBranch(pkgConfig model.PkgConfig, branchName string) {
-	//log.Println("Switching to branch: " + branchName)
 	_ = execGitCommand(pkgConfig, "checkout", branchName)
 }

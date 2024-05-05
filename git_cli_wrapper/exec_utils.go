@@ -39,12 +39,11 @@ func execGitCommand(pkgConfig model.PkgConfig, args ...string) string {
 		cmd.Env = append(os.Environ(), extraEnv)
 	}
 
-	output, err := cmd.CombinedOutput()
-	fmt.Println(string(output))
+	color.Yellow(">>>> cmd: " + cmd.String())
 
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		color.Yellow("!!!!!  cmd: " + cmd.String())
-		color.Yellow("!!!!! code: " + err.Error())
+		color.Red("!!!!! code: " + err.Error())
 		color.Red("!!!!!  out: " + strings.TrimSpace(string(output)))
 		log.Fatalf("Failed to execute git command: %s", err)
 	}

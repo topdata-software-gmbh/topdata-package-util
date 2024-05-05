@@ -14,15 +14,16 @@ var buildReleaseZipCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
-		pkConfig := pkgConfigList.FindOneByNameOrFail(args[0])
+		pkgConfig := pkgConfigList.FindOneByNameOrFail(args[0])
+
 		packageName := args[0]
 		releaseBranchName := args[1]
 		color.Blue("TODO: Implement build-release-zip command for package %s and release branch %s", packageName, releaseBranchName)
 
 		// -- switch to the release branch
-		git_cli_wrapper.SwitchBranch(*pkConfig, releaseBranchName)
+		git_cli_wrapper.SwitchBranch(*pkgConfig, releaseBranchName)
 		//  -- update local git repository
-		// git_cli_wrapper.UpdateRepo(*pkConfig)
+		// git_cli_wrapper.UpdateRepo(*pkgConfig)
 
 		//  create a zip file
 		//  upload the zip file to the shopware6 plugin store
