@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/loaders"
+	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
 	"log"
 )
@@ -14,7 +14,7 @@ var testGitCommand = &cobra.Command{
 	Short: "Testing git cli wrapper",
 	Run: func(cmd *cobra.Command, args []string) {
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("PackagesPortfolioFile")
-		pkgConfigList := loaders.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
+		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 		color.Cyan("Loaded %d repository configs\n", len(pkgConfigList.PkgConfigs))
 
 		// iterate over the repository configs

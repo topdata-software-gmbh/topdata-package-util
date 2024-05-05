@@ -1,4 +1,4 @@
-package loaders
+package config
 
 import (
 	"fmt"
@@ -8,6 +8,8 @@ import (
 	"log"
 	"os"
 )
+
+// TODO: use spf13/viber
 
 func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig, error) {
 	var config model.WebserverConfig

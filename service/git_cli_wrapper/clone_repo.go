@@ -5,8 +5,17 @@ import (
 )
 
 func CloneRepo(repoConfig model.PkgConfig) {
-	// Execute the pkg command to clone the repository
+	// Execute the git command to clone the repository
 	folderName := repoConfig.GetLocalGitRepoDir()
 
 	_ = execCommand("git", "clone", repoConfig.URL, folderName)
+}
+
+func DownsyncRepo(repoConfig model.PkgConfig) {
+	// check if repo exists
+	if !repoConfig.IsLocalRepoExisting() {
+		CloneRepo(repoConfig)
+	} else {
+		_ = execGitCommand(repoConfig, "pull")
+	}
 }

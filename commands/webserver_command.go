@@ -6,9 +6,9 @@ import (
 	"github.com/fatih/color"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/controllers"
 	"github.com/topdata-software-gmbh/topdata-package-service/gin_middleware"
-	"github.com/topdata-software-gmbh/topdata-package-service/loaders"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"log"
 	"net/http"
@@ -35,7 +35,7 @@ var webserverCommand = &cobra.Command{
 
 		// ---- webserver config
 		fmt.Printf("---- Reading webserver config file: %s\n", WebserverConfigFile)
-		webserverConfig, err = loaders.LoadWebserverConfig(WebserverConfigFile)
+		webserverConfig, err = config.LoadWebserverConfig(WebserverConfigFile)
 		if err != nil {
 			log.Fatalf("Failed to load webserverConfig: %s", err)
 		}
@@ -48,7 +48,7 @@ var webserverCommand = &cobra.Command{
 
 		// pkg configs / pkg portfolio
 		fmt.Printf("Reading packages portfolio file: %s\n", PackagesPortfolioFile)
-		pkgConfigList := loaders.LoadPackagePortfolioFile(PackagesPortfolioFile)
+		pkgConfigList := config.LoadPackagePortfolioFile(PackagesPortfolioFile)
 
 		// ---- register loaded configs in middlewares
 		router.Use(gin_middleware.WebserverConfigMiddleware(webserverConfig))

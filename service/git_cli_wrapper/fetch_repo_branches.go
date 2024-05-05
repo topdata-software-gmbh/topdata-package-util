@@ -9,7 +9,7 @@ import (
 )
 
 func FetchRepoBranches(repoURL string) ([]string, error) {
-	// Execute the pkg command to fetch all branches
+	// Execute the git command to fetch all branches
 	cmd := exec.Command("git", "ls-remote", "--heads", repoURL)
 	output, err := cmd.Output()
 

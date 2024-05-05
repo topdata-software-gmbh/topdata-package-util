@@ -3,7 +3,7 @@ package pkg_commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/loaders"
+	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/cli_out"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
 )
@@ -17,7 +17,7 @@ var listBranchesCommand = &cobra.Command{
 
 		// ---- load the package portfolio file
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
-		pkgConfigList := loaders.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
+		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 		pkgConfig := pkgConfigList.FindOneByNameOrFail(args[0])
 
 		//git_cli_wrapper.CloneRepo(*pkgConfig) // TODO: CloneIfNotExists
