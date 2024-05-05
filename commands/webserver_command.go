@@ -46,8 +46,6 @@ var webserverCommand = &cobra.Command{
 			}))
 		}
 
-		// pkg configs / pkg portfolio
-		fmt.Printf("Reading packages portfolio file: %s\n", PackagesPortfolioFile)
 		pkgConfigList := config.LoadPackagePortfolioFile(PackagesPortfolioFile)
 
 		// ---- register loaded configs in middlewares

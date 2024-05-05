@@ -177,17 +177,17 @@ func GetRepoInfos(pkgConfigs []model.PkgConfig, maxConcurrency int) ([]model.Pkg
 		go func(rc model.PkgConfig) {
 			defer wg.Done()
 
-			branches, err := GetRepositoryBranches_old(rc)
-			if err != nil {
-				errCh <- err
-				return
-			}
+			//branches, err := GetRepositoryBranches_old(rc)
+			//if err != nil {
+			//	errCh <- err
+			//	return
+			//}
 
 			repoInfoCh <- model.PkgInfo{
 				Name:        rc.Name,
 				URL:         rc.URL,
 				Description: rc.Description,
-				BranchNames: branches,
+				// BranchNames: branches,
 			}
 
 			// Read a value from the semaphore, allowing another goroutine to proceed
@@ -238,10 +238,10 @@ func GetRepoDetails_old(repoName string, pkgConfigs []model.PkgConfig) (model.Pk
 			})
 		}
 		return model.PkgInfo{
-			Name:            repoConfig.Name,
-			URL:             repoConfig.URL,
-			BranchNames:     branches,
-			ReleaseBranches: releaseBranches,
+			Name: repoConfig.Name,
+			URL:  repoConfig.URL,
+			// BranchNames:     branches,
+			// ReleaseBranches: releaseBranches,
 		}, nil
 	}
 	return model.PkgInfo{}, fmt.Errorf("repository not found: %s", repoName)

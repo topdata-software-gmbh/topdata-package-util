@@ -3,9 +3,9 @@ package pkg_commands
 import (
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
+	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/cli_out"
-	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
 )
 
 var pkgListCommand = &cobra.Command{
@@ -17,13 +17,7 @@ var pkgListCommand = &cobra.Command{
 		pkgInfos := make([]model.PkgInfo, len(pkgConfigList.PkgConfigs))
 
 		for i, pkgConfig := range pkgConfigList.PkgConfigs {
-			git_cli_wrapper.DownsyncRepo(pkgConfig)
-			pkgInfos[i] = model.PkgInfo{
-				Name:               pkgConfig.Name,
-				URL:                pkgConfig.URL,
-				BranchNames:        git_cli_wrapper.GetLocalBranchNames(pkgConfig),
-				ReleaseBranchNames: git_cli_wrapper.GetReleaseBranchNames(pkgConfig),
-			}
+			pkgInfos[i] = factory.NewPkgInfo(pkgConfig)
 		}
 		cli_out.DumpPkgsTable(pkgInfos)
 	},

@@ -9,7 +9,6 @@ import (
 	_ "github.com/fatih/color"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"log"
-	"regexp"
 	"strings"
 )
 
@@ -26,30 +25,16 @@ func GetRemoteBranchNames(pkgConfig model.PkgConfig) []string {
 	// git ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'
 	//out := execCommand("sh", "-c", "git ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'")
 
-	shellCommand := fmt.Sprintf("GIT_SSH_COMMAND='ssh -i %s' git -C %s ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'", *pkgConfig.PathSshKey, pkgConfig.GetLocalGitRepoDir())
-	fmt.Println("================= cmd: ", shellCommand)
-	out := execShellCommand(shellCommand)
+	var extraEnv []string
+	if pkgConfig.PathSshKey != nil {
+		extraEnv = append(extraEnv, fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", *pkgConfig.PathSshKey))
+		// extraEnv = append(extraEnv, fmt.Sprintf("GIT_SSH_COMMAND='/usr/bin/sshXXXXX'"))
+	}
+
+	shellCommand := fmt.Sprintf("git -C %s ls-remote --heads origin | awk '{print $2}' | sed 's#refs/heads/##' | sed '/^$/d'", pkgConfig.GetLocalGitRepoDir())
+	out := execShellCommand(shellCommand, extraEnv)
 
 	return strings.Split(strings.TrimSpace(out), "\n")
-}
-
-func GetReleaseBranchNames(repoConfig model.PkgConfig) []string {
-	branchNames := GetLocalBranchNames(repoConfig)
-	return filterBranchNames(branchNames, `^(main|main-.*|release-.*)$`)
-}
-
-// filterBranchNames filters the given branches and returns only those that are either "server" or start with "release-".
-// It takes a slice of strings representing the branch names as input and returns a slice of strings containing the filtered branch names.
-func filterBranchNames(branches []string, regexPattern string) []string {
-	releaseBranches := make([]string, 0)
-	for _, branch := range branches {
-		// TODO: the regex should be part of the service config
-		matched, _ := regexp.MatchString(regexPattern, branch)
-		if matched {
-			releaseBranches = append(releaseBranches, branch)
-		}
-	}
-	return releaseBranches
 }
 
 // returns the commit id of the current branch

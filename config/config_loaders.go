@@ -12,6 +12,7 @@ import (
 // TODO: use spf13/viber
 
 func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig, error) {
+	fmt.Printf(">>>> Reading webserver config file: %s\n", pathWebserverConfigFile)
 	var config model.WebserverConfig
 	err := loadJSONFile(pathWebserverConfigFile, &config)
 	if err != nil {
@@ -21,7 +22,7 @@ func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig,
 }
 
 func LoadPackagePortfolioFile(pathConfigFile string) model.PkgConfigList {
-	fmt.Printf("Reading packages portfolio file: %s\n", pathConfigFile)
+	fmt.Printf(">>>> Reading packages portfolio file: %s\n", pathConfigFile)
 	var configs []model.PkgConfig
 	err := loadJSONFile(pathConfigFile, &configs)
 	if err != nil {

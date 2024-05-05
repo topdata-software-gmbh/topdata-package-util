@@ -24,10 +24,10 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 func DumpPkgsTable(pkgInfos []model.PkgInfo) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Package Name", "URL", "Branch Names", "Release Branch Names"})
+	t.AppendHeader(table.Row{"Package Name", "Release Branch Names", "Other Branch Names" /*, "URL"*/})
 
 	for _, p := range pkgInfos {
-		t.AppendRow([]interface{}{p.Name, p.URL, p.BranchNames, p.ReleaseBranchNames})
+		t.AppendRow([]interface{}{p.Name, p.ReleaseBranchNames, p.OtherBranchNames /*, p.URL*/})
 	}
 
 	t.Render()

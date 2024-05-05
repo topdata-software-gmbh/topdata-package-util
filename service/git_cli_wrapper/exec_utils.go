@@ -30,18 +30,13 @@ func execCommand(command string, args ...string) string {
 func execGitCommand(pkgConfig model.PkgConfig, args ...string) string {
 	repoDir := pkgConfig.GetLocalGitRepoDir()
 	args = append([]string{"-C", repoDir}, args...)
-	// set environment variable for ssh key GIT_SSH_COMMAND='ssh -i /path/to/key'
-	//if pkgConfig.PathSshKey != nil {
-	//	fmt.Println("KEYEYKEYEYKEYEYKEYEYKEYEYKEYEYKEYEYKEYEYKEYEYKEYEYKEYEYKEYEYKEYEY")
-	//	args = append([]string{"-c", fmt.Sprintf("core.sshCommand='ssh -i %s'", *pkgConfig.PathSshKey)}, args...)
-	//	fmt.Println("args: ", args)
-	//}
 
 	cmd := exec.Command("git", args...)
 
-	// set environment variable for ssh key GIT_SSH_COMMAND='ssh -i /path/to/key'
+	// set environment variable for ssh key GIT_SSH_COMMAND='/usr/bin/ssh -i /path/to/key'
 	if pkgConfig.PathSshKey != nil {
-		cmd.Env = append(os.Environ(), fmt.Sprintf("GIT_SSH_COMMAND=ssh -i %s", *pkgConfig.PathSshKey))
+		extraEnv := fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", *pkgConfig.PathSshKey)
+		cmd.Env = append(os.Environ(), extraEnv)
 	}
 
 	output, err := cmd.CombinedOutput()
@@ -57,6 +52,22 @@ func execGitCommand(pkgConfig model.PkgConfig, args ...string) string {
 	return string(output)
 }
 
-func execShellCommand(command string) string {
-	return execCommand("sh", "-c", command)
+// execShellCommand executes a shell. Chaining commands with pipes is possible.
+func execShellCommand(command string, extraEnv []string) string {
+	//color.Yellow("================= execShellCommand env: %s", extraEnv)
+	//color.Yellow("================= execShellCommand cmd: %s", command)
+
+	cmd := exec.Command("/usr/bin/sh", "-c", command)
+	cmd.Env = extraEnv
+
+	output, err := cmd.CombinedOutput()
+
+	if err != nil {
+		color.Yellow("!!!!! cmd: " + cmd.String())
+		color.Red("!!!!! out: " + strings.TrimSpace(string(output)))
+		color.Yellow("!!!!! err: " + err.Error())
+		log.Fatalf("Failed to execute command: %s", err)
+	}
+
+	return string(output)
 }
