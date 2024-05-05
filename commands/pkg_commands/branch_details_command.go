@@ -3,9 +3,9 @@ package pkg_commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/cli_out"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-service/printer"
 )
 
 // TODO.... for now it only shows table with single row .. fix that and show more details in a definition list like manner
@@ -19,7 +19,7 @@ var showGitBranchDetailsCommand = &cobra.Command{
 		repoConfig := model.PkgConfig{Name: args[0]}
 		gitBranchInfo := factory.NewGitBranchInfo(repoConfig, args[1])
 		fmt.Printf("Branch details: %v\n", gitBranchInfo)
-		cli_out.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: []model.GitBranchInfo{gitBranchInfo}})
+		printer.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: []model.GitBranchInfo{gitBranchInfo}})
 	},
 }
 

@@ -1,6 +1,7 @@
-package cli_out
+package printer
 
 import (
+	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"os"
@@ -24,6 +25,8 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 func DumpPkgsTable(pkgInfos []model.PkgInfo, displayMode string) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
+
+	color.Blue("DumpPkgsTable.displayMode=%s", displayMode)
 
 	if displayMode == "full" {
 		t.AppendHeader(table.Row{"Package Name", "Release Branch Names", "Other Branch Names" /*, "URL"*/})

@@ -2,11 +2,12 @@ package pkg_commands
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/cli_out"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-service/printer"
 )
 
 var displayMode string
@@ -18,9 +19,7 @@ var pkgListCommand = &cobra.Command{
 		if displayMode != "compact" && displayMode != "full" {
 			return fmt.Errorf("invalid displayMode value: %q, it should be either 'compact' or 'full'", displayMode)
 		}
-		return nil
-	},
-	Run: func(cmd *cobra.Command, args []string) {
+		color.Red("sdhfjksdfjk")
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 		pkgInfos := make([]model.PkgInfo, len(pkgConfigList.PkgConfigs))
@@ -28,7 +27,8 @@ var pkgListCommand = &cobra.Command{
 		for i, pkgConfig := range pkgConfigList.PkgConfigs {
 			pkgInfos[i] = factory.NewPkgInfo(pkgConfig)
 		}
-		cli_out.DumpPkgsTable(pkgInfos, displayMode)
+		printer.DumpPkgsTable(pkgInfos, displayMode)
+		return nil
 	},
 }
 
