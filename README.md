@@ -59,8 +59,8 @@ go run main.go webserver
   - PATCH: increased when there are bug fixes 
 
 ## TODO
-- /get-release-branches/{packageMachineName}
-- /get-releases/{packageMachineName}/{releaseBranchName}
+- cache the parsed git data (command `pkg list` is very slow)
+- fix and refactor the JSON API
 
 
 ## Security issues
