@@ -6,12 +6,15 @@ import (
 	"os"
 )
 
-func DumpBranchesTable(branches []model.GitBranchInfo) {
+func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
+
+	gitBranchInfoList.SortByPackageVersionAsc()
+
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Git Branch", "Package Version", "Shopware Version", "Commit Id"})
 
-	for _, b := range branches {
+	for _, b := range gitBranchInfoList.GitBranchInfos {
 		t.AppendRow([]interface{}{b.Name, b.PackageVersion, b.ShopwareVersion, b.CommitId})
 	}
 

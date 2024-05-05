@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
+	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/cli_out"
 	"github.com/topdata-software-gmbh/topdata-package-service/service/git_cli_wrapper"
 )
@@ -29,9 +30,9 @@ var listBranchesCommand = &cobra.Command{
 		fmt.Printf("+++++++++++++++ Remote Branches: %v\n", remoteBranchNames)
 
 		// ----
-		branchInfos := git_cli_wrapper.GetReleaseBranches(*pkgConfig)
+		branchInfoList := git_cli_wrapper.GetReleaseBranches(*pkgConfig)
 
-		cli_out.DumpBranchesTable(branchInfos)
+		cli_out.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: branchInfoList})
 	},
 }
 
