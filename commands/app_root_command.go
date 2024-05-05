@@ -7,13 +7,13 @@ import (
 	"os"
 )
 
-var appRootCmd = &cobra.Command{
+var appRootCommand = &cobra.Command{
 	Use:   "main",
 	Short: "The entrypoint",
 }
 
 func Execute() {
-	if err := appRootCmd.Execute(); err != nil {
+	if err := appRootCommand.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -23,7 +23,7 @@ var WebserverConfigFile string
 var PackagesPortfolioFile string
 
 func init() {
-	appRootCmd.PersistentFlags().StringVar(&WebserverConfigFile, "webserver-config-file", "webserver-webserver-config.json5", "config file (default is webserver-webserver-webserver-config.json5)") // TODO: move to webserver_command.go
-	appRootCmd.PersistentFlags().StringVar(&PackagesPortfolioFile, "packages-portfolio-file", "packages-portfolio.json5", "config file (default is packages-portfolio.json5)")
-	pkg_commands.Register(appRootCmd)
+	appRootCommand.PersistentFlags().StringVar(&WebserverConfigFile, "webserver-config-file", "webserver-webserver-config.json5", "config file (default is webserver-webserver-webserver-config.json5)") // TODO: move to webserver_command.go
+	appRootCommand.PersistentFlags().StringVar(&PackagesPortfolioFile, "packages-portfolio-file", "packages-portfolio.json5", "config file (default is packages-portfolio.json5)")
+	pkg_commands.Register(appRootCommand)
 }

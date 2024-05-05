@@ -93,5 +93,5 @@ func pingHandler(c *gin.Context) {
 }
 
 func init() {
-	appRootCmd.AddCommand(webserverCommand)
+	appRootCommand.AddCommand(webserverCommand)
 }
