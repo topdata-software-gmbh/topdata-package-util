@@ -7,12 +7,11 @@ import (
 )
 
 type PkgConfig struct {
-	Name        string
-	Description string
-	URL         string // TODO: rename GitRepoUrl
-	PathSshKey  *string
-	Branches    []string
-	//	ReleaseBranches []string
+	Name             string
+	Description      string
+	URL              string // TODO: rename GitRepoUrl
+	PathSshKey       *string
+	InShopware6Store bool
 }
 
 func (repoConfig *PkgConfig) GetLocalGitRepoDir() string {
