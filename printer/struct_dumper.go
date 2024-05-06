@@ -22,18 +22,18 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 	t.Render()
 }
 
-func DumpPkgsTable(pkgInfos []model.PkgInfo, displayMode string) {
+func DumpPkgInfoListTable(pkgInfoList model.PkgInfoList, displayMode string) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 
-	color.Blue("DumpPkgsTable.displayMode=%s", displayMode)
+	color.Blue("DumpPkgInfoListTable.displayMode=%s", displayMode)
 
 	if displayMode == "full" {
 		t.AppendHeader(table.Row{"Package Name", "Release Branch Names", "Other Branch Names" /*, "URL"*/})
 	} else {
 		t.AppendHeader(table.Row{"Package Name", "Release Branch Names"})
 	}
-	for _, p := range pkgInfos {
+	for _, p := range pkgInfoList.PkgInfos {
 		if displayMode == "full" {
 			t.AppendRow([]interface{}{p.Name, p.ReleaseBranchNames, p.OtherBranchNames /*, p.URL*/})
 		} else {
