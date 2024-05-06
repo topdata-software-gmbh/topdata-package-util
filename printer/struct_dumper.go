@@ -22,7 +22,8 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 	t.Render()
 }
 
-func DumpPkgInfoListTable(pkgInfoList model.PkgInfoList, displayMode string) {
+// DumpPkgInfoListTable dumps the PkgInfoList as a table to the console
+func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 

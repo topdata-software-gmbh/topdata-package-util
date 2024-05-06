@@ -2,10 +2,14 @@ package pkg_commands
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
+	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/printer"
+	"github.com/topdata-software-gmbh/topdata-package-service/serializers"
+	"github.com/topdata-software-gmbh/topdata-package-service/util"
 )
 
 var displayMode string
@@ -20,9 +24,17 @@ var pkgListCommand = &cobra.Command{
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 
-		pkgInfoList := factory.NewPkgInfoList(pkgConfigList)
-		// save to disk for caching
-		pkgInfoList.SaveToDisk("/tmp/pkgInfoList.json")
+		// using a cache file to speed up the process
+		pkgInfoList := &model.PkgInfoList{}
+		if util.FileExists("/tmp/pkgInfoList.json") {
+			color.Yellow(">>>> Loading from cache file /tmp/pkgInfoList.json")
+			pkgInfoList = serializers.LoadPkgInfoList("/tmp/pkgInfoList.json")
+		} else {
+			// build a list of PkgInfo objects
+			pkgInfoList = factory.NewPkgInfoList(pkgConfigList)
+			// save to disk for caching
+			serializers.SavePkgInfoList(pkgInfoList, "/tmp/pkgInfoList.json")
+		}
 
 		printer.DumpPkgInfoListTable(pkgInfoList, displayMode)
 		return nil
