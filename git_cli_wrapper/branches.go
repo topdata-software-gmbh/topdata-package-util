@@ -41,6 +41,16 @@ func GetCommitId(repoConfig model.PkgConfig) string {
 	return strings.TrimSpace(out)
 }
 
+func GetCommitDate(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "show", "-s", "--format=%ci", "HEAD")
+	return strings.TrimSpace(out)
+}
+
+func GetCommitAuthor(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "show", "-s", "--format=%an", "HEAD")
+	return strings.TrimSpace(out)
+}
+
 //func GetCommitId(repoConfig model.PkgConfig, name2 string) string {
 //	// pkg rev-parse refs/heads/branchName
 //

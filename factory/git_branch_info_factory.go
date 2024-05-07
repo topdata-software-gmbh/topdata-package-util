@@ -8,13 +8,15 @@ import (
 )
 
 // NewGitBranchInfo creates a new GitBranchInfo object (aka constructor)
-func NewGitBranchInfo(repoConfig model.PkgConfig, branchName string) model.GitBranchInfo {
-	git_cli_wrapper.CheckoutBranch(repoConfig, branchName)
+func NewGitBranchInfo(pkgConfig model.PkgConfig, branchName string) model.GitBranchInfo {
+	git_cli_wrapper.CheckoutBranch(pkgConfig, branchName)
 
-	composerJson := getComposerJson(repoConfig)
+	composerJson := getComposerJson(pkgConfig)
 	branchInfo := model.GitBranchInfo{
 		Name:                      branchName,
-		CommitId:                  git_cli_wrapper.GetCommitId(repoConfig),
+		CommitId:                  git_cli_wrapper.GetCommitId(pkgConfig),
+		CommitDate:                git_cli_wrapper.GetCommitDate(pkgConfig),
+		CommitAuthor:              git_cli_wrapper.GetCommitAuthor(pkgConfig),
 		PackageVersion:            composerJson.Version,
 		ShopwareVersionConstraint: composerJson.Require["shopware/core"],
 	}

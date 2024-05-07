@@ -13,10 +13,20 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Git Branch", "Package Version", "Shopware Version", "Commit Id"})
+	t.AppendHeader(table.Row{
+		"Git Branch",
+		"Package Version",
+		"Shopware Version",
+		"Commit Id",
+	})
 
 	for _, b := range gitBranchInfoList.GitBranchInfos {
-		t.AppendRow([]interface{}{b.Name, b.PackageVersion, b.ShopwareVersionConstraint, b.CommitId})
+		t.AppendRow([]interface{}{
+			b.Name,
+			b.PackageVersion,
+			b.ShopwareVersionConstraint,
+			b.CommitId,
+		})
 	}
 
 	t.Render()
@@ -60,24 +70,45 @@ func DumpDefinitionList(definitions map[string]string) {
 func DumpPkgAndBranchTable(ret []model.PkgAndBranch) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Package", "Branch", "Shopware Version", "Commit Id"})
+	t.AppendHeader(table.Row{
+		"Package",
+		"Branch",
+		"Shopware Version",
+		"Commit Id",
+		"Commit Date",
+		"Commit Author",
+	})
 
 	for _, p := range ret {
 		var branchName string
 		var shopwareVersionConstraint string
 		var commitId string
+		var commitDate string
+		var commitAuthor string
 
 		if p.Branch != nil {
 			branchName = p.Branch.Name
 			shopwareVersionConstraint = p.Branch.ShopwareVersionConstraint
 			commitId = p.Branch.CommitId
+			commitDate = p.Branch.CommitDate
+			commitAuthor = p.Branch.CommitAuthor
 		} else {
-			branchName = "---"
-			shopwareVersionConstraint = "---"
-			commitId = "---"
+			const PLACEHOLDER_NO_BRANCH_FOUND = "---"
+			branchName = PLACEHOLDER_NO_BRANCH_FOUND
+			shopwareVersionConstraint = PLACEHOLDER_NO_BRANCH_FOUND
+			commitId = PLACEHOLDER_NO_BRANCH_FOUND
+			commitDate = PLACEHOLDER_NO_BRANCH_FOUND
+			commitAuthor = PLACEHOLDER_NO_BRANCH_FOUND
 		}
 
-		t.AppendRow([]interface{}{p.Pkg.PkgConfig.Name, branchName, shopwareVersionConstraint, commitId})
+		t.AppendRow([]interface{}{
+			p.Pkg.PkgConfig.Name,
+			branchName,
+			shopwareVersionConstraint,
+			commitId,
+			commitDate,
+			commitAuthor,
+		})
 	}
 
 	t.Render()
