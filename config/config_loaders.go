@@ -41,13 +41,15 @@ func LoadPackagePortfolioFile(pathConfigFile string) model.PkgConfigList {
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("error reading YAML file: %v", err)
 	}
-
-	// Unmarshal YAML data into slice of PkgConfig structs
 	if err := viper.UnmarshalKey("items", &configs); err != nil {
 		log.Fatalf("error unmarshalling: %v", err)
 	}
+	machineName := viper.GetString("machineName")
 	//	fmt.Print("Loaded " + pathConfigFile + "with " + len(configs) + " items\n")
 	fmt.Printf("Loaded %s with %d items\n", pathConfigFile, len(configs))
 
-	return model.PkgConfigList{PkgConfigs: configs}
+	return model.PkgConfigList{
+		MachineName: machineName,
+		PkgConfigs:  configs,
+	}
 }

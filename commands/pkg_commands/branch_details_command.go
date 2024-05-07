@@ -23,8 +23,8 @@ var showGitBranchDetailsCommand = &cobra.Command{
 		// ---- other info
 		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
 		dict := map[string]string{
-			"Name":    pkgConfig.Name,
-			"Git URL": pkgConfig.URL,
+			"MachineName": pkgConfig.Name,
+			"Git URL":     pkgConfig.URL,
 		}
 		printer.DumpDefinitionList(dict)
 

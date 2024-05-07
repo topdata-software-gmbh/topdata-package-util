@@ -48,7 +48,7 @@ var webserverCommand = &cobra.Command{
 			}))
 		}
 
-		pkgConfigList := config.LoadPackagePortfolioFile(PackagesPortfolioFile)
+		pkgConfigList := config.LoadPackagePortfolioFile(PackagePortfolioFile)
 
 		// ---- register loaded configs in middlewares
 		router.Use(gin_middleware.WebserverConfigMiddleware(webserverConfig))

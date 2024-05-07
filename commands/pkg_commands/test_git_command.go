@@ -13,8 +13,8 @@ var testGitCommand = &cobra.Command{
 	Use:   "test-git",
 	Short: "Testing git cli wrapper",
 	Run: func(cmd *cobra.Command, args []string) {
-		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("PackagesPortfolioFile")
-		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
+		pathPackagePortfolioFile, _ := cmd.Flags().GetString("PackagePortfolioFile")
+		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 		color.Cyan("Loaded %d repository configs\n", len(pkgConfigList.PkgConfigs))
 
 		// iterate over the repository configs

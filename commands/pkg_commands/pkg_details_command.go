@@ -17,8 +17,8 @@ var pkgDetailsCommand = &cobra.Command{
 		// fmt.Printf("Details for repository: %s ...\n", args[0])
 
 		// ---- load the package portfolio file
-		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
-		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
+		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
+		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 		pkgConfig := pkgConfigList.FindOneByNameOrFail(args[0])
 		git_cli_wrapper.RefreshRepo(*pkgConfig)
 
@@ -29,9 +29,9 @@ var pkgDetailsCommand = &cobra.Command{
 		// ---- other info
 		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
 		dict := map[string]string{
-			"Name":      pkgConfig.Name,
-			"Local Dir": pkgConfig.GetLocalGitRepoDir(),
-			"Git URL":   pkgConfig.URL,
+			"MachineName": pkgConfig.Name,
+			"Local Dir":   pkgConfig.GetLocalGitRepoDir(),
+			"Git URL":     pkgConfig.URL,
 		}
 		printer.DumpDefinitionList(dict)
 	},

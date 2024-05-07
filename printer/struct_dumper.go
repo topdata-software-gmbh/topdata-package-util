@@ -16,7 +16,7 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 	t.AppendHeader(table.Row{"Git Branch", "Package Version", "Shopware Version", "Commit Id"})
 
 	for _, b := range gitBranchInfoList.GitBranchInfos {
-		t.AppendRow([]interface{}{b.Name, b.PackageVersion, b.ShopwareVersion, b.CommitId})
+		t.AppendRow([]interface{}{b.Name, b.PackageVersion, b.ShopwareVersionConstraint, b.CommitId})
 	}
 
 	t.Render()
@@ -30,9 +30,9 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 	color.Blue("DumpPkgInfoListTable.displayMode=%s", displayMode)
 
 	if displayMode == "full" {
-		t.AppendHeader(table.Row{"Package Name", "Release Branch Names", "Other Branch Names" /*, "URL"*/})
+		t.AppendHeader(table.Row{"Package MachineName", "Release Branch Names", "Other Branch Names" /*, "URL"*/})
 	} else {
-		t.AppendHeader(table.Row{"Package Name", "Release Branch Names"})
+		t.AppendHeader(table.Row{"Package MachineName", "Release Branch Names"})
 	}
 	for _, p := range pkgInfoList.PkgInfos {
 		if displayMode == "full" {

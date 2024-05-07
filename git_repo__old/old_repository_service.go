@@ -93,7 +93,7 @@ func getAuth(repoConf model.PkgConfig, err error) (*ssh.PublicKeys, error) {
 		return nil, err
 	}
 	// dump publicKeys
-	// fmt.Println("loaded publicKeys: " + publicKeys.User + " " + publicKeys.Name())
+	// fmt.Println("loaded publicKeys: " + publicKeys.User + " " + publicKeys.MachineName())
 
 	return publicKeys, nil
 }
@@ -106,7 +106,7 @@ func getAuth(repoConf model.PkgConfig, err error) (*ssh.PublicKeys, error) {
 //		if err != nil {
 //			return nil, err
 //		}
-//		repoInfos[i].Name = repoConfig.Name
+//		repoInfos[i].MachineName = repoConfig.MachineName
 //		repoInfos[i].URL = repoConfig.URL
 //		repoInfos[i].Description = repoConfig.Description
 //		repoInfos[i].BranchNames = branches
@@ -130,7 +130,7 @@ func getAuth(repoConf model.PkgConfig, err error) (*ssh.PublicKeys, error) {
 //				return
 //			}
 //			repoInfoCh <- model.PkgInfo{
-//				Name:        rc.Name,
+//				MachineName:        rc.MachineName,
 //				URL:         rc.URL,
 //				Description: rc.Description,
 //				BranchNames:    branches,

@@ -13,10 +13,10 @@ func NewGitBranchInfo(repoConfig model.PkgConfig, branchName string) model.GitBr
 
 	composerJson := getComposerJson(repoConfig)
 	branchInfo := model.GitBranchInfo{
-		Name:            branchName,
-		CommitId:        git_cli_wrapper.GetCommitId(repoConfig),
-		PackageVersion:  composerJson.Version,
-		ShopwareVersion: composerJson.Require["shopware/core"],
+		Name:                      branchName,
+		CommitId:                  git_cli_wrapper.GetCommitId(repoConfig),
+		PackageVersion:            composerJson.Version,
+		ShopwareVersionConstraint: composerJson.Require["shopware/core"],
 	}
 	return branchInfo
 }
