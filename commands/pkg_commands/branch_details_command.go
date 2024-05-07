@@ -16,10 +16,22 @@ var showGitBranchDetailsCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Details for repository: %s, branch %s ...\n", args[0], args[1])
 
-		repoConfig := model.PkgConfig{Name: args[0]}
-		gitBranchInfo := factory.NewGitBranchInfo(repoConfig, args[1])
+		// ---- args
+		pkgConfig := factory.NewPkgConfig(args[0])
+		gitBranchInfo := factory.NewGitBranchInfo(pkgConfig, args[1])
+
+		// ---- other info
+		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
+		dict := map[string]string{
+			"Name":    pkgConfig.Name,
+			"Git URL": pkgConfig.URL,
+		}
+		printer.DumpDefinitionList(dict)
+
+		// ---- table with branches
 		fmt.Printf("Branch details: %v\n", gitBranchInfo)
 		printer.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: []model.GitBranchInfo{gitBranchInfo}})
+
 	},
 }
 
