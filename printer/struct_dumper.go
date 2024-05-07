@@ -30,15 +30,15 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 	color.Blue("DumpPkgInfoListTable.displayMode=%s", displayMode)
 
 	if displayMode == "full" {
-		t.AppendHeader(table.Row{"Package MachineName", "Release Branch Names", "Other Branch Names" /*, "URL"*/})
+		t.AppendHeader(table.Row{"Package Name", "Release Branch Names", "Other Branch Names" /*, "URL"*/})
 	} else {
-		t.AppendHeader(table.Row{"Package MachineName", "Release Branch Names"})
+		t.AppendHeader(table.Row{"Package Name", "Release Branch Names"})
 	}
 	for _, p := range pkgInfoList.PkgInfos {
 		if displayMode == "full" {
-			t.AppendRow([]interface{}{p.Name, p.ReleaseBranchNames, p.OtherBranchNames /*, p.URL*/})
+			t.AppendRow([]interface{}{p.PkgConfig.Name, p.ReleaseBranchNames, p.OtherBranchNames /*, p.URL*/})
 		} else {
-			t.AppendRow([]interface{}{p.Name, p.ReleaseBranchNames})
+			t.AppendRow([]interface{}{p.PkgConfig.Name, p.ReleaseBranchNames})
 		}
 	}
 
@@ -52,6 +52,32 @@ func DumpDefinitionList(definitions map[string]string) {
 
 	for key, value := range definitions {
 		t.AppendRow(table.Row{key, value})
+	}
+
+	t.Render()
+}
+
+func DumpPkgAndBranchTable(ret []model.PkgAndBranch) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Package", "Branch", "Shopware Version", "Commit Id"})
+
+	for _, p := range ret {
+		var branchName string
+		var shopwareVersionConstraint string
+		var commitId string
+
+		if p.Branch != nil {
+			branchName = p.Branch.Name
+			shopwareVersionConstraint = p.Branch.ShopwareVersionConstraint
+			commitId = p.Branch.CommitId
+		} else {
+			branchName = "---"
+			shopwareVersionConstraint = "---"
+			commitId = "---"
+		}
+
+		t.AppendRow([]interface{}{p.Pkg.PkgConfig.Name, branchName, shopwareVersionConstraint, commitId})
 	}
 
 	t.Render()

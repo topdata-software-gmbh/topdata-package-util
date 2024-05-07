@@ -184,9 +184,10 @@ func GetRepoInfos(pkgConfigs []model.PkgConfig, maxConcurrency int) ([]model.Pkg
 			//}
 
 			repoInfoCh <- model.PkgInfo{
-				Name:        rc.Name,
-				URL:         rc.URL,
-				Description: rc.Description,
+				// Name:        rc.Name,
+				//URL:         rc.URL,
+				//Description: rc.Description,
+				PkgConfig: rc,
 				// BranchNames: branches,
 			}
 
@@ -214,8 +215,8 @@ func GetRepoInfos(pkgConfigs []model.PkgConfig, maxConcurrency int) ([]model.Pkg
 }
 
 func GetRepoDetails_old(repoName string, pkgConfigs []model.PkgConfig) (model.PkgInfo, error) {
-	for _, repoConfig := range pkgConfigs {
-		branches, err := GetRepositoryBranches_old(repoConfig)
+	for _, pkgConfig := range pkgConfigs {
+		branches, err := GetRepositoryBranches_old(pkgConfig)
 		if err != nil {
 			return model.PkgInfo{}, err
 		}
@@ -227,7 +228,7 @@ func GetRepoDetails_old(repoName string, pkgConfigs []model.PkgConfig) (model.Pk
 		// iterate over release branches and get pkg commit id for each
 		for _, branch := range releaseBranchNames {
 			// get commit id for the branch
-			commitId, err := GetCommitId(repoConfig, branch)
+			commitId, err := GetCommitId(pkgConfig, branch)
 			if err != nil {
 				log.Println("Error getting commit ID for branch: " + branch + " " + err.Error())
 				return model.PkgInfo{}, err
@@ -238,8 +239,9 @@ func GetRepoDetails_old(repoName string, pkgConfigs []model.PkgConfig) (model.Pk
 			})
 		}
 		return model.PkgInfo{
-			Name: repoConfig.Name,
-			URL:  repoConfig.URL,
+			PkgConfig: pkgConfig,
+			//Name: pkgConfig.Name,
+			//URL:  pkgConfig.URL,
 			// BranchNames:     branches,
 			// ReleaseBranches: releaseBranches,
 		}, nil
