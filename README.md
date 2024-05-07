@@ -58,11 +58,22 @@ go run main.go webserver
   - MINOR: increased when there are new features
   - PATCH: increased when there are bug fixes 
 
+## Similar (?) Projects 
+- https://github.com/pickware/scs-commander/ [javascript]
+- https://github.com/shopwareLabs/plugin-info [php]
+- https://github.com/shopwareLabs/sw-cli-tools [php]
+- https://github.com/FriendsOfShopware/shopware-cli [golang]
+ 
+
+
 ## TODO
 - when creating a relaease zip, log it somewhere (release-log-path should be part of the config file)
 - fix and refactor the webservice API
-
+- make use of .sw-zip-blacklist when creating a release zip
+    - example: https://github.com/shopware/SwagMigrationConnector/blob/master/.sw-zip-blacklist
+    - 
 
 
 ## Security issues
 If you think that you have found a security issue, please contact security@topdata.de
+
