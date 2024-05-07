@@ -44,3 +44,15 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 
 	t.Render()
 }
+
+func DumpDefinitionList(definitions map[string]string) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Key", "Value"})
+
+	for key, value := range definitions {
+		t.AppendRow(table.Row{key, value})
+	}
+
+	t.Render()
+}

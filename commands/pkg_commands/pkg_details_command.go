@@ -9,9 +9,9 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/printer"
 )
 
-var listBranchesCommand = &cobra.Command{
+var pkgDetailsCommand = &cobra.Command{
 	Use:   "details [packageName]",
-	Short: "Prints a table with all branches of a repository",
+	Short: "Prints a table with all branches of a repository and some other info",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		// fmt.Printf("Details for repository: %s ...\n", args[0])
@@ -22,13 +22,21 @@ var listBranchesCommand = &cobra.Command{
 		pkgConfig := pkgConfigList.FindOneByNameOrFail(args[0])
 		git_cli_wrapper.RefreshRepo(*pkgConfig)
 
-		// ----
+		// ---- branches in a table
 		branchInfoList := factory.NewReleaseBranchInfos(*pkgConfig)
-
 		printer.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: branchInfoList})
+
+		// ---- other info
+		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
+		dict := map[string]string{
+			"Name":      pkgConfig.Name,
+			"Local Dir": pkgConfig.GetLocalGitRepoDir(),
+			"Git URL":   pkgConfig.URL,
+		}
+		printer.DumpDefinitionList(dict)
 	},
 }
 
 func init() {
-	pkgRootCommand.AddCommand(listBranchesCommand)
+	pkgRootCommand.AddCommand(pkgDetailsCommand)
 }
