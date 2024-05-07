@@ -12,7 +12,7 @@ type PkgInfoList struct {
 // FindOneByNameOrFail - find a package by name
 func (rcl *PkgInfoList) FindOneByNameOrFail(name string) *PkgInfo {
 	for _, pkgInfo := range rcl.PkgInfos {
-		if pkgInfo.Name == name {
+		if pkgInfo.PkgConfig.Name == name {
 			return &pkgInfo
 		}
 	}

@@ -21,8 +21,8 @@ var buildReleaseZipCommand = &cobra.Command{
 		packageName := args[0]
 		releaseBranchName := args[1]
 
-		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
-		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
+		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
+		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 		pkgConfig := pkgConfigList.FindOneByNameOrFail(packageName)
 
 		gitBranchInfo := factory.NewGitBranchInfo(*pkgConfig, releaseBranchName)

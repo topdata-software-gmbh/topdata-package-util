@@ -41,11 +41,32 @@ func GetCommitId(repoConfig model.PkgConfig) string {
 	return strings.TrimSpace(out)
 }
 
+func GetCommitDate(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "show", "-s", "--format=%ci", "HEAD")
+	return strings.TrimSpace(out)
+}
+
+func GetCommitAuthor(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "show", "-s", "--format=%an", "HEAD")
+	return strings.TrimSpace(out)
+}
+
+//func GetCommitId(repoConfig model.PkgConfig, name2 string) string {
+//	// pkg rev-parse refs/heads/branchName
+//
+//	out, err := runGitCommand(repoConfig, "rev-parse", "refs/heads/"+name2)
+//	if err != nil {
+//		log.Fatalln("Error getting branch commit id: " + err.Error())
+//	}
+//
+//	return strings.TrimSpace(out)
+//}
+
 func CheckoutBranch(repoConfig model.PkgConfig, branchName string) {
-	_ = runGitCommand(repoConfig, "checkout", branchName)
+	_ = runGitCommand(repoConfig, "checkout", "-f", branchName)
 	_ = runGitCommand(repoConfig, "pull")
 }
 
 func SwitchBranch(pkgConfig model.PkgConfig, branchName string) {
-	_ = runGitCommand(pkgConfig, "checkout", branchName)
+	_ = runGitCommand(pkgConfig, "checkout", "-f", branchName)
 }
