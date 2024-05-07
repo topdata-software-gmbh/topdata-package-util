@@ -93,6 +93,6 @@ func pingHandler(c *gin.Context) {
 }
 
 func init() {
-	webserverCommand.Flags().StringVarP(&webserverConfigFile, "webserver-config-file", "w", "webserver-config.json5", "Path to config file with settings for the webserver")
+	webserverCommand.Flags().StringVarP(&webserverConfigFile, "webserver-config-file", "w", "webserver-config.yaml", "Path to config file with settings for the webserver")
 	appRootCommand.AddCommand(webserverCommand)
 }

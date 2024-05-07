@@ -31,6 +31,7 @@ var pkgListCommand = &cobra.Command{
 			pkgInfoList = serializers.LoadPkgInfoList("/tmp/pkgInfoList.json")
 		} else {
 			// build a list of PkgInfo objects
+
 			pkgInfoList = factory.NewPkgInfoList(pkgConfigList)
 			// save to disk for caching
 			serializers.SavePkgInfoList(pkgInfoList, "/tmp/pkgInfoList.json")
