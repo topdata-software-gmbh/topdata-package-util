@@ -2,7 +2,7 @@ package factory
 
 import (
 	"github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/config"
+	"github.com/topdata-software-gmbh/topdata-package-service/app_constants"
 	git_cli_wrapper2 "github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/serializers"
@@ -39,11 +39,11 @@ func NewPkgInfoList(pkgConfigList model.PkgConfigList) *model.PkgInfoList {
 }
 
 func NewPkgInfoListCached(pkgConfigList model.PkgConfigList) *model.PkgInfoList {
-	if util.FileExists(config.PathCacheFile) {
-		return serializers.LoadPkgInfoList(config.PathCacheFile)
+	if util.FileExists(app_constants.PathCacheFile) {
+		return serializers.LoadPkgInfoList(app_constants.PathCacheFile)
 	} else {
 		pkgInfoList := NewPkgInfoList(pkgConfigList)
-		serializers.SavePkgInfoList(pkgInfoList, config.PathCacheFile)
+		serializers.SavePkgInfoList(pkgInfoList, app_constants.PathCacheFile)
 		return pkgInfoList
 	}
 
