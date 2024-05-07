@@ -17,3 +17,15 @@ func FileExists(path string) bool {
 	log.Fatalln("Error checking if file or directory exists: " + err.Error())
 	return false
 }
+
+func WriteToFile(file string, content string) {
+	f, err := os.Create(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	_, err = f.WriteString(content)
+	if err != nil {
+		log.Fatal(err)
+	}
+}

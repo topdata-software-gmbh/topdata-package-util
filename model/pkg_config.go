@@ -25,7 +25,7 @@ func (repoConfig *PkgConfig) GetAbsolutePath(relativePath string) string {
 func (repoConfig *PkgConfig) IsLocalRepoExisting() bool {
 	path := repoConfig.GetLocalGitRepoDir() + "/.git"
 	bExists := util.FileExists(path)
-	color.Blue("Checking if repo exists: %s : %s", path, bExists)
+	color.Blue("Checking if repo exists: %s : %t", path, bExists)
 
 	return bExists
 }

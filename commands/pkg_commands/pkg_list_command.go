@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"github.com/topdata-software-gmbh/topdata-package-service/app_constants"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
@@ -27,15 +28,14 @@ var pkgListCommand = &cobra.Command{
 		// using a cache_commands file to speed up the process
 		pkgInfoList := &model.PkgInfoList{}
 
-		if util.FileExists(config.PathCacheFile) {
-			color.Yellow(">>>> Loading from cache_commands file %s", config.PathCacheFile)
-			pkgInfoList = serializers.LoadPkgInfoList(config.PathCacheFile)
+		if util.FileExists(app_constants.PathCacheFile) {
+			color.Yellow(">>>> Loading from cache_commands file %s", app_constants.PathCacheFile)
+			pkgInfoList = serializers.LoadPkgInfoList(app_constants.PathCacheFile)
 		} else {
 			// build a list of PkgInfo objects
-
 			pkgInfoList = factory.NewPkgInfoList(pkgConfigList)
 			// save to disk for caching
-			serializers.SavePkgInfoList(pkgInfoList, config.PathCacheFile)
+			serializers.SavePkgInfoList(pkgInfoList, app_constants.PathCacheFile)
 		}
 
 		printer.DumpPkgInfoListTable(pkgInfoList, displayMode)
