@@ -24,17 +24,18 @@ var pkgListCommand = &cobra.Command{
 		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 
-		// using a cache file to speed up the process
+		// using a cache_commands file to speed up the process
 		pkgInfoList := &model.PkgInfoList{}
-		if util.FileExists("/tmp/pkgInfoList.json") {
-			color.Yellow(">>>> Loading from cache file /tmp/pkgInfoList.json")
-			pkgInfoList = serializers.LoadPkgInfoList("/tmp/pkgInfoList.json")
+
+		if util.FileExists(config.PathCacheFile) {
+			color.Yellow(">>>> Loading from cache_commands file %s", config.PathCacheFile)
+			pkgInfoList = serializers.LoadPkgInfoList(config.PathCacheFile)
 		} else {
 			// build a list of PkgInfo objects
 
 			pkgInfoList = factory.NewPkgInfoList(pkgConfigList)
 			// save to disk for caching
-			serializers.SavePkgInfoList(pkgInfoList, "/tmp/pkgInfoList.json")
+			serializers.SavePkgInfoList(pkgInfoList, config.PathCacheFile)
 		}
 
 		printer.DumpPkgInfoListTable(pkgInfoList, displayMode)
