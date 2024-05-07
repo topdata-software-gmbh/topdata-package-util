@@ -21,7 +21,7 @@ var pkgListCommand = &cobra.Command{
 		if displayMode != "compact" && displayMode != "full" {
 			return fmt.Errorf("invalid displayMode value: %q, it should be either 'compact' or 'full'", displayMode)
 		}
-		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
+		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 
 		// using a cache_commands file to speed up the process

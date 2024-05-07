@@ -23,7 +23,7 @@ func Execute() {
 var PackagesPortfolioFile string
 
 func init() {
-	appRootCommand.PersistentFlags().StringVar(&PackagesPortfolioFile, "packages-portfolio-file", "packages-portfolio", "config file (default is packages-portfolio)")
+	appRootCommand.PersistentFlags().StringVar(&PackagesPortfolioFile, "portfolio-file", "portfolio.yaml", "config file (default is portfolio)")
 	pkg_commands.Register(appRootCommand)
 	cache_commands.Register(appRootCommand)
 }

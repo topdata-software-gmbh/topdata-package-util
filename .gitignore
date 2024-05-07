@@ -2,4 +2,4 @@
 .idea
 bin/*
 webserver-config.yaml
-packages-portfolio.yaml
+portfolio.yaml

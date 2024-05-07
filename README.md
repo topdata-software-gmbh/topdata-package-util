@@ -32,8 +32,8 @@ go run main.go --help
 ## Command Line Options
 - `--webserver-config-file`
   - Set the path to the config file. Default is `webserver-config.yaml`.
-- `--packages-portfolio-file`
-  - Set the path to the config file where the package list is defined. Default is `packages-portfolio.yaml`. 
+- `--portfolio-file`
+  - Set the path to the config file where the package list is defined. Default is `portfolio.yaml`. 
 
 
 

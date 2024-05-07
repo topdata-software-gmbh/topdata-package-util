@@ -17,7 +17,7 @@ var listBranchesCommand = &cobra.Command{
 		// fmt.Printf("Details for repository: %s ...\n", args[0])
 
 		// ---- load the package portfolio file
-		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("packages-portfolio-file")
+		pathPackagesPortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagesPortfolioFile)
 		pkgConfig := pkgConfigList.FindOneByNameOrFail(args[0])
 		git_cli_wrapper.RefreshRepo(*pkgConfig)

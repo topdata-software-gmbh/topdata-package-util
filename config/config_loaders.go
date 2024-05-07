@@ -5,6 +5,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"log"
 )
 
 func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig, error) {
@@ -26,24 +27,27 @@ func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig,
 }
 
 func LoadPackagePortfolioFile(pathConfigFile string) model.PkgConfigList {
-	color.Yellow(">>>> Reading packages portfolio file... \n")
+	color.Yellow(">>>> Reading portfolio file XXX... \n")
+
+	// Define slice to hold configs
 	var configs []model.PkgConfig
 
-	viper.SetConfigName("packages-portfolio") // name of config file (without extension)
-	viper.SetConfigType("yaml")               // REQUIRED if the config file does not have the extension in the name
-	//viper.AddConfigPath("/etc/appname/")   // path to look for the config file in
-	//viper.AddConfigPath("$HOME/.appname")  // call multiple times to add many search paths
-	viper.AddConfigPath(".") // optionally look for config in the working directory
-	//err := viper.ReadInConfig() // Find and read the config file
+	viper.AddConfigPath(".")
+	// TODO... fix these hardcoded paths?
+	viper.AddConfigPath("/topdata/topdata-package-service")
+	viper.AddConfigPath("/topdata/topdata-package-portfolio")
 
-	err := viper.Unmarshal(&configs)
-	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %w \n", err))
+	viper.SetConfigFile(pathConfigFile)
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalf("error reading YAML file: %v", err)
 	}
 
-	//if err != nil {             // Handle errors reading the config file
-	//	panic(fmt.Errorf("Fatal reading portfolio file: %w", err))
-	//}
+	// Unmarshal YAML data into slice of PkgConfig structs
+	if err := viper.UnmarshalKey("items", &configs); err != nil {
+		log.Fatalf("error unmarshalling: %v", err)
+	}
+	//	fmt.Print("Loaded " + pathConfigFile + "with " + len(configs) + " items\n")
+	fmt.Printf("Loaded %s with %d items\n", pathConfigFile, len(configs))
 
 	return model.PkgConfigList{PkgConfigs: configs}
 }
