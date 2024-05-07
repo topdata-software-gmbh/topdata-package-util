@@ -63,6 +63,7 @@ go run main.go webserver
 - https://github.com/shopwareLabs/plugin-info [php]
 - https://github.com/shopwareLabs/sw-cli-tools [php]
 - https://github.com/FriendsOfShopware/shopware-cli [golang]
+- https://github.com/FriendsOfShopware/api.friendsofshopware.com [golang]
  
 
 
@@ -71,7 +72,9 @@ go run main.go webserver
 - fix and refactor the webservice API
 - make use of .sw-zip-blacklist when creating a release zip
     - example: https://github.com/shopware/SwagMigrationConnector/blob/master/.sw-zip-blacklist
-    - 
+- stats, see for example:
+    - https://api.friendsofshopware.com/v2/packagist/packages
+    - https://api.friendsofshopware.com/v2/shopware/sales
 
 
 ## Security issues
