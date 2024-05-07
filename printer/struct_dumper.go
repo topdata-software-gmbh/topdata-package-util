@@ -18,6 +18,8 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 		"Package Version",
 		"Shopware Version",
 		"Commit Id",
+		"Commit Date",
+		"Commit Author",
 	})
 
 	for _, b := range gitBranchInfoList.GitBranchInfos {
@@ -26,6 +28,8 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 			b.PackageVersion,
 			b.ShopwareVersionConstraint,
 			b.CommitId,
+			b.CommitDate,
+			b.CommitAuthor,
 		})
 	}
 

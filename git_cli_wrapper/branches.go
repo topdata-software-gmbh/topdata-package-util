@@ -63,10 +63,10 @@ func GetCommitAuthor(repoConfig model.PkgConfig) string {
 //}
 
 func CheckoutBranch(repoConfig model.PkgConfig, branchName string) {
-	_ = runGitCommand(repoConfig, "checkout", branchName)
+	_ = runGitCommand(repoConfig, "checkout", "-f", branchName)
 	_ = runGitCommand(repoConfig, "pull")
 }
 
 func SwitchBranch(pkgConfig model.PkgConfig, branchName string) {
-	_ = runGitCommand(pkgConfig, "checkout", branchName)
+	_ = runGitCommand(pkgConfig, "checkout", "-f", branchName)
 }

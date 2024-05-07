@@ -30,7 +30,7 @@ var pkgDetailsCommand = &cobra.Command{
 		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
 		dict := map[string]string{
 			"MachineName": pkgConfig.Name,
-			"Local Dir":   pkgConfig.GetLocalGitRepoDir(),
+			"Local Repo":  pkgConfig.GetLocalGitRepoDir(),
 			"Git URL":     pkgConfig.URL,
 		}
 		printer.DumpDefinitionList(dict)

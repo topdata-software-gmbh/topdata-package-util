@@ -14,17 +14,17 @@ func CloneRepo(repoConfig model.PkgConfig) {
 }
 
 // RefreshRepo .. aka DownsyncRepo .... pulls all remote branches and checks them out locally
-func RefreshRepo(repoConfig model.PkgConfig) {
-	color.Blue(">>>> Refreshing repo: %s", repoConfig.Name)
+func RefreshRepo(pkgConfig model.PkgConfig) {
+	color.Blue(">>>> Refreshing repo: %s", pkgConfig.Name)
 	// check if repo exists
-	if !repoConfig.IsLocalRepoExisting() {
-		color.Yellow(">> Cloning repo: %s", repoConfig.Name)
-		CloneRepo(repoConfig)
+	if !pkgConfig.IsLocalRepoExisting() {
+		color.Yellow(">> Cloning repo: %s", pkgConfig.Name)
+		CloneRepo(pkgConfig)
 	}
 
 	// fetch all remote branches
-	remoteBranchNames := GetRemoteBranchNames(repoConfig)
-	localBranchNames := GetLocalBranchNames(repoConfig)
+	remoteBranchNames := GetRemoteBranchNames(pkgConfig)
+	localBranchNames := GetLocalBranchNames(pkgConfig)
 
 	color.Cyan(">>>>>>>> Local branches: %v", localBranchNames)
 	color.Cyan(">>>>>>>> Remote branches: %v", remoteBranchNames)
@@ -32,9 +32,9 @@ func RefreshRepo(repoConfig model.PkgConfig) {
 	// check out each remote branch locally if it doesn't already exist
 	for _, branchName := range remoteBranchNames {
 		if util.StringSliceContains(localBranchNames, branchName) {
-			_ = runGitCommand(repoConfig, "checkout", branchName)
+			_ = runGitCommand(pkgConfig, "checkout", "-f", branchName)
 		} else {
-			_ = runGitCommand(repoConfig, "checkout", "-b", branchName, "origin/"+branchName)
+			_ = runGitCommand(pkgConfig, "checkout", "-b", branchName, "origin/"+branchName)
 		}
 	}
 	// TODO: remove stale local branches
