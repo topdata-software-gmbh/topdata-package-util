@@ -38,5 +38,7 @@ var findBranchCommand = &cobra.Command{
 
 func init() {
 	findBranchCommand.Flags().StringVarP(&shopwareVersion, "shopware-version", "s", "", "Shopware version to find the branch for")
+	_ = findBranchCommand.MarkFlagRequired("shopware-version")
+
 	pkgRootCommand.AddCommand(findBranchCommand)
 }
