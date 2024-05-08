@@ -26,7 +26,7 @@ func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig,
 	return config, nil
 }
 
-func LoadPackagePortfolioFile(pathConfigFile string) model.PkgConfigList {
+func LoadPackagePortfolioFile(pathConfigFile string) *model.PkgConfigList {
 	color.Yellow(">>>> Reading portfolio file XXX... \n")
 
 	// Define slice to hold configs
@@ -48,7 +48,7 @@ func LoadPackagePortfolioFile(pathConfigFile string) model.PkgConfigList {
 	//	fmt.Print("Loaded " + pathConfigFile + "with " + len(configs) + " items\n")
 	fmt.Printf("Loaded %s with %d items\n", pathConfigFile, len(configs))
 
-	return model.PkgConfigList{
+	return &model.PkgConfigList{
 		MachineName: machineName,
 		PkgConfigs:  configs,
 	}

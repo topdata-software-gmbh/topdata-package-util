@@ -11,6 +11,7 @@ import (
 
 var displayMode string
 var noCache bool
+var onlyInStore bool
 
 var pkgListCommand = &cobra.Command{
 	Use:   "list",
@@ -29,6 +30,11 @@ var pkgListCommand = &cobra.Command{
 			pkgInfoList = factory.NewPkgInfoListCached(pkgConfigList)
 		}
 
+		// ---- filter
+		if onlyInStore {
+			pkgInfoList = pkgInfoList.FilterInShopware6Store()
+		}
+
 		printer.DumpPkgInfoListTable(pkgInfoList, displayMode)
 		return nil
 	},
@@ -36,6 +42,7 @@ var pkgListCommand = &cobra.Command{
 
 func init() {
 	pkgListCommand.Flags().BoolVarP(&noCache, "no-cache", "n", false, "Do not use existing cache, force rebuilding the cache")
+	pkgListCommand.Flags().BoolVarP(&onlyInStore, "only-in-store", "o", false, "Show only packages that are in the Shopware6 store")
 	pkgListCommand.Flags().StringVarP(&displayMode, "displayMode", "d", "compact", "display mode for the list, either 'compact' or 'full'")
 	pkgRootCommand.AddCommand(pkgListCommand)
 }

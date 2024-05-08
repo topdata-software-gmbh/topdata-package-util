@@ -8,7 +8,7 @@ import (
 )
 
 func GetRepositoriesHandler(c *gin.Context) {
-	pkgConfigList := c.MustGet("pkgConfigList").(model.PkgConfigList)
+	pkgConfigList := c.MustGet("pkgConfigList").(*model.PkgConfigList)
 
 	repoInfos, err := git_repo__old.GetRepoInfos(pkgConfigList.PkgConfigs, 10)
 	if err != nil {
@@ -21,7 +21,7 @@ func GetRepositoriesHandler(c *gin.Context) {
 }
 
 func GetRepositoryDetailsHandler(c *gin.Context) {
-	pkgConfigList := c.MustGet("pkgConfigList").(model.PkgConfigList)
+	pkgConfigList := c.MustGet("pkgConfigList").(*model.PkgConfigList)
 
 	repoName := c.Param("name")
 	repoConfig, err := git_repo__old.GetRepoDetails_old(repoName, pkgConfigList.PkgConfigs)

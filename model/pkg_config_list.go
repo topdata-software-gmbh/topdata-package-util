@@ -2,6 +2,7 @@ package model
 
 import "log"
 
+// aka portfolio
 // PkgConfigList - just a container for a list of PkgConfig with convenience search functionality
 type PkgConfigList struct {
 	MachineName string // used for cache file name
