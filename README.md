@@ -51,6 +51,7 @@ go run main.go webserver
 - `http://localhost:8080/repository-details/:name` - Returns details of a repository
 
 
+
 ### Shopware Plugin Versioning Scheme
 - [MAJOR].[MINOR].[PATCH]
 - when a new release is created, the version number is increased by 1 in the following way:
