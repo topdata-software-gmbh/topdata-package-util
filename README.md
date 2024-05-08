@@ -22,6 +22,13 @@ go mod tidy
 go run .
 ```
 
+## Install binary on your machine
+Assuming you have Go installed on your machine, you can install the binary with the following command:
+```bash
+go install github.com/topdata-software-gmbh/topdata-package-service@latest
+```
+this compiles the program and installs it in your `$GOPATH/bin` directory.
+
 
 ## CLI Commands
 Run the program for exploring the commands:
