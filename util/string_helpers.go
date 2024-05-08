@@ -24,3 +24,11 @@ func MapToTable(keyValuePairs map[string]string) string {
 
 	return t.Render()
 }
+
+func FormatBool(store bool, trueText string, falseText string) string {
+	if store {
+		return trueText
+	} else {
+		return falseText
+	}
+}

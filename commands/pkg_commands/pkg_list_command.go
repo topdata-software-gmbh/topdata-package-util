@@ -25,9 +25,7 @@ var pkgListCommand = &cobra.Command{
 		var pkgInfoList *model.PkgInfoList
 		if noCache {
 			pkgInfoList = factory.NewPkgInfoList(pkgConfigList)
-			return nil
 		} else {
-			// using a cache_commands file to speed up the process
 			pkgInfoList = factory.NewPkgInfoListCached(pkgConfigList)
 		}
 

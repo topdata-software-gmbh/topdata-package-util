@@ -7,6 +7,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/printer"
+	"github.com/topdata-software-gmbh/topdata-package-service/util"
 )
 
 var pkgDetailsCommand = &cobra.Command{
@@ -29,9 +30,10 @@ var pkgDetailsCommand = &cobra.Command{
 		// ---- other info
 		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
 		dict := map[string]string{
-			"MachineName": pkgConfig.Name,
-			"Local Repo":  pkgConfig.GetLocalGitRepoDir(),
-			"Git URL":     pkgConfig.URL,
+			"MachineName":        pkgConfig.Name,
+			"Local Repo":         pkgConfig.GetLocalGitRepoDir(),
+			"Git URL":            pkgConfig.URL,
+			"In Shopware6 Store": util.FormatBool(pkgConfig.InShopware6Store, "yes", ""),
 		}
 		printer.DumpDefinitionList(dict)
 	},

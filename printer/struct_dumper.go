@@ -4,6 +4,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-service/util"
 	"os"
 )
 
@@ -44,15 +45,33 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 	color.Blue("DumpPkgInfoListTable.displayMode=%s", displayMode)
 
 	if displayMode == "full" {
-		t.AppendHeader(table.Row{"Package Name", "Release Branch Names", "Other Branch Names" /*, "URL"*/})
+		t.AppendHeader(table.Row{
+			"In SW6 Store",
+			"Package Name",
+			"Release Branch Names",
+			"Other Branch Names",
+			// "URL"
+		})
 	} else {
-		t.AppendHeader(table.Row{"Package Name", "Release Branch Names"})
+		t.AppendHeader(table.Row{
+			"Package Name",
+			"Release Branch Names",
+		})
 	}
 	for _, p := range pkgInfoList.PkgInfos {
 		if displayMode == "full" {
-			t.AppendRow([]interface{}{p.PkgConfig.Name, p.ReleaseBranchNames, p.OtherBranchNames /*, p.URL*/})
+			t.AppendRow([]interface{}{
+				util.FormatBool(p.PkgConfig.InShopware6Store, "yes", ""),
+				p.PkgConfig.Name,
+				p.ReleaseBranchNames,
+				p.OtherBranchNames,
+				// p.URL
+			})
 		} else {
-			t.AppendRow([]interface{}{p.PkgConfig.Name, p.ReleaseBranchNames})
+			t.AppendRow([]interface{}{
+				p.PkgConfig.Name,
+				p.ReleaseBranchNames,
+			})
 		}
 	}
 
