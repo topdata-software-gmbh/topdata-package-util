@@ -27,9 +27,8 @@ func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig,
 }
 
 func LoadPackagePortfolioFile(pathConfigFile string) *model.PkgConfigList {
-	color.Yellow(">>>> Reading portfolio file XXX... \n")
+	color.Yellow(">>>> Reading portfolio file %s ... \n", pathConfigFile)
 
-	// Define slice to hold configs
 	var configs []model.PkgConfig
 
 	viper.AddConfigPath(".")

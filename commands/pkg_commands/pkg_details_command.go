@@ -10,6 +10,8 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/util"
 )
 
+var bShowAllBranches bool
+
 var pkgDetailsCommand = &cobra.Command{
 	Use:   "details [packageName]",
 	Short: "Prints a table with all branches of a repository and some other info",
@@ -23,10 +25,6 @@ var pkgDetailsCommand = &cobra.Command{
 		pkgConfig := pkgConfigList.FindOneByNameOrFail(args[0])
 		git_cli_wrapper.RefreshRepo(*pkgConfig)
 
-		// ---- branches in a table
-		branchInfoList := factory.NewReleaseBranchInfos(*pkgConfig)
-		printer.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: branchInfoList})
-
 		// ---- other info
 		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
 		dict := map[string]string{
@@ -36,9 +34,14 @@ var pkgDetailsCommand = &cobra.Command{
 			"In Shopware6 Store": util.FormatBool(pkgConfig.InShopware6Store, "yes", ""),
 		}
 		printer.DumpDefinitionList(dict)
+
+		// ---- branches in a table
+		branchInfoList := factory.NewBranchInfos(*pkgConfig, !bShowAllBranches)
+		printer.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: branchInfoList})
 	},
 }
 
 func init() {
+	pkgDetailsCommand.Flags().BoolVarP(&bShowAllBranches, "all", "a", false, "Show all branches (not only release branches)")
 	pkgRootCommand.AddCommand(pkgDetailsCommand)
 }

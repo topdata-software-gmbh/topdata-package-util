@@ -4,6 +4,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-service/util"
 	"log"
 )
 
@@ -23,9 +24,13 @@ func NewGitBranchInfo(pkgConfig model.PkgConfig, branchName string) model.GitBra
 	return branchInfo
 }
 
-// NewReleaseBranchInfos creates multiple GitBranchInfo objects, one for each release branch
-func NewReleaseBranchInfos(repoConfig model.PkgConfig) []model.GitBranchInfo {
+// NewBranchInfos creates multiple GitBranchInfo objects, one for each release branch
+func NewBranchInfos(repoConfig model.PkgConfig, onlyReleaseBranches bool) []model.GitBranchInfo {
 	releaseBranchNames := git_cli_wrapper.GetLocalBranchNames(repoConfig)
+	if onlyReleaseBranches {
+		releaseBranchNames = util.FilterStringSlicePositive(releaseBranchNames, `^(main|main-.*|release-.*)$`)
+	}
+
 	color.Yellow("Release branch names: %v\n", releaseBranchNames)
 	releaseBranches := make([]model.GitBranchInfo, len(releaseBranchNames))
 	for idx, branchName := range releaseBranchNames {
