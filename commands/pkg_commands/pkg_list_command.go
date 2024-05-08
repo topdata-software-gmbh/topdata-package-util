@@ -2,18 +2,15 @@ package pkg_commands
 
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/app_constants"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/printer"
-	"github.com/topdata-software-gmbh/topdata-package-service/serializers"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
 )
 
 var displayMode string
+var noCache bool
 
 var pkgListCommand = &cobra.Command{
 	Use:   "list",
@@ -25,17 +22,13 @@ var pkgListCommand = &cobra.Command{
 		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 
-		// using a cache_commands file to speed up the process
-		pkgInfoList := &model.PkgInfoList{}
-
-		if util.FileExists(app_constants.PathCacheFile) {
-			color.Yellow(">>>> Loading from cache_commands file %s", app_constants.PathCacheFile)
-			pkgInfoList = serializers.LoadPkgInfoList(app_constants.PathCacheFile)
-		} else {
-			// build a list of PkgInfo objects
+		var pkgInfoList *model.PkgInfoList
+		if noCache {
 			pkgInfoList = factory.NewPkgInfoList(pkgConfigList)
-			// save to disk for caching
-			serializers.SavePkgInfoList(pkgInfoList, app_constants.PathCacheFile)
+			return nil
+		} else {
+			// using a cache_commands file to speed up the process
+			pkgInfoList = factory.NewPkgInfoListCached(pkgConfigList)
 		}
 
 		printer.DumpPkgInfoListTable(pkgInfoList, displayMode)
@@ -44,6 +37,7 @@ var pkgListCommand = &cobra.Command{
 }
 
 func init() {
+	pkgListCommand.Flags().BoolVarP(&noCache, "no-cache", "n", false, "Do not use existing cache, force rebuilding the cache")
 	pkgListCommand.Flags().StringVarP(&displayMode, "displayMode", "d", "compact", "display mode for the list, either 'compact' or 'full'")
 	pkgRootCommand.AddCommand(pkgListCommand)
 }
