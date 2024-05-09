@@ -3,7 +3,6 @@ package pkg_commands
 import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/topdata-software-gmbh/topdata-package-service/branches"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
@@ -17,12 +16,10 @@ var findBranchCommand = &cobra.Command{
 	Use:   "find-branch",
 	Short: "Finds the branch with the highest plugin version for a given Shopware version",
 	RunE: func(cmd *cobra.Command, args []string) error {
-
-		shopwareVersion := viper.GetString("shopware-version")
-		// onlyInStore := viper.GetBool("only-in-store")
-
+		// ---- init flags
 		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
+		shopwareVersion, _ := cmd.Flags().GetString("shopware-version")
 
 		// ---- TODO: Filter the packages based on the provided Shopware version using semantical versioning
 		pkgInfoList := factory.NewPkgInfoListCached(pkgConfigList)
@@ -59,8 +56,8 @@ func init() {
 	findBranchCommand.Flags().BoolP("only-in-store", "o", false, "Show only packages that are in the Shopware6 store")
 	findBranchCommand.Flags().BoolP("no-cache", "n", false, "Do not use existing cache, force rebuilding the cache")
 	pkgRootCommand.AddCommand(findBranchCommand)
-
-	viper.BindPFlag("shopware-version", findBranchCommand.Flags().Lookup("shopware-version"))
-	viper.BindPFlag("only-in-store", findBranchCommand.Flags().Lookup("only-in-store"))
-	viper.BindPFlag("no-cache", findBranchCommand.Flags().Lookup("no-cache"))
+	//
+	//viper.BindPFlag("shopware-version", findBranchCommand.Flags().Lookup("shopware-version"))
+	//viper.BindPFlag("only-in-store", findBranchCommand.Flags().Lookup("only-in-store"))
+	//viper.BindPFlag("no-cache", findBranchCommand.Flags().Lookup("no-cache"))
 }

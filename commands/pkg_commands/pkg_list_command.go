@@ -3,7 +3,6 @@ package pkg_commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
@@ -19,9 +18,11 @@ var pkgListCommand = &cobra.Command{
 	Short: "Prints a table with all packages",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// ---- init flags
-		displayMode := viper.GetString("display-mode")
-		noCache := viper.GetBool("no-cache")
-		onlyInStore := viper.GetBool("only-in-store")
+		displayMode, _ := cmd.Flags().GetString("display-mode")
+		noCache, _ := cmd.Flags().GetBool("no-cache")
+		onlyInStore, _ := cmd.Flags().GetBool("only-in-store")
+		// 		shopwareVersion, _ := cmd.Flags().GetString("shopware-version")
+
 		// ----
 		if displayMode != "compact" && displayMode != "full" {
 			return fmt.Errorf("invalid displayMode value: %q, it should be either 'compact' or 'full'", displayMode)
@@ -61,12 +62,13 @@ var pkgListCommand = &cobra.Command{
 */
 
 func init() {
-	findBranchCommand.Flags().StringP("shopware-version", "s", "", "Shopware version to find the branch for, eg 6.5.1")
-	findBranchCommand.Flags().BoolP("only-in-store", "o", false, "Show only packages that are in the Shopware6 store")
-	findBranchCommand.Flags().BoolP("no-cache", "n", false, "Do not use existing cache, force rebuilding the cache")
-	pkgRootCommand.AddCommand(findBranchCommand)
+	pkgListCommand.Flags().StringP("shopware-version", "s", "", "Shopware version to find the branch for, eg 6.5.1")
+	pkgListCommand.Flags().BoolP("only-in-store", "o", false, "Show only packages that are in the Shopware6 store")
+	pkgListCommand.Flags().BoolP("no-cache", "n", false, "Do not use existing cache, force rebuilding the cache")
+	pkgListCommand.Flags().StringP("display-mode", "d", "compact", "display mode for the list, either 'compact' or 'full")
+	pkgRootCommand.AddCommand(pkgListCommand)
 
-	viper.BindPFlag("shopware-version", findBranchCommand.Flags().Lookup("shopware-version"))
-	viper.BindPFlag("only-in-store", findBranchCommand.Flags().Lookup("only-in-store"))
-	viper.BindPFlag("no-cache", findBranchCommand.Flags().Lookup("no-cache"))
+	//viper.BindPFlag("shopware-version", pkgListCommand.Flags().Lookup("shopware-version"))
+	//viper.BindPFlag("only-in-store", pkgListCommand.Flags().Lookup("only-in-store"))
+	//viper.BindPFlag("no-cache", pkgListCommand.Flags().Lookup("no-cache"))
 }
