@@ -42,8 +42,8 @@ func NewPkgInfoList(pkgConfigList *model.PkgConfigList) *model.PkgInfoList {
 	}
 }
 
-func NewPkgInfoListCached(pkgConfigList *model.PkgConfigList) *model.PkgInfoList {
-	if util.FileExists(app_constants.PathCacheFile) {
+func NewPkgInfoListCached(pkgConfigList *model.PkgConfigList, bForceRefresh bool) *model.PkgInfoList {
+	if util.FileExists(app_constants.PathCacheFile) && !bForceRefresh {
 		color.Yellow(">>>> Loading from cache_commands file %s", app_constants.PathCacheFile)
 		return serializers.LoadPkgInfoList(app_constants.PathCacheFile)
 	} else {

@@ -31,11 +31,7 @@ var pkgListCommand = &cobra.Command{
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 
 		var pkgInfoList *model.PkgInfoList
-		if noCache {
-			pkgInfoList = factory.NewPkgInfoList(pkgConfigList)
-		} else {
-			pkgInfoList = factory.NewPkgInfoListCached(pkgConfigList)
-		}
+		pkgInfoList = factory.NewPkgInfoListCached(pkgConfigList, noCache)
 
 		// ---- filter
 		if onlyInStore {

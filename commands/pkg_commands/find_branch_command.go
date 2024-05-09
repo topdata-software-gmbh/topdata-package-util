@@ -20,9 +20,10 @@ var findBranchCommand = &cobra.Command{
 		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
 		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 		shopwareVersion, _ := cmd.Flags().GetString("shopware-version")
+		noCache, _ := cmd.Flags().GetBool("no-cache")
 
 		// ---- TODO: Filter the packages based on the provided Shopware version using semantical versioning
-		pkgInfoList := factory.NewPkgInfoListCached(pkgConfigList)
+		pkgInfoList := factory.NewPkgInfoListCached(pkgConfigList, noCache)
 		ret := make([]model.PkgAndBranch, 0)
 
 		for _, pkg := range pkgInfoList.PkgInfos {
