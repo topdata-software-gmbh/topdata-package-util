@@ -2,9 +2,9 @@ package pkg_commands
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
+	"github.com/topdata-software-gmbh/topdata-package-service/globals"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/printer"
 	"github.com/topdata-software-gmbh/topdata-package-service/util"
@@ -20,9 +20,9 @@ var pkgDetailsCommand = &cobra.Command{
 		// fmt.Printf("Details for repository: %s ...\n", args[0])
 
 		// ---- load the package portfolio file
-		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
-		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
-		pkgConfig := pkgConfigList.FindOneByNameOrFail(args[0])
+		// pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
+		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
+		pkgConfig := globals.PkgConfigList.FindOneByNameOrFail(args[0])
 		git_cli_wrapper.RefreshRepo(*pkgConfig)
 
 		// ---- other info

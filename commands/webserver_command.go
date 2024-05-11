@@ -9,6 +9,7 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/controllers"
 	"github.com/topdata-software-gmbh/topdata-package-service/gin_middleware"
+	"github.com/topdata-software-gmbh/topdata-package-service/globals"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"log"
 	"net/http"
@@ -48,11 +49,11 @@ var webserverCommand = &cobra.Command{
 			}))
 		}
 
-		pkgConfigList := config.LoadPackagePortfolioFile(PackagePortfolioFile)
+		// pkgConfigList := config.LoadPackagePortfolioFile(PackagePortfolioFile)
 
 		// ---- register loaded configs in middlewares
 		router.Use(gin_middleware.WebserverConfigMiddleware(webserverConfig))
-		router.Use(gin_middleware.PkgConfigListMiddleware(pkgConfigList))
+		router.Use(gin_middleware.PkgConfigListMiddleware(globals.PkgConfigList))
 
 		// ---- define routes
 		router.GET("/", welcomeHandler)
@@ -61,7 +62,7 @@ var webserverCommand = &cobra.Command{
 		router.GET("/repository-details/:name", controllers.GetRepositoryDetailsHandler)
 
 		// ----
-		color.Cyan("Loaded %d repository configs\n", len(pkgConfigList.PkgConfigs))
+		color.Cyan("Loaded %d repository configs\n", len(globals.PkgConfigList.PkgConfigs))
 
 		// ---- get port (TODO: remove, use spf13/viper)
 		finalPort := portFromCliOption

@@ -4,9 +4,9 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-service/app_constants"
-	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
 	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
+	"github.com/topdata-software-gmbh/topdata-package-service/globals"
 	"github.com/topdata-software-gmbh/topdata-package-service/pkg_zipper"
 	"github.com/topdata-software-gmbh/topdata-package-service/util"
 	"path/filepath"
@@ -21,9 +21,9 @@ var buildReleaseZipCommand = &cobra.Command{
 		packageName := args[0]
 		releaseBranchName := args[1]
 
-		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
-		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
-		pkgConfig := pkgConfigList.FindOneByNameOrFail(packageName)
+		// pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
+		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
+		pkgConfig := globals.PkgConfigList.FindOneByNameOrFail(packageName)
 
 		gitBranchInfo := factory.NewGitBranchInfo(*pkgConfig, releaseBranchName)
 

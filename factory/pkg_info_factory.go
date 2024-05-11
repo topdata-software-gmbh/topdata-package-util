@@ -28,26 +28,26 @@ func NewPkgInfo(pkgConfig model.PkgConfig) model.PkgInfo {
 
 }
 
-func NewPkgInfoList(pkgConfigList *model.PkgConfigList) *model.PkgInfoList {
-	pkgInfos := make([]model.PkgInfo, len(pkgConfigList.PkgConfigs))
+func NewPkgInfoList(PkgConfigList *model.PkgConfigList) *model.PkgInfoList {
+	pkgInfos := make([]model.PkgInfo, len(PkgConfigList.PkgConfigs))
 
-	for i, pkgConfig := range pkgConfigList.PkgConfigs {
+	for i, pkgConfig := range PkgConfigList.PkgConfigs {
 		pkgInfos[i] = NewPkgInfo(pkgConfig)
 	}
 
 	return &model.PkgInfoList{
-		PkgConfigList: pkgConfigList,
+		PkgConfigList: PkgConfigList,
 		IsFiltered:    false,
 		PkgInfos:      pkgInfos,
 	}
 }
 
-func NewPkgInfoListCached(pkgConfigList *model.PkgConfigList, bForceRefresh bool) *model.PkgInfoList {
+func NewPkgInfoListCached(PkgConfigList *model.PkgConfigList, bForceRefresh bool) *model.PkgInfoList {
 	if util.FileExists(app_constants.PathCacheFile) && !bForceRefresh {
 		color.Yellow(">>>> Loading from cache_commands file %s", app_constants.PathCacheFile)
 		return serializers.LoadPkgInfoList(app_constants.PathCacheFile)
 	} else {
-		pkgInfoList := NewPkgInfoList(pkgConfigList)
+		pkgInfoList := NewPkgInfoList(PkgConfigList)
 		serializers.SavePkgInfoList(pkgInfoList, app_constants.PathCacheFile)
 		return pkgInfoList
 	}

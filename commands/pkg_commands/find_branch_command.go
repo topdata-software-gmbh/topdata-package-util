@@ -4,8 +4,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-service/branches"
-	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
+	"github.com/topdata-software-gmbh/topdata-package-service/globals"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/printer"
 )
@@ -17,13 +17,13 @@ var findBranchCommand = &cobra.Command{
 	Short: "Finds the branch with the highest plugin version for a given Shopware version",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// ---- init flags
-		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
-		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
+		// pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
+		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 		shopwareVersion, _ := cmd.Flags().GetString("shopware-version")
 		noCache, _ := cmd.Flags().GetBool("no-cache")
 
 		// ---- TODO: Filter the packages based on the provided Shopware version using semantical versioning
-		pkgInfoList := factory.NewPkgInfoListCached(pkgConfigList, noCache)
+		pkgInfoList := factory.NewPkgInfoListCached(globals.PkgConfigList, noCache)
 		ret := make([]model.PkgAndBranch, 0)
 
 		for _, pkg := range pkgInfoList.PkgInfos {

@@ -3,8 +3,8 @@ package pkg_commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/config"
 	"github.com/topdata-software-gmbh/topdata-package-service/factory"
+	"github.com/topdata-software-gmbh/topdata-package-service/globals"
 	"github.com/topdata-software-gmbh/topdata-package-service/model"
 	"github.com/topdata-software-gmbh/topdata-package-service/printer"
 )
@@ -27,11 +27,11 @@ var pkgListCommand = &cobra.Command{
 		if displayMode != "compact" && displayMode != "full" {
 			return fmt.Errorf("invalid displayMode value: %q, it should be either 'compact' or 'full'", displayMode)
 		}
-		pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
-		pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
+		// pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
+		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 
 		var pkgInfoList *model.PkgInfoList
-		pkgInfoList = factory.NewPkgInfoListCached(pkgConfigList, noCache)
+		pkgInfoList = factory.NewPkgInfoListCached(globals.PkgConfigList, noCache)
 
 		// ---- filter
 		if onlyInStore {
