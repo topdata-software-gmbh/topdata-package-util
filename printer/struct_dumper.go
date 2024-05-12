@@ -62,6 +62,7 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 		if displayMode == "full" {
 			t.AppendRow([]interface{}{
 				util.FormatBool(p.PkgConfig.InShopware6Store, "yes", ""),
+				p.PkgConfig.Shopware6StoreTechnicalName,
 				p.PkgConfig.Name,
 				p.ReleaseBranchNames,
 				p.OtherBranchNames,
