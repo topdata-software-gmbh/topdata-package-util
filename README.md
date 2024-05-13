@@ -76,14 +76,14 @@ go run main.go webserver
 
 
 ## TODO
-- when creating a relaease zip, log it somewhere (release-log-path should be part of the config file)
+- when creating a release zip, log it somewhere (release-log-path should be part of the config file)
 - fix and refactor the webservice API
 - make use of .sw-zip-blacklist when creating a release zip
     - example: https://github.com/shopware/SwagMigrationConnector/blob/master/.sw-zip-blacklist
 - stats, see for example:
     - https://api.friendsofshopware.com/v2/packagist/packages
     - https://api.friendsofshopware.com/v2/shopware/sales
-
+- pkg details: show sw6 store backend url: https://account.shopware.com/producer/plugins/123456
 
 ## Security issues
 If you think that you have found a security issue, please contact security@topdata.de
