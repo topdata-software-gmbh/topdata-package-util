@@ -41,6 +41,16 @@ func GetCommitId(repoConfig model.PkgConfig) string {
 	return strings.TrimSpace(out)
 }
 
+func GetCommitIdShort(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "rev-parse", "--short", "HEAD")
+	return strings.TrimSpace(out)
+}
+
+func GetCommitMessage(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "show", "-s", "--format=%s", "HEAD")
+	return strings.TrimSpace(out)
+}
+
 func GetCommitDate(repoConfig model.PkgConfig) string {
 	out := runGitCommand(repoConfig, "show", "-s", "--format=%ci", "HEAD")
 	return strings.TrimSpace(out)
