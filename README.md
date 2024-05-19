@@ -88,3 +88,6 @@ go run main.go webserver
 ## Security issues
 If you think that you have found a security issue, please contact security@topdata.de
 
+
+## CHANGELOG:
+2024-05-19: project name changed topdata-package-service -> topdata-package-util
