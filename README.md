@@ -17,7 +17,7 @@
 ```bash
 go mod tidy
 ```
-5. Run the program:
+5. Compile and run the program (fast!):
 ```bash
 go run .
 ```
@@ -59,19 +59,6 @@ go run main.go webserver
 
 
 
-### Shopware Plugin Versioning Scheme
-- [MAJOR].[MINOR].[PATCH]
-- when a new release is created, the version number is increased by 1 in the following way:
-  - MAJOR: increased when there are breaking changes
-  - MINOR: increased when there are new features
-  - PATCH: increased when there are bug fixes 
-
-## Similar (?) Projects 
-- https://github.com/pickware/scs-commander/ [javascript]
-- https://github.com/shopwareLabs/plugin-info [php]
-- https://github.com/shopwareLabs/sw-cli-tools [php]
-- https://github.com/FriendsOfShopware/shopware-cli [golang]
-- https://github.com/FriendsOfShopware/api.friendsofshopware.com [golang]
  
 
 
@@ -91,3 +78,8 @@ If you think that you have found a security issue, please contact security@topda
 
 ## CHANGELOG:
 2024-05-19: project name changed topdata-package-service -> topdata-package-util
+
+
+## Documentation
+
+For more detailed information, please refer to the [documentation](./docs/index.md).
