@@ -1,6 +1,7 @@
 package util
 
 import (
+	"github.com/fatih/color"
 	"log"
 	"os"
 )
@@ -28,4 +29,25 @@ func WriteToFile(file string, content string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func RsyncDirectory(source string, destination string, exclude []string) {
+	// ---- make sure both source and destination end with a slash
+	if source[len(source)-1] != '/' {
+		source += "/"
+	}
+	if destination[len(destination)-1] != '/' {
+		destination += "/"
+	}
+	color.Yellow(">>>> RsyncDirectory: %s > %s ...", source, destination)
+
+	// ---- build cmd
+	cmd := []string{"rsync", "-avz" /*"--delete", */, source, destination}
+	if len(exclude) > 0 {
+		for i, _ := range exclude {
+			cmd = append(cmd, "--exclude", exclude[i])
+		}
+	}
+	// ---- action
+	RunCommand(cmd[0], cmd[1:]...)
 }

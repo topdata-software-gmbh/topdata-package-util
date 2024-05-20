@@ -17,7 +17,7 @@
 ```bash
 go mod tidy
 ```
-5. Run the program:
+5. Compile and run the program (fast!):
 ```bash
 go run .
 ```
@@ -25,7 +25,7 @@ go run .
 ## Install binary on your machine
 Assuming you have Go installed on your machine, you can install the binary with the following command:
 ```bash
-go install github.com/topdata-software-gmbh/topdata-package-service@latest
+go install github.com/topdata-software-gmbh/topdata-package-util@latest
 ```
 this compiles the program and installs it in your `$GOPATH/bin` directory.
 
@@ -59,32 +59,27 @@ go run main.go webserver
 
 
 
-### Shopware Plugin Versioning Scheme
-- [MAJOR].[MINOR].[PATCH]
-- when a new release is created, the version number is increased by 1 in the following way:
-  - MAJOR: increased when there are breaking changes
-  - MINOR: increased when there are new features
-  - PATCH: increased when there are bug fixes 
-
-## Similar (?) Projects 
-- https://github.com/pickware/scs-commander/ [javascript]
-- https://github.com/shopwareLabs/plugin-info [php]
-- https://github.com/shopwareLabs/sw-cli-tools [php]
-- https://github.com/FriendsOfShopware/shopware-cli [golang]
-- https://github.com/FriendsOfShopware/api.friendsofshopware.com [golang]
  
 
 
 ## TODO
-- when creating a relaease zip, log it somewhere (release-log-path should be part of the config file)
+- when creating a release zip, log it somewhere (release-log-path should be part of the config file)
 - fix and refactor the webservice API
 - make use of .sw-zip-blacklist when creating a release zip
     - example: https://github.com/shopware/SwagMigrationConnector/blob/master/.sw-zip-blacklist
 - stats, see for example:
     - https://api.friendsofshopware.com/v2/packagist/packages
     - https://api.friendsofshopware.com/v2/shopware/sales
-
+- pkg details: show sw6 store backend url: https://account.shopware.com/producer/plugins/123456
 
 ## Security issues
 If you think that you have found a security issue, please contact security@topdata.de
 
+
+## CHANGELOG:
+2024-05-19: project name changed topdata-package-service -> topdata-package-util
+
+
+## Documentation
+
+For more detailed information, please refer to the [documentation](./docs/index.md).

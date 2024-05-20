@@ -5,7 +5,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
 	"log"
 	"regexp"
 	"sort"

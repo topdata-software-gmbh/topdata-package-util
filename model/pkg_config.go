@@ -2,16 +2,18 @@ package model
 
 import (
 	"github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"path/filepath"
 )
 
 type PkgConfig struct {
-	Name             string
-	Description      string
-	URL              string // TODO: rename GitRepoUrl
-	PathSshKey       *string
-	InShopware6Store bool
+	Name                        string
+	Description                 string
+	URL                         string // TODO: rename GitRepoUrl
+	PathSshKey                  *string
+	InShopware6Store            bool
+	Shopware6StoreTechnicalName string
+	Shopware6StorePluginId      int
 }
 
 func (repoConfig *PkgConfig) GetLocalGitRepoDir() string {

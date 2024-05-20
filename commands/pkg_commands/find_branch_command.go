@@ -3,11 +3,11 @@ package pkg_commands
 import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/branches"
-	"github.com/topdata-software-gmbh/topdata-package-service/factory"
-	"github.com/topdata-software-gmbh/topdata-package-service/globals"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/printer"
+	"github.com/topdata-software-gmbh/topdata-package-util/branches"
+	"github.com/topdata-software-gmbh/topdata-package-util/factory"
+	"github.com/topdata-software-gmbh/topdata-package-util/globals"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/printer"
 )
 
 // var shopwareVersion string

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	git_cli_wrapper2 "github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
-	"github.com/topdata-software-gmbh/topdata-package-service/globals"
+	git_cli_wrapper2 "github.com/topdata-software-gmbh/topdata-package-util/git_cli_wrapper"
+	"github.com/topdata-software-gmbh/topdata-package-util/globals"
 	"log"
 )
 

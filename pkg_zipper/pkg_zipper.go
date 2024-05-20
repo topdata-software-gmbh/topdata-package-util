@@ -2,7 +2,7 @@ package pkg_zipper
 
 import (
 	"github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"path/filepath"
 )
 
@@ -12,7 +12,7 @@ func CreateZipArchive(sourceDir string, destZipFile string) {
 
 	parentDir := filepath.Dir(sourceDir)
 	sourceDirShort := filepath.Base(sourceDir)
-	cmd := util.RenderString("cd {parentDir} && zip -FSr {destZipFile} {sourceDirShort} -x '*.git*' ", map[string]string{
+	cmd := util.RenderString("cd {parentDir} && zip -FSr {destZipFile} {sourceDirShort}", map[string]string{
 		"parentDir":      parentDir,
 		"destZipFile":    destZipFile,
 		"sourceDirShort": sourceDirShort,

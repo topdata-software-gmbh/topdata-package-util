@@ -3,8 +3,8 @@ package branches
 import (
 	"fmt"
 	"github.com/Masterminds/semver/v3"
-	"github.com/topdata-software-gmbh/topdata-package-service/factory"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/factory"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
 	"sort"
 )
 

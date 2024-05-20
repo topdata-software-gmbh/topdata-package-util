@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	_ "github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"strings"
 )
 
@@ -38,6 +38,16 @@ func GetRemoteBranchNames(pkgConfig model.PkgConfig) []string {
 // returns the commit id of the current branch
 func GetCommitId(repoConfig model.PkgConfig) string {
 	out := runGitCommand(repoConfig, "rev-parse", "HEAD")
+	return strings.TrimSpace(out)
+}
+
+func GetCommitIdShort(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "rev-parse", "--short", "HEAD")
+	return strings.TrimSpace(out)
+}
+
+func GetCommitMessage(repoConfig model.PkgConfig) string {
+	out := runGitCommand(repoConfig, "show", "-s", "--format=%s", "HEAD")
 	return strings.TrimSpace(out)
 }
 

@@ -3,8 +3,8 @@ package printer
 import (
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"os"
 )
 
@@ -21,6 +21,7 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 		"Commit Id",
 		"Commit Date",
 		"Commit Author",
+		"Commit Message",
 	})
 
 	for _, b := range gitBranchInfoList.GitBranchInfos {
@@ -28,9 +29,10 @@ func DumpGitBranchInfoList(gitBranchInfoList model.GitBranchInfoList) {
 			b.Name,
 			b.PackageVersion,
 			b.ShopwareVersionConstraint,
-			b.CommitId,
+			b.CommitIdShort,
 			b.CommitDate,
 			b.CommitAuthor,
+			b.CommitMessage,
 		})
 	}
 
@@ -62,6 +64,7 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 		if displayMode == "full" {
 			t.AppendRow([]interface{}{
 				util.FormatBool(p.PkgConfig.InShopware6Store, "yes", ""),
+				p.PkgConfig.Shopware6StoreTechnicalName,
 				p.PkgConfig.Name,
 				p.ReleaseBranchNames,
 				p.OtherBranchNames,
@@ -100,6 +103,7 @@ func DumpPkgAndBranchTable(ret []model.PkgAndBranch) {
 		"Commit Id",
 		"Commit Date",
 		"Commit Author",
+		"Commit Message",
 	})
 
 	for _, p := range ret {
@@ -108,13 +112,15 @@ func DumpPkgAndBranchTable(ret []model.PkgAndBranch) {
 		var commitId string
 		var commitDate string
 		var commitAuthor string
+		var commitMessage string
 
 		if p.Branch != nil {
 			branchName = p.Branch.Name
 			shopwareVersionConstraint = p.Branch.ShopwareVersionConstraint
-			commitId = p.Branch.CommitId
+			commitId = p.Branch.CommitIdShort
 			commitDate = p.Branch.CommitDate
 			commitAuthor = p.Branch.CommitAuthor
+			commitMessage = p.Branch.CommitMessage
 		} else {
 			const PLACEHOLDER_NO_BRANCH_FOUND = "---"
 			branchName = PLACEHOLDER_NO_BRANCH_FOUND
@@ -122,6 +128,7 @@ func DumpPkgAndBranchTable(ret []model.PkgAndBranch) {
 			commitId = PLACEHOLDER_NO_BRANCH_FOUND
 			commitDate = PLACEHOLDER_NO_BRANCH_FOUND
 			commitAuthor = PLACEHOLDER_NO_BRANCH_FOUND
+			commitMessage = PLACEHOLDER_NO_BRANCH_FOUND
 		}
 
 		t.AppendRow([]interface{}{
@@ -131,6 +138,7 @@ func DumpPkgAndBranchTable(ret []model.PkgAndBranch) {
 			commitId,
 			commitDate,
 			commitAuthor,
+			commitMessage,
 		})
 	}
 

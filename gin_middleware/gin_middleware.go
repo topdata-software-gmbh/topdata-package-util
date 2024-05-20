@@ -2,7 +2,7 @@ package gin_middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
 )
 
 func WebserverConfigMiddleware(webserverConfig model.WebserverConfig) gin.HandlerFunc {

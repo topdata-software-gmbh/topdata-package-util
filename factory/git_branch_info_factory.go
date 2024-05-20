@@ -2,22 +2,26 @@ package factory
 
 import (
 	"github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/git_cli_wrapper"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"log"
 )
 
-// NewGitBranchInfo creates a new GitBranchInfo object (aka constructor)
+// NewGitBranchInfo creates a new GitBranchInfo object
 func NewGitBranchInfo(pkgConfig model.PkgConfig, branchName string) model.GitBranchInfo {
+
+	// ---- checkout branch, then get the info
 	git_cli_wrapper.CheckoutBranch(pkgConfig, branchName)
 
 	composerJson := getComposerJson(pkgConfig)
 	branchInfo := model.GitBranchInfo{
 		Name:                      branchName,
 		CommitId:                  git_cli_wrapper.GetCommitId(pkgConfig),
+		CommitIdShort:             git_cli_wrapper.GetCommitIdShort(pkgConfig),
 		CommitDate:                git_cli_wrapper.GetCommitDate(pkgConfig),
 		CommitAuthor:              git_cli_wrapper.GetCommitAuthor(pkgConfig),
+		CommitMessage:             git_cli_wrapper.GetCommitMessage(pkgConfig),
 		PackageVersion:            composerJson.Version,
 		ShopwareVersionConstraint: composerJson.Require["shopware/core"],
 	}
