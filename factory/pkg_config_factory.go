@@ -1,6 +1,6 @@
 package factory
 
-import "github.com/topdata-software-gmbh/topdata-package-service/model"
+import "github.com/topdata-software-gmbh/topdata-package-util/model"
 
 func NewPkgConfig(Name string) model.PkgConfig {
 	// FIXME: it should search the item in the loaded portfolio

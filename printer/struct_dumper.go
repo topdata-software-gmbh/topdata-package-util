@@ -3,8 +3,8 @@ package printer
 import (
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"os"
 )
 

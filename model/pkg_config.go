@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"path/filepath"
 )
 

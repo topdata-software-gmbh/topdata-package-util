@@ -3,10 +3,10 @@ package commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/commands/cache_commands"
-	"github.com/topdata-software-gmbh/topdata-package-service/commands/pkg_commands"
-	"github.com/topdata-software-gmbh/topdata-package-service/config"
-	"github.com/topdata-software-gmbh/topdata-package-service/globals"
+	"github.com/topdata-software-gmbh/topdata-package-util/commands/cache_commands"
+	"github.com/topdata-software-gmbh/topdata-package-util/commands/pkg_commands"
+	"github.com/topdata-software-gmbh/topdata-package-util/config"
+	"github.com/topdata-software-gmbh/topdata-package-util/globals"
 	"os"
 )
 

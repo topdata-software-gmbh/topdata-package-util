@@ -1,4 +1,4 @@
-module github.com/topdata-software-gmbh/topdata-package-service
+module github.com/topdata-software-gmbh/topdata-package-util
 
 go 1.22.0
 

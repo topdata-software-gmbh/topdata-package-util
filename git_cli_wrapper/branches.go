@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	_ "github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"strings"
 )
 

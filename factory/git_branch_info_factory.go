@@ -2,9 +2,9 @@ package factory
 
 import (
 	"github.com/fatih/color"
-	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
-	"github.com/topdata-software-gmbh/topdata-package-service/model"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/git_cli_wrapper"
+	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"log"
 )
 

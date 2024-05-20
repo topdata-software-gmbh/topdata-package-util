@@ -3,7 +3,7 @@ package cache_commands
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/app_constants"
+	"github.com/topdata-software-gmbh/topdata-package-util/app_constants"
 	"os"
 )
 

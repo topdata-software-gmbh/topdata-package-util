@@ -3,12 +3,12 @@ package pkg_commands
 import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-service/app_constants"
-	"github.com/topdata-software-gmbh/topdata-package-service/factory"
-	"github.com/topdata-software-gmbh/topdata-package-service/git_cli_wrapper"
-	"github.com/topdata-software-gmbh/topdata-package-service/globals"
-	"github.com/topdata-software-gmbh/topdata-package-service/pkg_zipper"
-	"github.com/topdata-software-gmbh/topdata-package-service/util"
+	"github.com/topdata-software-gmbh/topdata-package-util/app_constants"
+	"github.com/topdata-software-gmbh/topdata-package-util/factory"
+	"github.com/topdata-software-gmbh/topdata-package-util/git_cli_wrapper"
+	"github.com/topdata-software-gmbh/topdata-package-util/globals"
+	"github.com/topdata-software-gmbh/topdata-package-util/pkg_zipper"
+	"github.com/topdata-software-gmbh/topdata-package-util/util"
 	"path/filepath"
 	"time"
 )
