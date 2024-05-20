@@ -33,7 +33,7 @@ func LoadPackagePortfolioFile(pathConfigFile string) *model.PkgConfigList {
 
 	viper.AddConfigPath(".")
 	// TODO... fix these hardcoded paths?
-	viper.AddConfigPath("/topdata/topdata-package-service")
+	viper.AddConfigPath("/topdata/topdata-package-util")
 	viper.AddConfigPath("/topdata/topdata-package-portfolio")
 
 	viper.SetConfigFile(pathConfigFile)

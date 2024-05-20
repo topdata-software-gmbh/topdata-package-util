@@ -25,7 +25,7 @@ func Execute() {
 var PackagePortfolioFile string
 
 func init() {
-	appRootCommand.PersistentFlags().StringVar(&PackagePortfolioFile, "portfolio-file", "portfolio.yaml", "config file (default is portfolio)")
+	appRootCommand.PersistentFlags().StringVar(&PackagePortfolioFile, "portfolio-file", "portfolio.yaml", "config file")
 	pkg_commands.Register(appRootCommand)
 	cache_commands.Register(appRootCommand)
 
