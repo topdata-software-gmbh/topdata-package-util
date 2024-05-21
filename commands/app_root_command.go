@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-util/commands/cache_commands"
+	"github.com/topdata-software-gmbh/topdata-package-util/commands/git_commands"
 	"github.com/topdata-software-gmbh/topdata-package-util/commands/pkg_commands"
 	"github.com/topdata-software-gmbh/topdata-package-util/config"
 	"github.com/topdata-software-gmbh/topdata-package-util/globals"
@@ -28,6 +29,7 @@ func init() {
 	appRootCommand.PersistentFlags().StringVar(&PackagePortfolioFile, "portfolio-file", "portfolio.yaml", "config file")
 	pkg_commands.Register(appRootCommand)
 	cache_commands.Register(appRootCommand)
+	git_commands.Register(appRootCommand)
 
 	globals.PkgConfigList = config.LoadPackagePortfolioFile(PackagePortfolioFile)
 }
