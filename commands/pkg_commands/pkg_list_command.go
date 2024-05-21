@@ -38,6 +38,9 @@ var pkgListCommand = &cobra.Command{
 			pkgInfoList = pkgInfoList.FilterInShopware6Store()
 		}
 
+		// --- sort by name
+		pkgInfoList.SortByName()
+
 		printer.DumpPkgInfoListTable(pkgInfoList, displayMode)
 		return nil
 	},
