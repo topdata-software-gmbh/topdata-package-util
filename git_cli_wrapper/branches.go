@@ -9,6 +9,7 @@ import (
 	_ "github.com/fatih/color"
 	"github.com/topdata-software-gmbh/topdata-package-util/model"
 	"github.com/topdata-software-gmbh/topdata-package-util/util"
+	"os/exec"
 	"strings"
 )
 
@@ -83,10 +84,49 @@ func SwitchBranch(pkgConfig *model.PkgConfig, branchName string) {
 	_ = runGitCommandInClonedRepo(pkgConfig, "checkout", "-f", branchName)
 }
 
-func CompareBranches(pkgConfig *model.PkgConfig) {
+// commitExistsInBranch - private helper
+func commitExistsInBranch(pathGitRepoDir, commitId, branch string) bool {
+	cmd := exec.Command("git", "-C", pathGitRepoDir, "merge-base", "--is-ancestor", commitId, branch)
+	_, err := cmd.CombinedOutput()
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+// CompareBranches - compares N branches, returning a list of dicts
+func CompareBranches(pkgConfig *model.PkgConfig, branchNames []string) []map[string]string {
+
 	// Get all unique commits from both branches
 	gitCmd := "git -C " + pkgConfig.GetLocalGitRepoDir() + " log --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:'%h,%ad,%an,%s' --all | sort | uniq | sort -t',' -k2,2r"
 	println(gitCmd)
 	output := util.RunShellCommand(gitCmd, nil)
-	fmt.Println(output)
+	output = strings.TrimSpace(output)
+
+	// iterate over rows, split by newline
+	rows := strings.Split(output, "\n")
+	// iterate over rows, split by comma
+
+	var commits []map[string]string
+	for _, row := range rows {
+		fmt.Println(">> " + row)
+		commitId := strings.Split(row, ",")[0]
+
+		commit := map[string]string{
+			"commitId": commitId,
+			"date":     strings.Split(row, ",")[1],
+			"author":   strings.Split(row, ",")[2],
+			"message":  strings.Split(row, ",")[3],
+		}
+
+		// iterate over release branches (pkgInfo.ReleaseBranchNames)
+		for _, branch := range branchNames {
+			bExists := commitExistsInBranch(pkgConfig.GetLocalGitRepoDir(), commitId, branch)
+			commit[branch] = util.FormatBool(bExists, "yes", "")
+		}
+
+		commits = append(commits, commit)
+	}
+
+	return commits
 }

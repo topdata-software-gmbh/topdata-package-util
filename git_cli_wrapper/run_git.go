@@ -13,6 +13,7 @@ import (
 	"strings"
 )
 
+// runGitCommandInClonedRepo runs a git command in the cloned repository and returns the output
 func runGitCommandInClonedRepo(pkgConfig *model.PkgConfig, args ...string) string {
 	args = append([]string{"-C", pkgConfig.GetLocalGitRepoDir()}, args...)
 
