@@ -152,7 +152,7 @@ func DumpBranchesDiffTable(branchNames []string, branchesDiff []map[string]strin
 	headerRow := table.Row{
 		"commitId",
 		"date",
-		"author",
+		//		"author",
 		"message",
 	}
 	// append the branchNames to the header row
@@ -166,7 +166,7 @@ func DumpBranchesDiffTable(branchNames []string, branchesDiff []map[string]strin
 		row := table.Row{
 			commit["commitId"],
 			commit["date"],
-			commit["author"],
+			//			commit["author"],
 			commit["message"],
 		}
 		// append the branchNames to the row

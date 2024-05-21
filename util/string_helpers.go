@@ -32,3 +32,10 @@ func FormatBool(store bool, trueText string, falseText string) string {
 		return falseText
 	}
 }
+
+func Truncate(s string, maxLength int) string {
+	if len(s) > maxLength {
+		return s[:maxLength] + "…"
+	}
+	return s
+}

@@ -115,8 +115,8 @@ func CompareBranches(pkgConfig *model.PkgConfig, branchNames []string) []map[str
 		commit := map[string]string{
 			"commitId": commitId,
 			"date":     strings.Split(row, ",")[1],
-			"author":   strings.Split(row, ",")[2],
-			"message":  strings.Split(row, ",")[3],
+			// "author":   strings.Split(row, ",")[2],
+			"message": util.Truncate(strings.Split(row, ",")[3], 50),
 		}
 
 		// iterate over release branches (pkgInfo.ReleaseBranchNames)
