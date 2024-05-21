@@ -9,7 +9,7 @@ import (
 )
 
 // NewGitBranchInfo creates a new GitBranchInfo object
-func NewGitBranchInfo(pkgConfig model.PkgConfig, branchName string) model.GitBranchInfo {
+func NewGitBranchInfo(pkgConfig *model.PkgConfig, branchName string) model.GitBranchInfo {
 
 	// ---- checkout branch, then get the info
 	git_cli_wrapper.CheckoutBranch(pkgConfig, branchName)
@@ -29,8 +29,8 @@ func NewGitBranchInfo(pkgConfig model.PkgConfig, branchName string) model.GitBra
 }
 
 // NewBranchInfos creates multiple GitBranchInfo objects, one for each release branch
-func NewBranchInfos(repoConfig model.PkgConfig, onlyReleaseBranches bool) []model.GitBranchInfo {
-	releaseBranchNames := git_cli_wrapper.GetLocalBranchNames(repoConfig)
+func NewBranchInfos(pkgConfig *model.PkgConfig, onlyReleaseBranches bool) []model.GitBranchInfo {
+	releaseBranchNames := git_cli_wrapper.GetLocalBranchNames(pkgConfig)
 	if onlyReleaseBranches {
 		releaseBranchNames = util.FilterStringSlicePositive(releaseBranchNames, `^(main|main-.*|release-.*)$`)
 	}
@@ -39,17 +39,17 @@ func NewBranchInfos(repoConfig model.PkgConfig, onlyReleaseBranches bool) []mode
 	releaseBranches := make([]model.GitBranchInfo, len(releaseBranchNames))
 	for idx, branchName := range releaseBranchNames {
 		// fmt.Println("-----> " + branchName)
-		releaseBranches[idx] = NewGitBranchInfo(repoConfig, branchName)
+		releaseBranches[idx] = NewGitBranchInfo(pkgConfig, branchName)
 	}
 	// color.Blue("Release branches: %v\n", releaseBranches)
 	return releaseBranches
 }
 
-func getComposerJson(repoConfig model.PkgConfig) model.ComposerJSON {
+func getComposerJson(pkgConfig *model.PkgConfig) model.ComposerJSON {
 	var composerJson model.ComposerJSON
 
 	// Load data from composer.json file
-	err := composerJson.LoadFromFile(repoConfig.GetAbsolutePath("composer.json"))
+	err := composerJson.LoadFromFile(pkgConfig.GetAbsolutePath("composer.json"))
 	if err != nil {
 		log.Fatalln("Error loading composer.json: " + err.Error())
 	}

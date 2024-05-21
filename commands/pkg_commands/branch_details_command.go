@@ -18,7 +18,7 @@ var showGitBranchDetailsCommand = &cobra.Command{
 
 		// ---- args
 		pkgConfig := factory.NewPkgConfig(args[0])
-		gitBranchInfo := factory.NewGitBranchInfo(pkgConfig, args[1])
+		gitBranchInfo := factory.NewGitBranchInfo(&pkgConfig, args[1])
 
 		// ---- other info
 		//pkgInfo := factory.NewPkgInfo(*pkgConfig)

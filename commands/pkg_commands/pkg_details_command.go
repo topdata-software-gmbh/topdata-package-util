@@ -23,21 +23,25 @@ var pkgDetailsCommand = &cobra.Command{
 		// pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
 		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 		pkgConfig := globals.PkgConfigList.FindOneByNameOrFail(args[0])
-		git_cli_wrapper.RefreshRepo(*pkgConfig)
+		git_cli_wrapper.RefreshRepo(pkgConfig)
 
 		// ---- other info
 		//pkgInfo := factory.NewPkgInfo(*pkgConfig)
 		dict := map[string]string{
-			"MachineName":        pkgConfig.Name,
-			"Local Repo":         pkgConfig.GetLocalGitRepoDir(),
+			"Name":               pkgConfig.Name,
+			"Cloned Repo":        pkgConfig.GetLocalGitRepoDir(),
 			"Git URL":            pkgConfig.URL,
 			"In Shopware6 Store": util.FormatBool(pkgConfig.InShopware6Store, "yes", ""),
 		}
 		printer.DumpDefinitionList(dict)
 
 		// ---- branches in a table
-		branchInfoList := factory.NewBranchInfos(*pkgConfig, !bShowAllBranches)
+		branchInfoList := factory.NewBranchInfos(pkgConfig, !bShowAllBranches)
 		printer.DumpGitBranchInfoList(model.GitBranchInfoList{GitBranchInfos: branchInfoList})
+
+		// ---- branches diff table (WIP)
+		git_cli_wrapper.CompareBranches(pkgConfig)
+
 	},
 }
 

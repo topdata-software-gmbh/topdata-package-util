@@ -5,32 +5,30 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/topdata-software-gmbh/topdata-package-util/model"
 	"log"
 	"regexp"
-	"sort"
 )
 
-func GetRepositoryBranches_old(repoConfig model.PkgConfig) ([]string, error) {
-	fmt.Println(">>>> GetRepositoryBranches_old: " + repoConfig.Name)
-	// ---- fetch branches from the repoConfig
-	gitDir := repoConfig.GetLocalGitRepoDir()
-
-	// ---- git clone / pull
-	repo, err := refreshRepo_old(repoConfig, gitDir)
-	if err != nil {
-		fmt.Println("Error fetching repo to " + gitDir + ": " + err.Error())
-		return nil, err
-	}
-
-	remoteBranches, err := getRemoteBranches(repoConfig, repo)
-	if err != nil {
-		fmt.Println("Error fetching remote branches to " + gitDir + ": " + err.Error())
-		return nil, err
-	}
-
-	return remoteBranches, nil
-}
+//func GetRepositoryBranches_old(pkgConfig *model.PkgConfig) ([]string, error) {
+//	fmt.Println(">>>> GetRepositoryBranches_old: " + pkgConfig.Name)
+//	// ---- fetch branches from the pkgConfig
+//	gitDir := pkgConfig.GetLocalGitRepoDir()
+//
+//	// ---- git clone / pull
+//	repo, err := refreshRepo_old(pkgConfig, gitDir)
+//	if err != nil {
+//		fmt.Println("Error fetching repo to " + gitDir + ": " + err.Error())
+//		return nil, err
+//	}
+//
+//	remoteBranches, err := getRemoteBranches(pkgConfig, repo)
+//	if err != nil {
+//		fmt.Println("Error fetching remote branches to " + gitDir + ": " + err.Error())
+//		return nil, err
+//	}
+//
+//	return remoteBranches, nil
+//}
 
 func getBranches(repo *git.Repository) ([]string, error) {
 	// ---- branches from the local repository
@@ -49,39 +47,39 @@ func getBranches(repo *git.Repository) ([]string, error) {
 	return branches, nil
 }
 
-func getRemoteBranches(repoConf model.PkgConfig, repo *git.Repository) ([]string, error) {
-	// ---- branches from the remote repository
-	branches := make([]string, 0)
-	remote, err := repo.Remote("origin")
-	if err != nil {
-		fmt.Println("Error fetching remote branches: " + err.Error())
-		return nil, err
-	}
-
-	listOptions := &git.ListOptions{}
-	publicKeys, err := getAuth(repoConf, err)
-	if err != nil {
-		return nil, err
-	}
-	if publicKeys != nil {
-		listOptions.Auth = publicKeys
-	}
-
-	refs, err := remote.List(listOptions)
-	if err != nil {
-		fmt.Println("Error fetching remote branches: " + err.Error())
-		return nil, err
-	}
-
-	for _, ref := range refs {
-		branches = append(branches, ref.Name().Short())
-	}
-
-	// Sort the branches slice in increasing order.
-	sort.Strings(branches)
-
-	return branches, nil
-}
+//func getRemoteBranches(pkgConfig *model.PkgConfig, repo *git.Repository) ([]string, error) {
+//	// ---- branches from the remote repository
+//	branches := make([]string, 0)
+//	remote, err := repo.Remote("origin")
+//	if err != nil {
+//		fmt.Println("Error fetching remote branches: " + err.Error())
+//		return nil, err
+//	}
+//
+//	listOptions := &git.ListOptions{}
+//	publicKeys, err := getAuth(pkgConfig, err)
+//	if err != nil {
+//		return nil, err
+//	}
+//	if publicKeys != nil {
+//		listOptions.Auth = publicKeys
+//	}
+//
+//	refs, err := remote.List(listOptions)
+//	if err != nil {
+//		fmt.Println("Error fetching remote branches: " + err.Error())
+//		return nil, err
+//	}
+//
+//	for _, ref := range refs {
+//		branches = append(branches, ref.Name().Short())
+//	}
+//
+//	// Sort the branches slice in increasing order.
+//	sort.Strings(branches)
+//
+//	return branches, nil
+//}
 
 // FilterBranches_old filters the given branches and returns only those that are either "server" or start with "release-".
 // It takes a slice of strings representing the branch names as input and returns a slice of strings containing the filtered branch names.
@@ -97,24 +95,24 @@ func FilterBranches_old(branches []string, regexPattern string) []string {
 	return releaseBranches
 }
 
-func GetCommitId(repoConfig model.PkgConfig, branchName string) (string, error) {
-	destGitDir := repoConfig.GetLocalGitRepoDir()
-	repo, err := refreshRepo_old(repoConfig, destGitDir)
-
-	if err != nil {
-		log.Println("Error fetching repo to " + destGitDir + ": " + err.Error())
-		return "", err
-	}
-
-	checkoutBranch(repo, branchName)
-
-	// Get the commit ID for the branchName
-	ref, err := repo.Reference(plumbing.NewBranchReferenceName(branchName), true)
-	if err != nil {
-		return "", err
-	}
-	return ref.Hash().String(), nil
-}
+//func GetCommitId(pkgConfig *model.PkgConfig, branchName string) (string, error) {
+//	destGitDir := pkgConfig.GetLocalGitRepoDir()
+//	repo, err := refreshRepo_old(pkgConfig, destGitDir)
+//
+//	if err != nil {
+//		log.Println("Error fetching repo to " + destGitDir + ": " + err.Error())
+//		return "", err
+//	}
+//
+//	checkoutBranch(repo, branchName)
+//
+//	// Get the commit ID for the branchName
+//	ref, err := repo.Reference(plumbing.NewBranchReferenceName(branchName), true)
+//	if err != nil {
+//		return "", err
+//	}
+//	return ref.Hash().String(), nil
+//}
 
 func checkoutBranch(r *git.Repository, branchName string) {
 

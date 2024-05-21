@@ -10,7 +10,7 @@ import (
 )
 
 // NewPkgInfo creates a new PkgInfo object (aka constructor)
-func NewPkgInfo(pkgConfig model.PkgConfig) model.PkgInfo {
+func NewPkgInfo(pkgConfig *model.PkgConfig) model.PkgInfo {
 
 	color.Blue("//////////////// NewPkgInfo: %s", pkgConfig.Name)
 
@@ -32,7 +32,7 @@ func NewPkgInfoList(PkgConfigList *model.PkgConfigList) *model.PkgInfoList {
 	pkgInfos := make([]model.PkgInfo, len(PkgConfigList.PkgConfigs))
 
 	for i, pkgConfig := range PkgConfigList.PkgConfigs {
-		pkgInfos[i] = NewPkgInfo(pkgConfig)
+		pkgInfos[i] = NewPkgInfo(&pkgConfig)
 	}
 
 	return &model.PkgInfoList{

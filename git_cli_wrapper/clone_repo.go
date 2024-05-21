@@ -6,15 +6,15 @@ import (
 	"github.com/topdata-software-gmbh/topdata-package-util/util"
 )
 
-func CloneRepo(repoConfig model.PkgConfig) {
+func CloneRepo(pkgConfig *model.PkgConfig) {
 	// Execute the git command to clone the repository
-	folderName := repoConfig.GetLocalGitRepoDir()
+	folderName := pkgConfig.GetLocalGitRepoDir()
 
-	_ = util.RunCommand("git", "clone", repoConfig.URL, folderName)
+	_ = util.RunCommand("git", "clone", pkgConfig.URL, folderName)
 }
 
 // RefreshRepo .. aka DownsyncRepo .... pulls all remote branches and checks them out locally
-func RefreshRepo(pkgConfig model.PkgConfig) {
+func RefreshRepo(pkgConfig *model.PkgConfig) {
 	color.Blue(">>>> Refreshing repo: %s", pkgConfig.Name)
 	// check if repo exists
 	if !pkgConfig.IsLocalRepoExisting() {
@@ -32,9 +32,9 @@ func RefreshRepo(pkgConfig model.PkgConfig) {
 	// check out each remote branch locally if it doesn't already exist
 	for _, branchName := range remoteBranchNames {
 		if util.StringSliceContains(localBranchNames, branchName) {
-			_ = runGitCommand(pkgConfig, "checkout", "-f", branchName)
+			_ = runGitCommandInClonedRepo(pkgConfig, "checkout", "-f", branchName)
 		} else {
-			_ = runGitCommand(pkgConfig, "checkout", "-b", branchName, "origin/"+branchName)
+			_ = runGitCommandInClonedRepo(pkgConfig, "checkout", "-b", branchName, "origin/"+branchName)
 		}
 	}
 	// TODO: remove stale local branches

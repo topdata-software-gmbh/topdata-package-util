@@ -21,7 +21,7 @@ var testGitCommand = &cobra.Command{
 		for _, pkgConfig := range globals.PkgConfigList.PkgConfigs {
 			color.Cyan("Cloning repository %s from %s\n", pkgConfig.Name, pkgConfig.URL)
 			// CloneRepo the repository
-			git_cli_wrapper2.CloneRepo(pkgConfig)
+			git_cli_wrapper2.CloneRepo(&pkgConfig)
 			//// Fetch the branches of the repository
 
 			color.Cyan("Fetching branches for repository %s\n", pkgConfig.Name)

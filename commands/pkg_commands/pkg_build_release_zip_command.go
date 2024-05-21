@@ -25,10 +25,10 @@ var buildReleaseZipCommand = &cobra.Command{
 		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
 		pkgConfig := globals.PkgConfigList.FindOneByNameOrFail(packageName)
 
-		gitBranchInfo := factory.NewGitBranchInfo(*pkgConfig, releaseBranchName)
+		gitBranchInfo := factory.NewGitBranchInfo(pkgConfig, releaseBranchName)
 
 		// -- switch to the release branch
-		git_cli_wrapper.SwitchBranch(*pkgConfig, releaseBranchName)
+		git_cli_wrapper.SwitchBranch(pkgConfig, releaseBranchName)
 
 		//  -- update local git repository
 		// TODO... git_cli_wrapper.UpdateRepo(*pkgConfig)

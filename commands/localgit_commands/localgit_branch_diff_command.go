@@ -1,8 +1,10 @@
-package git_commands
+package localgit_commands
 
 import (
 	"github.com/spf13/cobra"
 )
+
+// TODO: finish this command
 
 var compareBranchesCommand = &cobra.Command{
 	Use:   "compare-branches [branch1] [branch2]",
@@ -14,12 +16,12 @@ var compareBranchesCommand = &cobra.Command{
 		branch2 := args[1]
 
 		// print the branch names
-		cmd.Printf("Comparing branches %s and %s\n", branch1, branch2)
+		cmd.Printf("TODO: Comparing branches %s and %s in CWD repo\n", branch1, branch2)
 
 		return nil
 	},
 }
 
 func init() {
-	gitRootCommand.AddCommand(compareBranchesCommand)
+	localgitRootCommand.AddCommand(compareBranchesCommand)
 }
