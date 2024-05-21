@@ -109,7 +109,7 @@ func CompareBranches(pkgConfig *model.PkgConfig, branchNames []string) []map[str
 
 	var commits []map[string]string
 	for _, row := range rows {
-		fmt.Println(">> " + row)
+		// fmt.Println(">> " + row)
 		commitId := strings.Split(row, ",")[0]
 
 		commit := map[string]string{

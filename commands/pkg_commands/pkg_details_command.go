@@ -1,7 +1,6 @@
 package pkg_commands
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/topdata-software-gmbh/topdata-package-util/factory"
 	"github.com/topdata-software-gmbh/topdata-package-util/git_cli_wrapper"
@@ -43,7 +42,8 @@ var pkgDetailsCommand = &cobra.Command{
 		// ---- branches diff table (WIP, TODO)
 		pkgInfo := factory.NewPkgInfo(pkgConfig)
 		ret := git_cli_wrapper.CompareBranches(pkgConfig, pkgInfo.ReleaseBranchNames)
-		fmt.Println(ret)
+		printer.DumpBranchesDiffTable(pkgInfo.ReleaseBranchNames, ret)
+		// fmt.Println(ret)
 		// fmt.Println(branchDiffs)
 	},
 }

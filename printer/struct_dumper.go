@@ -144,3 +144,37 @@ func DumpPkgAndBranchTable(ret []model.PkgAndBranch) {
 
 	t.Render()
 }
+
+func DumpBranchesDiffTable(branchNames []string, branchesDiff []map[string]string) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	// ---- header
+	headerRow := table.Row{
+		"commitId",
+		"date",
+		"author",
+		"message",
+	}
+	// append the branchNames to the header row
+	for _, branchName := range branchNames {
+		headerRow = append(headerRow, branchName)
+	}
+	t.AppendHeader(headerRow)
+
+	// ---- rows
+	for _, commit := range branchesDiff {
+		row := table.Row{
+			commit["commitId"],
+			commit["date"],
+			commit["author"],
+			commit["message"],
+		}
+		// append the branchNames to the row
+		for _, branchName := range branchNames {
+			row = append(row, commit[branchName])
+		}
+		t.AppendRow(row)
+	}
+
+	t.Render()
+}
