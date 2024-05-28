@@ -27,7 +27,7 @@ func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig,
 }
 
 func LoadPackagePortfolioFile(pathConfigFile string) *model.PkgConfigList {
-	color.Yellow(">>>> Reading portfolio file %s ... \n", pathConfigFile)
+	color.Yellow(">>>> XXX Reading portfolio file %s ... \n", pathConfigFile)
 
 	var configs []model.PkgConfig
 
