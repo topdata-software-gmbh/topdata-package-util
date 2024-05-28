@@ -26,7 +26,7 @@ func Execute() {
 var PackagePortfolioFile string
 
 func init() {
-	appRootCommand.PersistentFlags().StringVar(&PackagePortfolioFile, "portfolio-file", "portfolio.yaml", "config file")
+	appRootCommand.PersistentFlags().StringVar(&PackagePortfolioFile, "portfolio-file", "/topdata/topdata-package-portfolio/portfolio.yaml", "config file") // FIXME: make the default path configurable (~/.config/topdata-package-util.config ?)
 	pkg_commands.Register(appRootCommand)
 	cache_commands.Register(appRootCommand)
 	localgit_commands.Register(appRootCommand)
