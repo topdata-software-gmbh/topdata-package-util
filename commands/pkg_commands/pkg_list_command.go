@@ -20,7 +20,9 @@ var pkgListCommand = &cobra.Command{
 		// ---- init flags
 		displayMode, _ := cmd.Flags().GetString("display-mode")
 		noCache, _ := cmd.Flags().GetBool("no-cache")
-		onlyInStore, _ := cmd.Flags().GetBool("only-in-store")
+		// onlyInStore, _ := cmd.Flags().GetBool("only-in-store")
+		all, _ := cmd.Flags().GetBool("all")
+
 		// 		shopwareVersion, _ := cmd.Flags().GetString("shopware-version")
 
 		// ----
@@ -34,7 +36,7 @@ var pkgListCommand = &cobra.Command{
 		pkgInfoList = factory.NewPkgInfoListCached(globals.PkgConfigList, noCache)
 
 		// ---- filter
-		if onlyInStore {
+		if !all {
 			pkgInfoList = pkgInfoList.FilterInShopware6Store()
 		}
 
@@ -62,9 +64,10 @@ var pkgListCommand = &cobra.Command{
 
 func init() {
 	pkgListCommand.Flags().StringP("shopware-version", "s", "", "Shopware version to find the branch for, eg 6.5.1")
-	pkgListCommand.Flags().BoolP("only-in-store", "o", false, "Show only packages that are in the Shopware6 store")
+	// pkgListCommand.Flags().BoolP("only-in-store", "o", false, "Show only packages that are in the Shopware6 store")
 	pkgListCommand.Flags().BoolP("no-cache", "n", false, "Do not use existing cache, force rebuilding the cache")
 	pkgListCommand.Flags().StringP("display-mode", "d", "compact", "display mode for the list, either 'compact' or 'full")
+	pkgListCommand.Flags().BoolVarP(&bShowAllBranches, "all", "a", false, "Show all (not only the ones in the store)")
 	pkgRootCommand.AddCommand(pkgListCommand)
 
 	//viper.BindPFlag("shopware-version", pkgListCommand.Flags().Lookup("shopware-version"))
