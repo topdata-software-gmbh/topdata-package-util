@@ -1,5 +1,5 @@
 webserver:
-    port: "8080"
+    port: "8282"
     username: "test"
     password: "test"
 

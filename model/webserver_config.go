@@ -1,8 +1,7 @@
 package model
 
 type WebserverConfig struct {
-	Port     uint16  `json:"port"`
-	Username *string `json:"username"`
-	Password *string `json:"password"`
-	//	RepositoryConfigs []PkgConfig `json:"repositories"`
+	Port     uint16 `json:"port" yaml:"port"`
+	Username string `json:"username" yaml:"username"`
+	Password string `json:"password" yaml:"password"`
 }

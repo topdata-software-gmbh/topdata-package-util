@@ -6,7 +6,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
-	"github.com/topdata-software-gmbh/topdata-package-util/config"
+	"github.com/spf13/viper"
 	"github.com/topdata-software-gmbh/topdata-package-util/controllers"
 	"github.com/topdata-software-gmbh/topdata-package-util/gin_middleware"
 	"github.com/topdata-software-gmbh/topdata-package-util/globals"
@@ -15,13 +15,9 @@ import (
 	"net/http"
 )
 
-var webserverConfig model.WebserverConfig
-
 var (
 	portFromCliOption string
 )
-
-var webserverConfigFile string
 
 var webserverCommand = &cobra.Command{
 	Use:   "webserver",
@@ -32,20 +28,20 @@ var webserverCommand = &cobra.Command{
 
 		var err error
 
-		// ---- webserver config .. FIXME.. we use now just one global config for all functionalities (except the repo portfolio)
-		fmt.Printf("---- Reading webserver config file: %s\n", webserverConfigFile)
-		webserverConfig, err = config.LoadWebserverConfig(webserverConfigFile)
+		// ---- load webserver webserverConfig
+
+		var webserverConfig model.WebserverConfig
+		err = viper.UnmarshalKey("webserver", &webserverConfig)
 		if err != nil {
-			log.Fatalf("Failed to load webserverConfig: %s", err)
+			log.Fatalf("unable to decode into struct, %v", err)
 		}
 
-		if webserverConfig.Username != nil && webserverConfig.Password != nil {
-			router.Use(gin.BasicAuth(gin.Accounts{
-				*webserverConfig.Username: *webserverConfig.Password,
-			}))
+		fmt.Printf("WebserverConfig: %+v\n", webserverConfig)
+		if webserverConfig.Username != "" && webserverConfig.Password != "" {
+			router.Use(gin.BasicAuth(gin.Accounts{webserverConfig.Username: webserverConfig.Password}))
 		}
 
-		// pkgConfigList := config.LoadPackagePortfolioFile(PackagePortfolioFile)
+		// pkgConfigList := webserverConfig.LoadPackagePortfolioFile(PackagePortfolioFile)
 
 		// ---- register loaded configs in middlewares
 		router.Use(gin_middleware.WebserverConfigMiddleware(webserverConfig))
@@ -90,6 +86,5 @@ func pingHandler(c *gin.Context) {
 }
 
 func init() {
-	webserverCommand.Flags().StringVarP(&webserverConfigFile, "webserver-config-file", "w", "webserver-config.yaml", "Path to config file with settings for the webserver")
 	appRootCommand.AddCommand(webserverCommand)
 }

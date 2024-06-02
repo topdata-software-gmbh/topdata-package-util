@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"github.com/topdata-software-gmbh/topdata-package-util/model"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
@@ -10,23 +9,23 @@ import (
 )
 
 // TODO: remove this function
-func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig, error) {
-	fmt.Printf(">>>> Reading webserver config file: %s\n", pathWebserverConfigFile)
-	var config model.WebserverConfig
-
-	viper.SetConfigFile(pathWebserverConfigFile)
-	err := viper.ReadInConfig()
-	if err != nil {
-		return config, fmt.Errorf("failed to load webserver config: %w", err)
-	}
-
-	err = viper.Unmarshal(&config)
-	if err != nil {
-		return config, fmt.Errorf("failed to unmarshal webserver config: %w", err)
-	}
-
-	return config, nil
-}
+//func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig, error) {
+//	fmt.Printf(">>>> Reading webserver config file: %s\n", pathWebserverConfigFile)
+//	var config model.WebserverConfig
+//
+//	viper.SetConfigFile(pathWebserverConfigFile)
+//	err := viper.ReadInConfig()
+//	if err != nil {
+//		return config, fmt.Errorf("failed to load webserver config: %w", err)
+//	}
+//
+//	err = viper.Unmarshal(&config)
+//	if err != nil {
+//		return config, fmt.Errorf("failed to unmarshal webserver config: %w", err)
+//	}
+//
+//	return config, nil
+//}
 
 // LoadPackagePortfolioFile reads a YAML file with package definitions
 func LoadPackagePortfolioFile(pathConfigFile string) *model.PkgConfigList {
