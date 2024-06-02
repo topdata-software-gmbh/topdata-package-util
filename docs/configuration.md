@@ -2,8 +2,9 @@
 
 the configuration is looked for in these locations:
 
-- `$HOME/.config/topdata-package-util.yaml`
+- `./topdata-package-util.yaml`
 - `/etc/topdata-package-util.yaml`
+- `$HOME/.config/topdata-package-util.yaml`
 
 
 ## example config file
