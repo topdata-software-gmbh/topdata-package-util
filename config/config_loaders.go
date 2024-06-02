@@ -2,12 +2,14 @@ package config
 
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"github.com/spf13/viper"
 	"github.com/topdata-software-gmbh/topdata-package-util/model"
+	"gopkg.in/yaml.v3"
+	"io/ioutil"
 	"log"
 )
 
+// TODO: remove this function
 func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig, error) {
 	fmt.Printf(">>>> Reading webserver config file: %s\n", pathWebserverConfigFile)
 	var config model.WebserverConfig
@@ -26,29 +28,24 @@ func LoadWebserverConfig(pathWebserverConfigFile string) (model.WebserverConfig,
 	return config, nil
 }
 
+// LoadPackagePortfolioFile reads a YAML file with package definitions
 func LoadPackagePortfolioFile(pathConfigFile string) *model.PkgConfigList {
-	color.Yellow(">>>> XXX Reading portfolio file %s ... \n", pathConfigFile)
+	fmt.Printf(">>>> Reading portfolio file %s ... \n", pathConfigFile)
 
-	var configs []model.PkgConfig
-
-	viper.AddConfigPath(".")
-	// TODO... fix these hardcoded paths?
-	viper.AddConfigPath("/topdata/topdata-package-util")
-	viper.AddConfigPath("/topdata/topdata-package-portfolio")
-
-	viper.SetConfigFile(pathConfigFile)
-	if err := viper.ReadInConfig(); err != nil {
+	// ---- Read the file
+	data, err := ioutil.ReadFile(pathConfigFile)
+	if err != nil {
 		log.Fatalf("error reading YAML file: %v", err)
 	}
-	if err := viper.UnmarshalKey("items", &configs); err != nil {
+
+	// ---- Unmarshal the data
+	var portfolio model.PkgConfigList
+	err = yaml.Unmarshal(data, &portfolio)
+	if err != nil {
 		log.Fatalf("error unmarshalling: %v", err)
 	}
-	machineName := viper.GetString("machineName")
-	//	fmt.Print("Loaded " + pathConfigFile + "with " + len(configs) + " items\n")
-	fmt.Printf("Loaded %s with %d items\n", pathConfigFile, len(configs))
 
-	return &model.PkgConfigList{
-		MachineName: machineName,
-		PkgConfigs:  configs,
-	}
+	fmt.Printf("Loaded %s with %d items\n", pathConfigFile, len(portfolio.Items))
+
+	return &portfolio
 }

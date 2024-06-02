@@ -20,8 +20,8 @@ func runGitCommandInClonedRepo(pkgConfig *model.PkgConfig, args ...string) strin
 	cmd := exec.Command("git", args...)
 
 	// set environment variable for ssh key GIT_SSH_COMMAND='/usr/bin/ssh -i /path/to/key'
-	if pkgConfig.PathSshKey != nil {
-		extraEnv := fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", *pkgConfig.PathSshKey)
+	if pkgConfig.PathSshKey != "" {
+		extraEnv := fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", pkgConfig.PathSshKey)
 		cmd.Env = append(os.Environ(), extraEnv)
 	}
 

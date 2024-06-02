@@ -27,8 +27,8 @@ func GetRemoteBranchNames(pkgConfig *model.PkgConfig) []string {
 	color.Blue(">>>> GetRemoteBranchNames: " + pkgConfig.Name)
 	// extra env to set ssh key
 	var extraEnv []string
-	if pkgConfig.PathSshKey != nil {
-		extraEnv = append(extraEnv, fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", *pkgConfig.PathSshKey))
+	if pkgConfig.PathSshKey != "" {
+		extraEnv = append(extraEnv, fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", pkgConfig.PathSshKey))
 	}
 
 	// run shell command

@@ -15,10 +15,10 @@ var testGitCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// pathPackagePortfolioFile, _ := cmd.Flags().GetString("PackagePortfolioFile")
 		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
-		color.Cyan("Loaded %d repository configs\n", len(globals.PkgConfigList.PkgConfigs))
+		color.Cyan("Loaded %d repository configs\n", len(globals.PkgConfigList.Items))
 
 		// iterate over the repository configs
-		for _, pkgConfig := range globals.PkgConfigList.PkgConfigs {
+		for _, pkgConfig := range globals.PkgConfigList.Items {
 			color.Cyan("Cloning repository %s from %s\n", pkgConfig.Name, pkgConfig.URL)
 			// CloneRepo the repository
 			git_cli_wrapper2.CloneRepo(&pkgConfig)

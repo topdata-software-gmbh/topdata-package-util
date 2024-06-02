@@ -21,10 +21,6 @@ var (
 	portFromCliOption string
 )
 
-//func init() {
-//	flag.StringVar(&portFromCliOption, "port", "", "port to run the server on")
-//}
-
 var webserverConfigFile string
 
 var webserverCommand = &cobra.Command{
@@ -36,7 +32,7 @@ var webserverCommand = &cobra.Command{
 
 		var err error
 
-		// ---- webserver config
+		// ---- webserver config .. FIXME.. we use now just one global config for all functionalities (except the repo portfolio)
 		fmt.Printf("---- Reading webserver config file: %s\n", webserverConfigFile)
 		webserverConfig, err = config.LoadWebserverConfig(webserverConfigFile)
 		if err != nil {
@@ -62,7 +58,7 @@ var webserverCommand = &cobra.Command{
 		router.GET("/repository-details/:name", controllers.GetRepositoryDetailsHandler)
 
 		// ----
-		color.Cyan("Loaded %d repository configs\n", len(globals.PkgConfigList.PkgConfigs))
+		color.Cyan("Loaded %d repository configs\n", len(globals.PkgConfigList.Items))
 
 		// ---- get port (TODO: remove, use spf13/viper)
 		finalPort := portFromCliOption

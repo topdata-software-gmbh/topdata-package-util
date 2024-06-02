@@ -8,7 +8,7 @@ import (
 func GetRepositoriesHandler(c *gin.Context) {
 	//PkgConfigList := c.MustGet("PkgConfigList").(*model.PkgConfigList)
 	//
-	//repoInfos, err := git_repo__old.GetRepoInfos(PkgConfigList.PkgConfigs, 10)
+	//repoInfos, err := git_repo__old.GetRepoInfos(PkgConfigList.Items, 10)
 	//if err != nil {
 	//	c.JSON(http.StatusInternalServerError, gin.H{
 	//		"error": err.Error(),
@@ -22,7 +22,7 @@ func GetRepositoryDetailsHandler(c *gin.Context) {
 	//PkgConfigList := c.MustGet("PkgConfigList").(*model.PkgConfigList)
 	//
 	//repoName := c.Param("name")
-	//pkgConfig, err := git_repo__old.GetRepoDetails_old(repoName, PkgConfigList.PkgConfigs)
+	//pkgConfig, err := git_repo__old.GetRepoDetails_old(repoName, PkgConfigList.Items)
 	//
 	//if err != nil {
 	//	c.JSON(http.StatusInternalServerError, gin.H{

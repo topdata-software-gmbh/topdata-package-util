@@ -29,9 +29,9 @@ func NewPkgInfo(pkgConfig *model.PkgConfig) model.PkgInfo {
 }
 
 func NewPkgInfoList(PkgConfigList *model.PkgConfigList) *model.PkgInfoList {
-	pkgInfos := make([]model.PkgInfo, len(PkgConfigList.PkgConfigs))
+	pkgInfos := make([]model.PkgInfo, len(PkgConfigList.Items))
 
-	for i, pkgConfig := range PkgConfigList.PkgConfigs {
+	for i, pkgConfig := range PkgConfigList.Items {
 		pkgInfos[i] = NewPkgInfo(&pkgConfig)
 	}
 
