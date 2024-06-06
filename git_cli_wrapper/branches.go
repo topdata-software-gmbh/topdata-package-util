@@ -77,7 +77,7 @@ func GetCommitAuthor(pkgConfig *model.PkgConfig) string {
 
 func CheckoutBranch(pkgConfig *model.PkgConfig, branchName string) {
 	_ = runGitCommandInClonedRepo(pkgConfig, "checkout", "-f", branchName)
-	_ = runGitCommandInClonedRepo(pkgConfig, "pull")
+	_ = runGitCommandInClonedRepo(pkgConfig, "pull", "--rebase")
 }
 
 func SwitchBranch(pkgConfig *model.PkgConfig, branchName string) {
