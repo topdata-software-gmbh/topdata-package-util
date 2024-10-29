@@ -19,11 +19,12 @@ func NewPkgInfo(pkgConfig *model.PkgConfig) model.PkgInfo {
 	regex := `^(main|main-.*|release-.*)$` // TODO: the regex should be part of the service config or even pkgConfig
 
 	return model.PkgInfo{
-		PkgConfig: pkgConfig,
-		// Name:               pkgConfig.Name,
-		// URL:                pkgConfig.URL,
+		PkgConfig:          pkgConfig,
 		ReleaseBranchNames: util.FilterStringSlicePositive(branchNames, regex),
 		OtherBranchNames:   util.FilterStringSliceNegative(branchNames, regex),
+		LastCommitToMainAt: git_cli_wrapper2.GetLastCommitToMainAt(pkgConfig),
+		// Name:               pkgConfig.Name,
+		// URL:                pkgConfig.URL,
 	}
 
 }

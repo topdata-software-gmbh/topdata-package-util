@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-// runGitCommandInClonedRepo runs a git command in the cloned repository and returns the output
+// runGitCommandInClonedRepo remains unchanged - keeps the fatal error handling
 func runGitCommandInClonedRepo(pkgConfig *model.PkgConfig, args ...string) string {
 	args = append([]string{"-C", pkgConfig.GetLocalGitRepoDir()}, args...)
 
@@ -35,4 +35,27 @@ func runGitCommandInClonedRepo(pkgConfig *model.PkgConfig, args ...string) strin
 	}
 
 	return string(output)
+}
+
+// tryRunGitCommandInClonedRepo 10/2024 added - non-fatal variant that returns error instead of calling log.Fatalf
+func tryRunGitCommandInClonedRepo(pkgConfig *model.PkgConfig, args ...string) (string, error) {
+	args = append([]string{"-C", pkgConfig.GetLocalGitRepoDir()}, args...)
+
+	cmd := exec.Command("git", args...)
+
+	if pkgConfig.PathSshKey != "" {
+		extraEnv := fmt.Sprintf("GIT_SSH_COMMAND=/usr/bin/ssh -i %s", pkgConfig.PathSshKey)
+		cmd.Env = append(os.Environ(), extraEnv)
+	}
+
+	color.Yellow(">>>> cmd: " + cmd.String())
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		color.Red("!!!!! code: " + err.Error())
+		color.Red("!!!!!  out: " + strings.TrimSpace(string(output)))
+		return string(output), fmt.Errorf("git command failed: %w\nOutput: %s", err, string(output))
+	}
+
+	return string(output), nil
 }

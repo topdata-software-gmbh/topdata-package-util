@@ -52,14 +52,25 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 			"Package Name",
 			"Release Branch Names",
 			"Other Branch Names",
+			"Last Commit to main",
 			// "URL"
 		})
-	} else {
+	} else if displayMode == "compact" {
+		t.AppendHeader(table.Row{
+			"Package Name",
+			"Release Branch Names",
+			"Last Commit to main",
+		})
+	} else if displayMode == "minimal" {
 		t.AppendHeader(table.Row{
 			"Package Name",
 			"Release Branch Names",
 		})
+	} else {
+		color.Red("Invalid displayMode value: %q, it should be either 'minimal', 'compact' or 'full'", displayMode)
+		return
 	}
+
 	for _, p := range pkgInfoList.PkgInfos {
 		if displayMode == "full" {
 			t.AppendRow([]interface{}{
@@ -68,14 +79,25 @@ func DumpPkgInfoListTable(pkgInfoList *model.PkgInfoList, displayMode string) {
 				p.PkgConfig.Name,
 				p.ReleaseBranchNames,
 				p.OtherBranchNames,
+				p.LastCommitToMainAt,
 				// p.URL
 			})
-		} else {
+		} else if displayMode == "compact" {
+			t.AppendRow([]interface{}{
+				p.PkgConfig.Name,
+				p.ReleaseBranchNames,
+				p.LastCommitToMainAt,
+			})
+		} else if displayMode == "minimal" {
 			t.AppendRow([]interface{}{
 				p.PkgConfig.Name,
 				p.ReleaseBranchNames,
 			})
+		} else {
+			color.Red("Invalid displayMode value: %q, it should be either 'minimal', 'compact' or 'full'", displayMode)
+			return
 		}
+
 	}
 
 	t.Render()

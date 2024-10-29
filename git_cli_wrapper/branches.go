@@ -75,9 +75,25 @@ func GetCommitAuthor(pkgConfig *model.PkgConfig) string {
 //	return strings.TrimSpace(out)
 //}
 
+// CheckoutBranch keeps the fatal error handling
 func CheckoutBranch(pkgConfig *model.PkgConfig, branchName string) {
 	_ = runGitCommandInClonedRepo(pkgConfig, "checkout", "-f", branchName)
 	_ = runGitCommandInClonedRepo(pkgConfig, "pull", "--rebase")
+}
+
+// TryCheckoutBranch 10/2024 added - attempts to checkout and pull a branch without crashing on error
+func TryCheckoutBranch(pkgConfig *model.PkgConfig, branchName string) error {
+	output, err := tryRunGitCommandInClonedRepo(pkgConfig, "checkout", "-f", branchName)
+	if err != nil {
+		return fmt.Errorf("failed to checkout branch %s: %w\nOutput: %s", branchName, err, output)
+	}
+
+	output, err = tryRunGitCommandInClonedRepo(pkgConfig, "pull", "--rebase")
+	if err != nil {
+		return fmt.Errorf("failed to pull branch %s: %w\nOutput: %s", branchName, err, output)
+	}
+
+	return nil
 }
 
 func SwitchBranch(pkgConfig *model.PkgConfig, branchName string) {

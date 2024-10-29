@@ -26,8 +26,8 @@ var pkgListCommand = &cobra.Command{
 		// 		shopwareVersion, _ := cmd.Flags().GetString("shopware-version")
 
 		// ----
-		if displayMode != "compact" && displayMode != "full" {
-			return fmt.Errorf("invalid displayMode value: %q, it should be either 'compact' or 'full'", displayMode)
+		if displayMode != "minimal" && displayMode != "compact" && displayMode != "full" {
+			return fmt.Errorf("invalid displayMode value: %q, it should be either 'minimal', 'compact' or 'full'", displayMode)
 		}
 		// pathPackagePortfolioFile, _ := cmd.Flags().GetString("portfolio-file")
 		// pkgConfigList := config.LoadPackagePortfolioFile(pathPackagePortfolioFile)
@@ -66,7 +66,7 @@ func init() {
 	pkgListCommand.Flags().StringP("shopware-version", "s", "", "Shopware version to find the branch for, eg 6.5.1")
 	// pkgListCommand.Flags().BoolP("only-in-store", "o", false, "Show only packages that are in the Shopware6 store")
 	pkgListCommand.Flags().BoolP("no-cache", "n", false, "Do not use existing cache, force rebuilding the cache")
-	pkgListCommand.Flags().StringP("display-mode", "d", "compact", "display mode for the list, either 'compact' or 'full")
+	pkgListCommand.Flags().StringP("display-mode", "d", "compact", "display mode for the list, either 'minimal', 'compact' or 'full'")
 	pkgListCommand.Flags().BoolVarP(&bShowAllBranches, "all", "a", false, "Show all (not only the ones in the store)")
 	pkgRootCommand.AddCommand(pkgListCommand)
 

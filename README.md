@@ -36,6 +36,13 @@ Run the program for exploring the commands:
 go run main.go --help
 ```
 
+## Quick Start
+```bash
+# print a list of all packages as a table
+main pkg list --all
+```
+
+
 ## Command Line Options
 - `--webserver-config-file`
   - Set the path to the config file. Default is `webserver-config.yaml`.
