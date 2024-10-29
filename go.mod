@@ -10,6 +10,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.5.9
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -75,5 +76,4 @@ require (
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

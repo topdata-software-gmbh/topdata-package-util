@@ -10,8 +10,6 @@ builder-images:
         image: "some-docker-registry:5000/sw64-for-build-pipelines:latest"
     -   name: "sw66"
         image: "some-docker-registry:5000/sw66-for-build-pipelines:latest"
-#    -   name: "sw65"
-#        image: "some-docker-registry:5000/sw65-for-build-pipelines:latest"
 
 
 

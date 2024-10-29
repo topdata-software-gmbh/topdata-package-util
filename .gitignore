@@ -1,5 +1,7 @@
 .aider*
 .idea
 bin/*
-webserver-config.yaml
-portfolio.yaml
+
+# the config file
+topdata-package-util.yaml
+.env

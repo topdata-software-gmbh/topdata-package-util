@@ -38,15 +38,6 @@ var buildReleaseZipCommand = &cobra.Command{
 		pathReleaseInfoFile := filepath.Join(pkgConfig.GetLocalGitRepoDir(), app_constants.ReleaseInfoFileName)
 		color.Blue("Writing release info to " + pathReleaseInfoFile + " ...")
 		now := time.Now().Format(time.RFC3339)
-		//		releaseInfo := strings.TrimSpace(util.RenderString(`
-		//Commit ID: {commitId}
-		//Branch:    {branch}
-		//Created:   {created}
-		//`, map[string]string{
-		//			"commitId": gitBranchInfo.CommitId,
-		//			"branch":   gitBranchInfo.Name,
-		//			"created":  now,
-		//		}))
 		releaseInfo := util.MapToTable(map[string]string{
 			"Version":   gitBranchInfo.PackageVersion,
 			"Created":   now,
@@ -65,6 +56,7 @@ var buildReleaseZipCommand = &cobra.Command{
 		color.Blue("Creating zip file " + pathDestZipFile + "...")
 		pkg_zipper.CreateZipArchive(tmpReleaseDir, pathDestZipFile)
 		// -- TODO: upload the zip file to the shopware6 plugin store
+		// -- TODO: upload a copy of the zip file to the sw-plugin-releases folder of our file server
 
 	},
 }
