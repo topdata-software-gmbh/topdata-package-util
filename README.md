@@ -2,7 +2,6 @@
 
 ## About
 - This is cli command written in Go that handles "Topdata Packages"
-- aka "Topdata Release Manager"
 - a Topdata Package is currently a "Shopware 6 Plugin", more to come.
 - git repositories with branches are used for release management 
 - it is single CLI program with multiple commands and subcommands
@@ -66,14 +65,10 @@ go run main.go webserver
 
 
 
- 
 
 
 ## TODO
-- when creating a release zip, log it somewhere (release-log-path should be part of the config file)
 - fix and refactor the webservice API
-- make use of .sw-zip-blacklist when creating a release zip
-    - example: https://github.com/shopware/SwagMigrationConnector/blob/master/.sw-zip-blacklist
 - stats, see for example:
     - https://api.friendsofshopware.com/v2/packagist/packages
     - https://api.friendsofshopware.com/v2/shopware/sales
@@ -85,7 +80,7 @@ If you think that you have found a security issue, please contact security@topda
 
 ## CHANGELOG:
 2024-05-19: project name changed topdata-package-service -> topdata-package-util
-
+2024-11-02: removed the package building stuff, as this is now handled by the topdata-package-release-builder
 
 ## Documentation
 
